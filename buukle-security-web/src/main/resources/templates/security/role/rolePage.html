@@ -1,0 +1,68 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<table class="layui-table" lay-even lay-skin="nob">
+	<thead>
+	<tr>
+		<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+		<th class="hidden-xs">所属应用</th>
+		<th class="hidden-xs">角色名</th>
+		<th class="hidden-xs">创建者</th>
+		<th class="hidden-xs">创建时间</th>
+		<th class="hidden-xs">修改者</th>
+		<th class="hidden-xs">修改时间</th>
+		<th class="hidden-xs">状态</th>
+		<th>操作</th>
+	</tr>
+	</thead>
+	<tbody id="tbody-role">
+		<tr th:each="roleRecord:${response?.body?.list}">
+			<td><input type="checkbox" name="batchCheckBox" lay-skin="primary" th:attr="data-id = ${roleRecord?.id}"  /></td>
+			<td th:text="${roleRecord?.applicationCode}" class="hidden-xs"></td>
+			<td th:text="${roleRecord?.roleName}" class="hidden-xs"></td>
+			<td th:text="${roleRecord?.creator}" class="hidden-xs"></td>
+			<td th:text="${#dates.format(roleRecord?.gmtCreated,'yyyy-MM-dd HH:mm:ss')}" class="hidden-xs"></td>
+			<td th:text="${roleRecord?.modifier}" class="hidden-xs"></td>
+			<td th:text="${#dates.format(roleRecord?.gmtModified,'yyyy-MM-dd HH:mm:ss')}" class="hidden-xs"></td>
+			<td th:switch="${roleRecord?.status}">
+				<button th:case="0" class="layui-btn layui-btn-xs layui-btn-danger" > 初始化</button>
+				<button th:case="1" class="layui-btn layui-btn-xs layui-btn-normal" > 处理中</button>
+				<button th:case="2" class="layui-btn layui-btn-xs layui-btn-default"> 审核不通过</button>
+				<button th:case="3" class="layui-btn layui-btn-xs layui-btn-default"> 审核通过</button>
+				<button th:case="4" class="layui-btn layui-btn-xs layui-btn-default"> 已被封禁</button>
+				<button th:case="*" class="layui-btn layui-btn-xs layui-btn-unknown"> 未知</button>
+			</td>
+			<td>
+				<div class="layui-inline">
+					<hp url="/security/role/roleCrudView">
+						<div class="layui-btn layui-btn-sm layui-btn-normal editBtn" th:attr="data-id = ${roleRecord?.id}" data-url="/security/role/roleCrudView"><i class="layui-icon">&#xe642;</i></div>
+					</hp>
+					<hp url="/security/role/roleCrudJson">
+						<div class="layui-btn layui-btn-sm layui-btn-danger delOneBtn" th:attr="data-id = ${roleRecord?.id}" data-url="/security/role/roleCrudJson"><i class="layui-icon">&#xe640;</i></div>
+					</hp>
+					<hp url="/security/role/roleMenuSetView">
+						<div class="layui-btn layui-btn-sm layui-btn-normal setRoleMenuBtn" th:attr="data-id = ${roleRecord?.id}" data-url="/security/role/roleMenuSetView"><i class="layui-icon">&#xe857;</i></div>
+					</hp>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+	<input type="hidden" id="page" th:attr="value=${response?.body.pageNo}" />
+	<input type="hidden" id="totalPage" th:attr="value=${response?.body.totalPage}" />
+	<input type="hidden" id="total" th:attr="value=${response?.body.total}" />
+</table>
+<script>
+	// 绑定分配菜单
+	bindSetRoleMenu();
+	/** 绑定分配菜单*/
+	function bindSetRoleMenu() {
+		$('.setRoleMenuBtn').off().on('click', function() {
+			var url=$(this).attr('data-url');
+			var userId=$(this).attr('data-userId');
+			url = url + "?id=" + $(this).attr('data-id') + ((userId =="" || userId==undefined) ? "" : "&userId=" + userId);
+			parent.page("分配资源", url, iframeObj, w = "700px", h = "620px");
+			return false;
+		}).mouseenter(function() {
+			dialog.tips('分配资源', '.setRoleMenuBtn');
+		})
+	}
+</script>
+
