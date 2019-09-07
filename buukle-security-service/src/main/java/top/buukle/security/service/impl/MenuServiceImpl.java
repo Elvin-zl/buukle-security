@@ -14,7 +14,8 @@ import top.buukle.common.status.StatusConstants;
 
 import top.buukle.security.dao.ApplicationMapper;
 import top.buukle.security .dao.MenuMapper;
-import top.buukle.security .dao.CommonMapper;
+import top.buukle.util.mvc.BaseQuery;
+import top.buukle.util.mvc.CommonMapper;
 import top.buukle.security.entity.Application;
 import top.buukle.security .entity.User;
 import top.buukle.security .entity.Menu;

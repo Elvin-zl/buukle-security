@@ -2,6 +2,7 @@ package top.buukle.security .service;
 
 import top.buukle.common.call.CommonResponse;
 import top.buukle.security.entity.vo.UserRoleRelationQuery;
+import top.buukle.util.mvc.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 * @author elvin
 * @description UserRoleRelationService 接口类
 */
-public interface UserRoleRelationService extends BaseService{
+public interface UserRoleRelationService extends BaseService {
 
     CommonResponse saveOrEdit(UserRoleRelationQuery query, HttpServletRequest request, HttpServletResponse response);
 

@@ -13,11 +13,11 @@ import top.buukle.common.call.vo.FuzzyVo;
 import top.buukle.common.status.StatusConstants;
 
 import top.buukle.security .dao.ItemMapper;
-import top.buukle.security .dao.CommonMapper;
+import top.buukle.util.mvc.CommonMapper;
 import top.buukle.security .entity.User;
 import top.buukle.security .entity.Item;
 import top.buukle.security .entity.ItemExample;
-import top.buukle.security .entity.vo.BaseQuery;
+import top.buukle.util.mvc.BaseQuery;
 import top.buukle.security.entity.vo.DynamicCondition;
 import top.buukle.security .entity.vo.ItemQuery;
 import top.buukle.security .plugin.util.SessionUtil;

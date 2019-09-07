@@ -1,12 +1,13 @@
 package top.buukle.security .entity.vo;
 
 import top.buukle.security.entity.Area;
+import top.buukle.util.mvc.BaseQuery;
 
 /**
 * @author elvin
 * @description  Area 查询包装类
 */
-public class AreaQuery extends Area implements BaseQuery{
+public class AreaQuery extends Area implements BaseQuery {
 
     /** 当前页码*/
     private Integer page;

@@ -12,7 +12,7 @@ import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 
-@MapperScan("top.buukle.security.dao")
+@MapperScan({"top.buukle.security.dao","top.buukle.util.mvc"})
 @SpringBootApplication(scanBasePackages={"top.buukle.*"})
 @EnableFeignClients(basePackages = {"top.buukle.*"})
 @EnableRedisHttpSession

@@ -11,11 +11,11 @@ import top.buukle.common.call.vo.FuzzyVo;
 import top.buukle.common.status.StatusConstants;
 
 import top.buukle.security .dao.InterfaceRegisterLogsMapper;
-import top.buukle.security .dao.CommonMapper;
+import top.buukle.util.mvc.CommonMapper;
 import top.buukle.security .entity.User;
 import top.buukle.security .entity.InterfaceRegisterLogs;
 import top.buukle.security .entity.InterfaceRegisterLogsExample;
-import top.buukle.security .entity.vo.BaseQuery;
+import top.buukle.util.mvc.BaseQuery;
 import top.buukle.security .entity.vo.InterfaceRegisterLogsQuery;
 import top.buukle.security .plugin.util.SessionUtil;
 import top.buukle.security .service.InterfaceRegisterLogsService;

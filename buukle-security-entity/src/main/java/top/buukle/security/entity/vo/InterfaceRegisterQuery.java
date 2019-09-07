@@ -1,6 +1,7 @@
 package top.buukle.security .entity.vo;
 
 import top.buukle.security.entity.InterfaceRegister;
+import top.buukle.util.mvc.BaseQuery;
 
 /**
 * @author elvin

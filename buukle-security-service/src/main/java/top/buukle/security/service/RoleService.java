@@ -4,6 +4,7 @@ import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.PageResponse;
 import top.buukle.security.entity.Role;
 import top.buukle.security.entity.vo.RoleQuery;
+import top.buukle.util.mvc.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ import java.util.List;
 * @author elvin
 * @description RoleService 接口类
 */
-public interface RoleService extends BaseService{
+public interface RoleService extends BaseService {
 
     CommonResponse saveOrEdit(RoleQuery query, HttpServletRequest request, HttpServletResponse response);
 

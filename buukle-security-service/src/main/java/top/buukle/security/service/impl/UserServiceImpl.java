@@ -12,7 +12,6 @@ import top.buukle.common.status.StatusConstants;
 import top.buukle.security.api.ApiUserService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
-import top.buukle.security.entity.vo.BaseQuery;
 import top.buukle.security .entity.vo.UserQuery;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security.service.RoleService;
@@ -30,6 +29,8 @@ import top.buukle.util.DateUtil;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.MD5Util;
 import top.buukle.util.StringUtil;
+import top.buukle.util.mvc.BaseQuery;
+import top.buukle.util.mvc.CommonMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

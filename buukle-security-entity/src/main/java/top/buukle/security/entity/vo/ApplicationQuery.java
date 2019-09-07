@@ -1,12 +1,13 @@
 package top.buukle.security .entity.vo;
 
 import top.buukle.security.entity.Application;
+import top.buukle.util.mvc.BaseQuery;
 
 /**
 * @author elvin
 * @description  Application 查询包装类
 */
-public class ApplicationQuery extends Application implements BaseQuery{
+public class ApplicationQuery extends Application implements BaseQuery {
 
     /** 当前页码*/
     private Integer page;

@@ -11,11 +11,9 @@ import top.buukle.common.call.vo.FuzzyVo;
 import top.buukle.common.status.StatusConstants;
 
 import top.buukle.security .dao.AreaMapper;
-import top.buukle.security .dao.CommonMapper;
 import top.buukle.security .entity.User;
 import top.buukle.security .entity.Area;
 import top.buukle.security .entity.AreaExample;
-import top.buukle.security .entity.vo.BaseQuery;
 import top.buukle.security .entity.vo.AreaQuery;
 import top.buukle.security .plugin.util.SessionUtil;
 import top.buukle.security .service.AreaService;
@@ -26,6 +24,8 @@ import top.buukle.security .service.util.ConvertHumpUtil;
 import top.buukle.util.DateUtil;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.StringUtil;
+import top.buukle.util.mvc.BaseQuery;
+import top.buukle.util.mvc.CommonMapper;
 
 
 import javax.servlet.http.HttpServletRequest;
