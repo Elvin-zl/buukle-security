@@ -2,15 +2,10 @@ package top.buukle.security.web;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
-import org.springframework.session.web.http.CookieSerializer;
-import org.springframework.session.web.http.DefaultCookieSerializer;
-import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 
 @MapperScan({"top.buukle.security.dao","top.buukle.util.mvc"})
 @SpringBootApplication(scanBasePackages={"top.buukle.*"})
