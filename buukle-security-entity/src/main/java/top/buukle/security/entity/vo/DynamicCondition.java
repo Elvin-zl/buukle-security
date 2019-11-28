@@ -1,5 +1,5 @@
 /**
- * Copyright (C), 2015-2019  http://www.jd.com
+ * Copyright (C), 2015-2019  http://www.buukle.top
  * FileName: DynimicCondition
  * Author:   zhanglei1102
  * Date:     2019/8/7 15:37
