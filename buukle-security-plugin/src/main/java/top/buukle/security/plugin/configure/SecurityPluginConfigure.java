@@ -1,6 +1,5 @@
 package top.buukle.security.plugin.configure;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,14 +8,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
-import top.buukle.security.entity.User;
 import top.buukle.security.plugin.client.DataIsolationInterceptor;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
-import top.buukle.util.JsonUtil;
 import top.buukle.util.log.BaseLogger;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +23,7 @@ import java.util.Properties;
 public class SecurityPluginConfigure {
 
     private static final BaseLogger LOGGER = BaseLogger.getLogger(SecurityPluginConfigure.class);
+
     @Autowired
     private List<SqlSessionFactory> sqlSessionFactoryList;
     @Autowired
@@ -68,13 +65,19 @@ public class SecurityPluginConfigure {
         defaultCookieSerializer.setCookiePath("/");
         return defaultCookieSerializer;
     }
+
+    /**
+     * @description 自定义Redis Session序列化
+     * @param
+     * @return org.springframework.data.redis.serializer.RedisSerializer<java.lang.Object>
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
     @Bean("springSessionDefaultRedisSerializer")
     public RedisSerializer<Object> defaultRedisSerializer(){
+        GenericFastJsonRedisSerializer genericFastJsonRedisSerializer = new GenericFastJsonRedisSerializer();
         LOGGER.debug("自定义Redis Session序列化加载成功");
-        return valueSerializer();
+        return genericFastJsonRedisSerializer;
     }
 
-    private RedisSerializer<Object> valueSerializer() {
-        return new GenericFastJsonRedisSerializer();
-    }
 }

@@ -2,18 +2,12 @@ package top.buukle.security.plugin.invoker;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
-//import top.buukle.common.annotation.InvokerLoggingAnnotation;
-//import top.buukle.common.request.BaseRequest;
-//import top.buukle.common.response.BaseResponse;
-//import top.buukle.plugin.security.entity.Button;
-//import top.buukle.plugin.security.entity.ButtonType;
-//import top.buukle.plugin.security.entity.User;
-//import top.buukle.plugin.security.plugins.SecurityInterceptor;
-//import top.buukle.plugin.security.vo.response.ModuleNavigationVo;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import top.buukle.common.call.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
-import top.buukle.common.call.PageResponse;
-import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
+import top.buukle.common.call.CommonResponse;
+import top.buukle.security.entity.User;
 
 /**
  * @Author elvin
@@ -31,5 +25,83 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/8/2
      */
     @PostMapping(value = "${security.server.appResourceURI}")
-    AppResourceResponse getApplicationResource(CommonRequest request);
+    AppResourceResponse getApplicationResource(@RequestBody CommonRequest request);
+
+    /**
+     * @description 删除session
+     * @param userId
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/deleteSession")
+    void deleteSession(@RequestParam String userId);
+
+    /**
+     * @description 强制下线用户
+     * @param userId
+     * @param user
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/kickOutUser")
+    void kickOutUser(@RequestParam String userId, @RequestBody User user, @RequestParam int expire);
+
+    /**
+     * @description 刷新session
+     * @param userId
+     * @param k
+     * @param v
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/refreshSession")
+    void refreshSession(@RequestParam String userId,@RequestParam String k, @RequestBody Object v, @RequestParam int expire);
+
+    /**
+     * @description 刷新过期时间
+     * @param userId
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/refreshDDL")
+    void refreshDDL(@RequestParam String userId,@RequestParam  int expire);
+
+    /**
+     * @description 注册session
+     * @param sessionId
+     * @param userId
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/registerInSessionContext")
+    void registerInSessionContext(@RequestParam String sessionId, @RequestParam String userId, @RequestParam Integer expire);
+
+    /**
+     * @description 移除session
+     * @param userId
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/removeFromSessionContext")
+    void removeFromSessionContext(@RequestParam String userId);
+
+    /**
+     * @description 计数
+     * @param
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/11/28
+     */
+    @PostMapping(value = "/api/app/countSessionContext")
+    CommonResponse countSessionContext();
 }
