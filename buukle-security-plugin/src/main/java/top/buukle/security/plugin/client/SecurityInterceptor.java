@@ -60,6 +60,11 @@ public class SecurityInterceptor implements HandlerInterceptor {
      */
     @Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String replace = request.getRequestURI().replace("//", "/");
+        if(replace.startsWith("/api/app") || replace.startsWith("/favicon.ico")){
+           // 第三方接口,通过验签即可放行
+           return true;
+       }
         // 认证
         boolean authentic = !SecurityInterceptorConstants.OPEN_AUTH_TRUE.equals(env.getProperty("security.openAuth")) || this.authentic(request, response);
         // 授权

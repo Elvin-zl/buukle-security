@@ -11,7 +11,7 @@ logging:
 spring:
   ##引入
   profiles:
-    include: pre-security
+    include: pre-security,pre-wjs
   ##应用名
   application:
       name: buukle-security
