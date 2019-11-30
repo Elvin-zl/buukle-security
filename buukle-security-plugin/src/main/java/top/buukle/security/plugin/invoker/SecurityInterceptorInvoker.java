@@ -35,7 +35,7 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/11/28
      */
     @PostMapping(value = "/api/app/deleteSession")
-    void deleteSession(@RequestParam String userId);
+    void deleteSession(@RequestParam("userId") String userId);
 
     /**
      * @description 强制下线用户
@@ -47,7 +47,7 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/11/28
      */
     @PostMapping(value = "/api/app/kickOutUser")
-    void kickOutUser(@RequestParam String userId, @RequestBody User user, @RequestParam int expire);
+    void kickOutUser(@RequestParam("userId") String userId, @RequestBody User user, @RequestParam("expire") int expire);
 
     /**
      * @description 刷新session
@@ -60,7 +60,7 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/11/28
      */
     @PostMapping(value = "/api/app/refreshSession")
-    void refreshSession(@RequestParam String userId,@RequestParam String k, @RequestBody Object v, @RequestParam int expire);
+    void refreshSession(@RequestParam("userId") String userId,@RequestParam("k") String k, @RequestBody Object v, @RequestParam("expire") int expire);
 
     /**
      * @description 刷新过期时间
@@ -71,7 +71,7 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/11/28
      */
     @PostMapping(value = "/api/app/refreshDDL")
-    void refreshDDL(@RequestParam String userId,@RequestParam  int expire);
+    void refreshDDL(@RequestParam("userId") String userId,@RequestParam("expire")  int expire);
 
     /**
      * @description 注册session
@@ -83,7 +83,7 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/11/28
      */
     @PostMapping(value = "/api/app/registerInSessionContext")
-    void registerInSessionContext(@RequestParam String sessionId, @RequestParam String userId, @RequestParam Integer expire);
+    void registerInSessionContext(@RequestParam("sessionId") String sessionId, @RequestParam("userId") String userId, @RequestParam("expire") Integer expire);
 
     /**
      * @description 移除session
@@ -93,7 +93,7 @@ public interface SecurityInterceptorInvoker {
      * @Date 2019/11/28
      */
     @PostMapping(value = "/api/app/removeFromSessionContext")
-    void removeFromSessionContext(@RequestParam String userId);
+    void removeFromSessionContext(@RequestParam("userId") String userId);
 
     /**
      * @description 计数
