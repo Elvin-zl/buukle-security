@@ -41,7 +41,6 @@ spring:
     host: 127.0.0.1
     port: 4376
     timeout: 3000
-
   ## session 共享
   session:
     store-type: redis
