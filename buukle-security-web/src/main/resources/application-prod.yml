@@ -42,11 +42,7 @@ spring:
     port: 4376
     password: zxcvbnmKO),.
     timeout: 604800
-    jedis:
-      pool:
-        max-idle: 100
-        min-idle: 1
-        max-wait: 20
+
   ## session 共享
   session:
     store-type: redis
