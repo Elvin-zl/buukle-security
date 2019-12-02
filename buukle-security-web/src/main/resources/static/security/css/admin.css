@@ -2185,3 +2185,8 @@ body{
 .error {
   color: #ff0000cf;
 }
+.version-info{
+  margin-top: 28%;
+  border: solid 0;
+  padding-left: 34%;
+}
