@@ -19,5 +19,10 @@
             <artifactId>buukle-util</artifactId>
             <version>1.0.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>top.buukle</groupId>
+            <artifactId>buukle-common</artifactId>
+            <version>1.0.1.RELEASE</version>
+        </dependency>
     </dependencies>
 </project>

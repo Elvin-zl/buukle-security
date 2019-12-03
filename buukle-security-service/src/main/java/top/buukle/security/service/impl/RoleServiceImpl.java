@@ -26,8 +26,8 @@ import top.buukle.security .service.util.ConvertHumpUtil;
 import top.buukle.util.DateUtil;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.StringUtil;
-import top.buukle.util.mvc.BaseQuery;
-import top.buukle.util.mvc.CommonMapper;
+import top.buukle.common.mvc.BaseQuery;
+import top.buukle.common.mvc.CommonMapper;
 
 
 import javax.servlet.http.HttpServletRequest;

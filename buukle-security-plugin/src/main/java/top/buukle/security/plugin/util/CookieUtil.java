@@ -2,8 +2,7 @@ package top.buukle.security.plugin.util;
 
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 import top.buukle.util.NumberUtil;
-import top.buukle.util.StringUtil;
-import top.buukle.util.log.BaseLogger;
+import top.buukle.common.log.BaseLogger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

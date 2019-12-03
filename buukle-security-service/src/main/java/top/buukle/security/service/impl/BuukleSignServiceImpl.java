@@ -11,11 +11,11 @@ import top.buukle.common.call.vo.FuzzyVo;
 import top.buukle.common.status.StatusConstants;
 
 import top.buukle.security .dao.BuukleSignMapper;
-import top.buukle.util.mvc.CommonMapper;
+import top.buukle.common.mvc.CommonMapper;
 import top.buukle.security .entity.User;
 import top.buukle.security .entity.BuukleSign;
 import top.buukle.security .entity.BuukleSignExample;
-import top.buukle.util.mvc.BaseQuery;
+import top.buukle.common.mvc.BaseQuery;
 import top.buukle.security .entity.vo.BuukleSignQuery;
 import top.buukle.security .plugin.util.SessionUtil;
 import top.buukle.security .service.BuukleSignService;

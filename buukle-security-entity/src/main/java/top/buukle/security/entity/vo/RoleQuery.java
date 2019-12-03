@@ -1,7 +1,7 @@
 package top.buukle.security .entity.vo;
 
 import top.buukle.security.entity.Role;
-import top.buukle.util.mvc.BaseQuery;
+import top.buukle.common.mvc.BaseQuery;
 
 /**
 * @author elvin

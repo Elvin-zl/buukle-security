@@ -23,7 +23,7 @@ import top.buukle.security.plugin.cache.DataIsolationCache;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 import top.buukle.security.plugin.util.DataIsolationSqlUtil;
 import top.buukle.util.StringUtil;
-import top.buukle.util.log.BaseLogger;
+import top.buukle.common.log.BaseLogger;
 
 
 /**

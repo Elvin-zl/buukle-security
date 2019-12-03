@@ -13,7 +13,7 @@ import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import top.buukle.security.plugin.client.DataIsolationInterceptor;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
-import top.buukle.util.log.BaseLogger;
+import top.buukle.common.log.BaseLogger;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

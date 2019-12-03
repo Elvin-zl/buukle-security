@@ -2,7 +2,7 @@ package top.buukle.security .service;
 
 import top.buukle.common.call.CommonResponse;
 import top.buukle.security.entity.vo.ButtonQuery;
-import top.buukle.util.mvc.BaseService;
+import top.buukle.common.mvc.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

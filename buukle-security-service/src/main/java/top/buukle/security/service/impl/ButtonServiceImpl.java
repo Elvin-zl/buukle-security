@@ -14,10 +14,10 @@ import top.buukle.common.status.StatusConstants;
 
 import top.buukle.security.dao.ApplicationMapper;
 import top.buukle.security .dao.ButtonMapper;
-import top.buukle.util.mvc.CommonMapper;
+import top.buukle.common.mvc.CommonMapper;
 import top.buukle.security.dao.MenuMapper;
 import top.buukle.security.entity.*;
-import top.buukle.util.mvc.BaseQuery;
+import top.buukle.common.mvc.BaseQuery;
 import top.buukle.security.entity.vo.ButtonCrudModelVo;
 import top.buukle.security .entity.vo.ButtonQuery;
 import top.buukle.security .plugin.util.SessionUtil;

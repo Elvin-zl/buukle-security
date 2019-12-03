@@ -3,7 +3,7 @@ package top.buukle.security .service;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.PageResponse;
 import top.buukle.security.entity.vo.ApplicationQuery;
-import top.buukle.util.mvc.BaseService;
+import top.buukle.common.mvc.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -15,7 +15,7 @@ import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.StringUtil;
-import top.buukle.util.log.BaseLogger;
+import top.buukle.common.log.BaseLogger;
 
 public class DataIsolationSqlUtil {
 

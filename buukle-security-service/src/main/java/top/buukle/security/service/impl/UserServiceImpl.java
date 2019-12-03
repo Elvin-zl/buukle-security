@@ -29,8 +29,8 @@ import top.buukle.util.DateUtil;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.MD5Util;
 import top.buukle.util.StringUtil;
-import top.buukle.util.mvc.BaseQuery;
-import top.buukle.util.mvc.CommonMapper;
+import top.buukle.common.mvc.BaseQuery;
+import top.buukle.common.mvc.CommonMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
