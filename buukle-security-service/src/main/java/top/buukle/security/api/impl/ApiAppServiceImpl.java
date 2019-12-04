@@ -25,10 +25,6 @@ public class ApiAppServiceImpl implements ApiAppService {
 
 
     @Autowired
-    private MenuMapper menuMapper;
-    @Autowired
-    private ButtonMapper buttonMapper;
-    @Autowired
     private ApplicationMapper applicationMapper;
     @Autowired
     private InterfaceRegisterMapper interfaceRegisterMapper;

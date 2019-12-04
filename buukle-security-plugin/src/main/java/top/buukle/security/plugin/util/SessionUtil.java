@@ -10,8 +10,12 @@
  */
 package top.buukle.security.plugin.util;
 
+import top.buukle.common.call.CommonResponse;
+import top.buukle.common.call.PageResponse;
+import top.buukle.security.entity.Application;
 import top.buukle.security.entity.Role;
 import top.buukle.security.entity.User;
+import top.buukle.security.entity.vo.SelectTreeNodeResult;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
@@ -20,6 +24,8 @@ import top.buukle.util.StringUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -179,5 +185,27 @@ public class SessionUtil {
             throw new SecurityPluginException(SecurityExceptionEnum.AUTH_WRONG_NO_ROLE);
         }
         return role;
+    }
+
+    /**
+     * @description 获取当前用户拥有角色的应用
+     * @param request
+     * @return java.util.List<top.buukle.security.entity.Application>
+     * @Author zhanglei1102
+     * @Date 2019/12/4
+     */
+    public static PageResponse getUserApplication(HttpServletRequest request) {
+        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
+        List<SelectTreeNodeResult> applications = new ArrayList<>();
+        for (String applicationCode : roleMap.keySet()) {
+            if(null != roleMap.get(applicationCode)){
+                SelectTreeNodeResult application = new SelectTreeNodeResult();
+                application.setTitle(applicationCode);
+                application.setId(roleMap.get(applicationCode).getApplicationId());
+                applications.add(application);
+            }
+        }
+        PageResponse commonResponse = new PageResponse.Builder().build(applications,1,-1,applications.size());
+        return commonResponse;
     }
 }

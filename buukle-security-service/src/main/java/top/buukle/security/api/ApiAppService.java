@@ -3,6 +3,7 @@ package top.buukle.security.api;
 
 import top.buukle.common.call.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
+import top.buukle.common.call.CommonResponse;
 
 /**
 * @author elvin
@@ -20,4 +21,5 @@ public interface ApiAppService {
      * @Date 2019/8/2
      */
     AppResourceResponse getAppResource(CommonRequest request);
+
 }

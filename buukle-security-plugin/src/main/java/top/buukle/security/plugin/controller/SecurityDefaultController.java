@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.buukle.common.call.CommonResponse;
+import top.buukle.common.call.PageResponse;
 import top.buukle.security.plugin.cache.SecuritySessionContext;
 import top.buukle.security.plugin.util.SessionUtil;
 
@@ -37,16 +38,44 @@ public class SecurityDefaultController {
     @Autowired
     private SecuritySessionContext sessionContext;
 
-
+    /**
+     * @description 登出
+     * @param request
+     * @param response
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/4
+     */
     @RequestMapping("/logout")
     public void logout(HttpServletRequest request , HttpServletResponse response) throws IOException {
         sessionContext.removeFromSessionContext(SessionUtil.getUser(request,response).getUserId());
         SessionUtil.logout(request,response);
         response.sendRedirect(env.getProperty("security.passport.host"));
     }
+
+    /**
+     * @description 计数
+     * @param
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/4
+     */
     @RequestMapping("/getOnlineCount")
     @ResponseBody
     public CommonResponse getOnlineCount(){
         return sessionContext.countSessionContext();
+    }
+
+    /**
+     * @description 获取当前用户拥有角色的应用
+     * @param request
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/4
+     */
+    @RequestMapping("/getUserApplication")
+    @ResponseBody
+    public PageResponse getUserApplication(HttpServletRequest request){
+        return SessionUtil.getUserApplication(request);
     }
 }

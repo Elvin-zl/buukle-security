@@ -59,7 +59,6 @@ public class ApiUserServiceImpl implements ApiUserService{
             throw new SecurityPluginException(SecurityExceptionEnum.LOGIN_WRONG_USER_NULL);
         }
         User userInfo = users.get(0);
-        // 缓存用户信息
         User user1 = new User();
         user1.setId(userInfo.getId());
         user1.setGmtLastLogin(new Date());
@@ -124,26 +123,24 @@ public class ApiUserServiceImpl implements ApiUserService{
             // 查询所有角色
             List<Role> allRoles = roleMapper.selectByExample(roleExample);
             if(isUpdate){
-                // 刷新用户角色目录
-                sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
                 // 刷新用户可见菜单数组
+                sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
+                // 刷新用户角色目录
                 sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles),SessionUtil.getUserExpire(userInfo));
                 // 刷新用户下辖角色映射
                 sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,this.assUserSubRoleMap(userRoles,allRoles),SessionUtil.getUserExpire(userInfo));
                 // 刷新用户所有资源url清单
                 sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)),SessionUtil.getUserExpire(userInfo));
             }else{
-                // 刷新用户角色目录
-                SessionUtil.cache(request,SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed);
                 // 刷新用户可见菜单数组
+                SessionUtil.cache(request,SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed);
+                // 刷新用户角色目录
                 SessionUtil.cache(request,SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles));
                 // 刷新用户下辖角色映射
                 SessionUtil.cache(request,SessionUtil.USER_ROLE_SUB_MAP_KEY,this.assUserSubRoleMap(userRoles,allRoles));
                 // 刷新用户所有资源url清单
                 SessionUtil.cache(request,SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)));
             }
-
-
         }
     }
 
