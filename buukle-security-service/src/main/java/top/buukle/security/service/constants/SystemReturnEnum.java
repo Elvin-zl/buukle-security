@@ -22,7 +22,7 @@ public enum SystemReturnEnum {
     APP_RESOURCE_EXCEPTION("F","010100","应用获取资源列表异常,应用不存在!"),
 
     /*--user 返回码{03}{**}{**}*/
-    USER_BATCH_DELETE_IDS_NULL("F","010200","批量删除用户失败,参数错误!"),
+    USER_BATCH_DELETE_IDS_NULL("F","010200","批量删除失败,参数错误!"),
     USER_SAVE_OR_EDIT_PARAM_WRONG("F","010201","保存或更新用户失败,用户UID信息异常!"),
     USER_SAVE_OR_EDIT_USERNAME_NULL("F","010202","保存或更新用户失败,用户名为空!"),
     USER_SAVE_OR_EDIT_PASSWORD_NULL("F","010203","保存或更新用户失败,密码为空!"),
