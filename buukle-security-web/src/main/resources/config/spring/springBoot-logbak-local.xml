@@ -93,7 +93,7 @@
     <logger name="org" level="ERROR" />
     <!-- 日志输出级别 -->
     <!--<root level="INFO">-->
-    <root level="debug">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <appender-ref ref="HTML" />
