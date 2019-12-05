@@ -162,7 +162,6 @@ public class ApiUserServiceImpl implements ApiUserService{
                     if(userRole.getApplicationId().equals(application.getId())){
                         this.getUserSubRoleWithApplicationCode(subRoleList,userRole,allRoles);
                     }
-                    break;
                 }
                 map.put(application.getCode(),subRoleList);
             }
