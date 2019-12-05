@@ -6,11 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @MapperScan({"top.buukle.security.dao","top.buukle.common.mvc"})
 @SpringBootApplication(scanBasePackages={"top.buukle.*"})
 @EnableFeignClients(basePackages = {"top.buukle.*"})
 @EnableRedisHttpSession
+@EnableTransactionManagement
 public class SecurityApplication {
     private static volatile boolean RUNNING = true;
     public static void main(String[] args) {

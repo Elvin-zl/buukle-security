@@ -6,6 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.FuzzyResponse;
@@ -89,6 +92,7 @@ public class RoleServiceImpl implements RoleService{
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse delete(Integer id, HttpServletRequest request, HttpServletResponse response) {
         Role role = roleMapper.selectByPrimaryKey(id);
         if(role!=null){
@@ -112,6 +116,7 @@ public class RoleServiceImpl implements RoleService{
      * @Date 2019/8/4
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse deleteBatch(String ids, HttpServletRequest request, HttpServletResponse response) {
         String trimIds = ids.trim();
         String[] split = trimIds.split(",");
@@ -214,6 +219,7 @@ public class RoleServiceImpl implements RoleService{
      * @Date 2019/8/5
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse saveOrEdit(RoleQuery query, HttpServletRequest request, HttpServletResponse response) {
         validateParamForSaveOrEdit(query);
         // 新增
@@ -457,6 +463,7 @@ public class RoleServiceImpl implements RoleService{
      * @Date 2019/8/14
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse roleMenuSet(String ids, Integer id, HttpServletRequest request, HttpServletResponse response) {
         User operator = SessionUtil.getOperator(request, response);
         // 查询操作角色
@@ -615,6 +622,7 @@ public class RoleServiceImpl implements RoleService{
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse save(BaseQuery query, HttpServletRequest request, HttpServletResponse response) {
 
         roleMapper.insert(this.assQueryForInsert((RoleQuery)query,request,response));
@@ -629,6 +637,7 @@ public class RoleServiceImpl implements RoleService{
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse update(BaseQuery query, HttpServletRequest request, HttpServletResponse response) {
         RoleQuery roleQuery = ((RoleQuery)query);
 

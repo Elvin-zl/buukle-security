@@ -4,6 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.FuzzyResponse;
 import top.buukle.common.call.PageResponse;
@@ -69,6 +72,7 @@ public class UserTrailServiceImpl implements UserTrailService{
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse delete(Integer id, HttpServletRequest request, HttpServletResponse response) {
         if(userTrailMapper.updateByPrimaryKeySelective(this.assQueryForUpdateStatus(id, UserTrailEnums.status.DELETED.value(),request,response)) != 1){
             throw new SystemException(SystemReturnEnum.DELETE_INFO_EXCEPTION);
@@ -86,6 +90,7 @@ public class UserTrailServiceImpl implements UserTrailService{
      * @Date 2019/8/4
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse deleteBatch(String ids, HttpServletRequest request, HttpServletResponse response) {
         String trimIds = ids.trim();
         String[] split = trimIds.split(",");
@@ -134,6 +139,7 @@ public class UserTrailServiceImpl implements UserTrailService{
      * @Date 2019/8/5
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse saveOrEdit(UserTrailQuery query, HttpServletRequest request, HttpServletResponse response) {
         validateParamForSaveOrEdit(query);
         // 新增
@@ -170,6 +176,7 @@ public class UserTrailServiceImpl implements UserTrailService{
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse save(BaseQuery query, HttpServletRequest request, HttpServletResponse response) {
 
         userTrailMapper.insert(this.assQueryForInsert((UserTrailQuery)query,request,response));
@@ -184,6 +191,7 @@ public class UserTrailServiceImpl implements UserTrailService{
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse update(BaseQuery query, HttpServletRequest request, HttpServletResponse response) {
         UserTrailQuery userTrailQuery = ((UserTrailQuery)query);
 

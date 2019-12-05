@@ -4,6 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.FuzzyResponse;
 import top.buukle.common.call.PageResponse;
@@ -69,6 +72,7 @@ public class RoleMenuButtonRelationLogsServiceImpl implements RoleMenuButtonRela
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse delete(Integer id, HttpServletRequest request, HttpServletResponse response) {
         if(roleMenuButtonRelationLogsMapper.updateByPrimaryKeySelective(this.assQueryForUpdateStatus(id, RoleMenuButtonRelationLogsEnums.status.DELETED.value(),request,response)) != 1){
             throw new SystemException(SystemReturnEnum.DELETE_INFO_EXCEPTION);
@@ -134,6 +138,7 @@ public class RoleMenuButtonRelationLogsServiceImpl implements RoleMenuButtonRela
      * @Date 2019/8/5
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse saveOrEdit(RoleMenuButtonRelationLogsQuery query, HttpServletRequest request, HttpServletResponse response) {
         validateParamForSaveOrEdit(query);
         // 新增
@@ -170,6 +175,7 @@ public class RoleMenuButtonRelationLogsServiceImpl implements RoleMenuButtonRela
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse save(BaseQuery query, HttpServletRequest request, HttpServletResponse response) {
 
         roleMenuButtonRelationLogsMapper.insert(this.assQueryForInsert((RoleMenuButtonRelationLogsQuery)query,request,response));
@@ -184,6 +190,7 @@ public class RoleMenuButtonRelationLogsServiceImpl implements RoleMenuButtonRela
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse update(BaseQuery query, HttpServletRequest request, HttpServletResponse response) {
         RoleMenuButtonRelationLogsQuery roleMenuButtonRelationLogsQuery = ((RoleMenuButtonRelationLogsQuery)query);
 
