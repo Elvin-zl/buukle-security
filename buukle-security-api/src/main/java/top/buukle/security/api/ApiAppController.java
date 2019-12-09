@@ -46,6 +46,7 @@ public class ApiAppController{
     private static final String SPRING_SESSION_KEY_PREFIX = "spring:session:sessions:";
     private static final String SPRING_SESSION_KEY_EXPIRE_PREFIX = "spring:session:sessions:expires:";
     public static final String SESSION_ATTR_PREFIX = "sessionAttr:";
+    public static final String BUUKLE_APP_RESOURCE_KEY_PREFIX = "buukle:appResource:";
 
     /**
      * @description 获取app资源目录
@@ -57,7 +58,7 @@ public class ApiAppController{
     @RequestMapping("/getAppResource")
     @ResponseBody
     public AppResourceResponse getAppResource(CommonRequest request) {
-        return appResourceService.getAppResource(request);
+        return appResourceService.getAppResource(request,BUUKLE_APP_RESOURCE_KEY_PREFIX);
     }
 
     /**

@@ -24,8 +24,8 @@ public interface SecurityInterceptorInvoker {
      * @Author elvin
      * @Date 2019/8/2
      */
-    @PostMapping(value = "${security.server.appResourceURI}")
-    AppResourceResponse getApplicationResource(@RequestBody CommonRequest request);
+    @PostMapping(value = "/api/app/getAppResource")
+    AppResourceResponse getAppResource(@RequestBody CommonRequest request);
 
     /**
      * @description 删除session

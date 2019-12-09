@@ -11,7 +11,7 @@
  *          ### security.server.name , security server's name
  *          name: buukle-security
  *          ### security.server.appResourceURI ,security get application resources's URI
- *          appResourceURI: /api/app/getAppResource
+ *
  *        ### security.openAuth user-authentic switch : 1 mains open, default is not
  *        openAuth: 1
  *        ### security.openPerm url-permission switch : 1 mains open, default is not

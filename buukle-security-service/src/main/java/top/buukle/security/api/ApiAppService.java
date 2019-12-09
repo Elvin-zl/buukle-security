@@ -3,7 +3,6 @@ package top.buukle.security.api;
 
 import top.buukle.common.call.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
-import top.buukle.common.call.CommonResponse;
 
 /**
 * @author elvin
@@ -16,10 +15,11 @@ public interface ApiAppService {
     /**
      * @description 查询app资源目录
      * @param request
+     * @param buukleAppResourceKeyPrefix
      * @return top.buukle.common.call.AppResourceResponse
      * @Author elvin
      * @Date 2019/8/2
      */
-    AppResourceResponse getAppResource(CommonRequest request);
+    AppResourceResponse getAppResource(CommonRequest request, String buukleAppResourceKeyPrefix);
 
 }

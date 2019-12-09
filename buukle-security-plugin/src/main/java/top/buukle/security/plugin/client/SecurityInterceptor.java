@@ -123,25 +123,23 @@ public class SecurityInterceptor implements HandlerInterceptor {
     private boolean permission(HttpServletRequest request, HttpServletResponse response) throws ExecutionException, IOException {
         AppResourceResponse appResourceResponse = SecurityInterceptorCache.get();
         String uri = request.getRequestURI().replace("//", "/");
-        // 注册验证
-        if(SecurityInterceptorConstants.OPEN_REGS_TRUE.equals(env.getProperty("security.openRegs")) ){
-            if( null == appResourceResponse ||
-                    CollectionUtils.isEmpty(appResourceResponse.getRegisteredResourceList()) ||
-                    !appResourceResponse.getRegisteredResourceList().contains(uri)
-                    ){
-                this.writeNoticePage(request, response,SecurityInterceptorConstants.NO_PERM_RETURN_HTML_TEMPLATE.replace("noPerm",SecurityExceptionEnum.AUTH_WRONG_APP_NO_REG.getMsg()),
-                        SecurityExceptionEnum.AUTH_WRONG_APP_NO_REG.getCode(),
-                        SecurityExceptionEnum.AUTH_WRONG_APP_NO_REG.getMsg());
-                return false;
-            }
+        // 是否在管控列表
+        if(!appResourceResponse.getRegisteredResourceList().contains(uri)){
+            return true;
         }
-        // 授权验证
+        // 是否拥有该资源
         List<String> list = (List<String>) SessionUtil.get(request,SessionUtil.USER_URL_LIST_KEY);
         if(CollectionUtils.isEmpty(list) || !list.contains(uri)){
             this.writeNoticePage(request, response,SecurityInterceptorConstants.NO_PERM_RETURN_HTML_TEMPLATE.replace("noPerm",SecurityExceptionEnum.AUTH_WRONG_NO_PERM.getMsg()),
                     SecurityExceptionEnum.AUTH_WRONG_NO_PERM.getCode(),
                     SecurityExceptionEnum.AUTH_WRONG_NO_PERM.getMsg());
             return false;
+        }else{
+            // 注册验证
+            if(SecurityInterceptorConstants.OPEN_REGS_TRUE.equals(env.getProperty("security.openRegs")) ){
+                // TODO 接口注册逻辑
+                return true;
+            }
         }
         return true;
     }
