@@ -86,7 +86,7 @@ public class ApiAppServiceImpl implements ApiAppService {
             }
         }
         AppResourceResponse appResourceResponse = new AppResourceResponse();
-        appResourceResponse.setRegisteredResourceList(appUrlList);
+        appResourceResponse.setPermResourceList(appUrlList);
         stringRedisTemplate.opsForValue().set(buukleAppResourceKeyPrefix + request.getHead().getApplicationName(),JsonUtil.toJSONString(appResourceResponse));
         return appResourceResponse;
     }

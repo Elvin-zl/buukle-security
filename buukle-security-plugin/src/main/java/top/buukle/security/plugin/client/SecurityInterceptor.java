@@ -124,7 +124,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         AppResourceResponse appResourceResponse = SecurityInterceptorCache.get();
         String uri = request.getRequestURI().replace("//", "/");
         // 是否在管控列表
-        if(!appResourceResponse.getRegisteredResourceList().contains(uri)){
+        if(!appResourceResponse.getPermResourceList().contains(uri)){
             return true;
         }
         // 是否拥有该资源
