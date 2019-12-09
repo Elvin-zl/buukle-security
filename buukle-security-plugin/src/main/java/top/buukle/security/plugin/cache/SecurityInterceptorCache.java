@@ -54,13 +54,14 @@ public class SecurityInterceptorCache {
                     public AppResourceResponse load(String s) {
 
                         long startTime = System.currentTimeMillis();
-                        LOGGER.info("应用 : {} 开始加载security资源目录...",applicationName);
                         CommonRequest commonRequest = new CommonRequest.Builder().build(applicationName);
                         AppResourceResponse appResource;
                         try{
+                            LOGGER.info("应用 : {} 开始加载security资源目录,参数 :{}",applicationName,JsonUtil.toJSONString(commonRequest));
                             appResource = invoker.getAppResource(commonRequest);
                         }catch (Exception e){
                             e.printStackTrace();
+                            LOGGER.info("应用 : {} 加载security资源出现异常,原因:{} ",applicationName,e.getMessage());
                             throw new SecurityPluginException(SecurityExceptionEnum.SECURITY_PLUGIN_LOAD_EXCEPTION);
                         }
                         LOGGER.info("应用 : {} 加载security资源目录完成,耗时:{} ms",applicationName,System.currentTimeMillis() - startTime);

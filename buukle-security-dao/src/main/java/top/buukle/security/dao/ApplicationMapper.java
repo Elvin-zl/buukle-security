@@ -75,4 +75,6 @@ public interface ApplicationMapper {
      * @mbg.generated Tue Aug 06 21:36:30 CST 2019
      */
     int updateByPrimaryKey(Application record);
+
+    List<Application> selectByExampleWithoutIsolation(ApplicationExample applicationExample);
 }

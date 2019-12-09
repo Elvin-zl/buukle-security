@@ -112,6 +112,23 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByExampleWithoutIsolation" parameterType="top.buukle.security.entity.ApplicationExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated  This element was generated on Sun Aug 18 22:53:13 CST 2019. by MyBatis Generator, do not modify.
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from application
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated  This element was generated on Sun Aug 18 22:53:13 CST 2019. by MyBatis Generator, do not modify.

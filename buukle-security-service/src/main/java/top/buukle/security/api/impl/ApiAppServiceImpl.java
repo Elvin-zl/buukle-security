@@ -12,6 +12,7 @@ import top.buukle.common.status.StatusConstants;
 import top.buukle.security.api.ApiAppService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
+import top.buukle.security.service.constants.ApplicationEnums;
 import top.buukle.security.service.constants.SystemReturnEnum;
 import top.buukle.security.service.exception.SystemException;
 import top.buukle.util.JsonUtil;
@@ -58,8 +59,8 @@ public class ApiAppServiceImpl implements ApiAppService {
         ApplicationExample applicationExample = new ApplicationExample();
         ApplicationExample.Criteria appCriteria = applicationExample.createCriteria();
         appCriteria.andNameEqualTo(request.getHead().getApplicationName());
-        appCriteria.andStatusEqualTo(StatusConstants.OPEN);
-        List<Application> applications = applicationMapper.selectByExample(applicationExample);
+        appCriteria.andStatusEqualTo(ApplicationEnums.status.PUBLISED.value());
+        List<Application> applications = applicationMapper.selectByExampleWithoutIsolation(applicationExample);
         if(CollectionUtils.isEmpty(applications) || applications.size()!=1){
             throw SystemException.convert(new SystemException(SystemReturnEnum.APP_RESOURCE_EXCEPTION),new CommonException());
         }
