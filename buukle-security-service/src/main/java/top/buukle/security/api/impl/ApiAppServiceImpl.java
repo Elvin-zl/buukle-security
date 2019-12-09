@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 import top.buukle.common.call.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
 import top.buukle.common.exception.CommonException;
-import top.buukle.common.status.StatusConstants;
 import top.buukle.security.api.ApiAppService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
@@ -51,14 +50,14 @@ public class ApiAppServiceImpl implements ApiAppService {
     @Override
     public AppResourceResponse getAppResource(CommonRequest request, String buukleAppResourceKeyPrefix) {
 
-        String appResource = stringRedisTemplate.opsForValue().get(buukleAppResourceKeyPrefix + request.getHead().getApplicationName());
+        String appResource = stringRedisTemplate.opsForValue().get(buukleAppResourceKeyPrefix + request.getHead().getApplicationCode());
         if(!StringUtils.isEmpty(appResource)){
             return JsonUtil.parseObject(appResource,AppResourceResponse.class);
         }
         // 查询应用
         ApplicationExample applicationExample = new ApplicationExample();
         ApplicationExample.Criteria appCriteria = applicationExample.createCriteria();
-        appCriteria.andNameEqualTo(request.getHead().getApplicationName());
+        appCriteria.andNameEqualTo(request.getHead().getApplicationCode());
         appCriteria.andStatusEqualTo(ApplicationEnums.status.PUBLISED.value());
         List<Application> applications = applicationMapper.selectByExampleWithoutIsolation(applicationExample);
         if(CollectionUtils.isEmpty(applications) || applications.size()!=1){
@@ -88,7 +87,7 @@ public class ApiAppServiceImpl implements ApiAppService {
         }
         AppResourceResponse appResourceResponse = new AppResourceResponse();
         appResourceResponse.setPermResourceList(appUrlList);
-        stringRedisTemplate.opsForValue().set(buukleAppResourceKeyPrefix + request.getHead().getApplicationName(),JsonUtil.toJSONString(appResourceResponse));
+        stringRedisTemplate.opsForValue().set(buukleAppResourceKeyPrefix + request.getHead().getApplicationCode(),JsonUtil.toJSONString(appResourceResponse));
         return appResourceResponse;
     }
 }
