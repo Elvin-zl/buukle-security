@@ -57,7 +57,7 @@ public class ApiAppServiceImpl implements ApiAppService {
         // 查询应用
         ApplicationExample applicationExample = new ApplicationExample();
         ApplicationExample.Criteria appCriteria = applicationExample.createCriteria();
-        appCriteria.andNameEqualTo(request.getHead().getApplicationCode());
+        appCriteria.andCodeEqualTo(request.getHead().getApplicationCode());
         appCriteria.andStatusEqualTo(ApplicationEnums.status.PUBLISED.value());
         List<Application> applications = applicationMapper.selectByExampleWithoutIsolation(applicationExample);
         if(CollectionUtils.isEmpty(applications) || applications.size()!=1){
