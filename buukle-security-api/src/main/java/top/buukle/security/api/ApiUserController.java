@@ -18,6 +18,7 @@ import top.buukle.common.call.CommonResponse;
 import top.buukle.security.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @description 〈用户api〉
@@ -32,6 +33,21 @@ public class ApiUserController {
 
     @Autowired
     private ApiUserService apiUserService;
+
+    /**
+     * @description 内部登陆
+     * @param user
+     * @param request
+     * @param response
+     * @return top.buukle.common.call.CommonResponse
+     * @Author elvin
+     * @Date 2019/8/3
+     */
+    @RequestMapping("/innerLogin")
+    @ResponseBody
+    public CommonResponse innerLogin(User user , HttpServletRequest request, HttpServletResponse response) {
+        return apiUserService.innerLogin(user,request,response);
+    }
 
     /**
      * @description 失效指定user session

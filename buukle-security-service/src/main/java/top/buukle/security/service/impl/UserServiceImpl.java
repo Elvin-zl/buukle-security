@@ -238,10 +238,6 @@ public class UserServiceImpl implements UserService{
     @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse userRoleSet(Integer applicationId, String ids, UserQuery query, HttpServletRequest request, HttpServletResponse response) {
         this.validatePerm(request,query);
-        String[] roleIds = ids.split(",");
-        if(roleIds.length > 1){
-            throw new SystemException(SystemReturnEnum.USER_SET_USER_ROLE_ROLE_ID_MULTI);
-        }
         // 查询应用
         ApplicationExample applicationExample = new ApplicationExample();
         ApplicationExample.Criteria applicationCriteria = applicationExample.createCriteria();
@@ -269,13 +265,15 @@ public class UserServiceImpl implements UserService{
         // 重新设置角色
         if(StringUtil.isNotEmpty(ids)){
             for (String idStr : ids.split(",")) {
-                UserRoleRelation userRoleRelation = new UserRoleRelation();
-                userRoleRelation.setCreator(operator.getUsername());
-                userRoleRelation.setGmtCreated(new Date());
-                userRoleRelation.setCreatorCode(operator.getUserId());
-                userRoleRelation.setUserId(query.getUserId());
-                userRoleRelation.setRoleId(Integer.parseInt(idStr));
-                userRoleRelationMapper.insert(userRoleRelation);
+                if(StringUtil.isNotEmpty(idStr)){
+                    UserRoleRelation userRoleRelation = new UserRoleRelation();
+                    userRoleRelation.setCreator(operator.getUsername());
+                    userRoleRelation.setGmtCreated(new Date());
+                    userRoleRelation.setCreatorCode(operator.getUserId());
+                    userRoleRelation.setUserId(query.getUserId());
+                    userRoleRelation.setRoleId(Integer.parseInt(idStr));
+                    userRoleRelationMapper.insert(userRoleRelation);
+                }
             }
         }
         // 组装日志实体

@@ -107,7 +107,7 @@
 							$('#choseRoleNotice').hide();
 							if(data.body.list.length > 0){
 								// 渲染树
-								userRoleTree = renderSimpleRadioZTree(userRoleTree,data.body.list,'tree');
+								userRoleTree = renderSimpleCheckboxZTree(userRoleTree,data.body.list,'tree');
 							}else{
 								$('#tree').html('暂无数据！');
 							}

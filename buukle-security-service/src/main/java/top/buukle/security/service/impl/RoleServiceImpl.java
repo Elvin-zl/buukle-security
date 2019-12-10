@@ -189,12 +189,6 @@ public class RoleServiceImpl implements RoleService{
         if(role != null && RoleEnums.systemFlag.SYSTEM_PROTECTED.value().equals(role.getSystemFlag())){
             throw new SystemException(SystemReturnEnum.OPERATE_INFO_SYSTEM_PROTECT_EXCEPTION);
         }
-        // 获取操作者在app的角色映射
-        Map<String, Role> operatorRoleMap = (Map<String, Role>) SessionUtil.get(httpServletRequest, SessionUtil.USER_ROLE_MAP_KEY);
-        Role operatorRoleInCurrentApp = operatorRoleMap.get(application.getCode());
-        if(operatorRoleInCurrentApp == null){
-            throw new SystemException(SystemReturnEnum.USER_SET_USER_ROLE_NO_ROLE);
-        }
         // 查询app角色列表
         RoleExample roleExample = new RoleExample();
         RoleExample.Criteria appCriteria = roleExample.createCriteria();
@@ -202,8 +196,10 @@ public class RoleServiceImpl implements RoleService{
         appCriteria.andApplicationIdEqualTo(application.getId());
         List<Role> appRoles = roleMapper.selectByExample(roleExample);
         // 获取操作者下辖角色列表
-        List<Integer> operatorSubRoleIds = new ArrayList<>();
-        this.getUserSubRoles(operatorSubRoleIds,operatorRoleInCurrentApp,appRoles);
+        PageResponse userSubRolesByAppCode = SessionUtil.getUserSubRolesByAppCode(httpServletRequest, env.getProperty("spring.application.name"));
+        List<Role> userSubRoleList = (List<Role>) userSubRolesByAppCode.getBody().getList();
+        for (Role subRole: userSubRoleList) {
+        }
         if(!operatorSubRoleIds.contains(id)){
             throw new SystemException(SystemReturnEnum.ROLE_SET_MENU_WRONG_ROLE_NO_LEVEL);
         }

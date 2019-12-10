@@ -11,7 +11,6 @@ import top.buukle.security.api.ApiUserService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
 import top.buukle.security.entity.vo.MenuTreeNode;
-import top.buukle.security.plugin.cache.SecuritySessionContext;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
 import top.buukle.security.plugin.util.SessionUtil;
@@ -129,13 +128,14 @@ public class ApiUserServiceImpl implements ApiUserService{
             roleExampleCriteria.andStatusEqualTo(RoleEnums.status.PUBLISED.value());
             // 查询所有角色
             List<Role> allRoles = roleMapper.selectByExample(roleExample);
+            Map<String, List<Role>> userSubRoleMap = this.assUserSubRoleMap(userRoles, allRoles);
             if(isUpdate){
                 // 刷新用户可见菜单数组
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
                 // 刷新用户角色目录
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles),SessionUtil.getUserExpire(userInfo));
                 // 刷新用户下辖角色映射
-                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,this.assUserSubRoleMap(userRoles,allRoles),SessionUtil.getUserExpire(userInfo));
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,userSubRoleMap,SessionUtil.getUserExpire(userInfo));
                 // 刷新用户所有资源url清单
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)),SessionUtil.getUserExpire(userInfo));
             }else{
@@ -144,7 +144,7 @@ public class ApiUserServiceImpl implements ApiUserService{
                 // 刷新用户角色目录
                 SessionUtil.cache(request,SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles));
                 // 刷新用户下辖角色映射
-                SessionUtil.cache(request,SessionUtil.USER_ROLE_SUB_MAP_KEY,this.assUserSubRoleMap(userRoles,allRoles));
+                SessionUtil.cache(request,SessionUtil.USER_ROLE_SUB_MAP_KEY,userSubRoleMap);
                 // 刷新用户所有资源url清单
                 SessionUtil.cache(request,SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)));
             }
@@ -307,15 +307,8 @@ public class ApiUserServiceImpl implements ApiUserService{
      * @Date 2019/8/17
      */
     private Map<String,Role> assUserRoleMap(List<Role> userRoles) {
-        Map<String,Role> map = new HashMap<>();
-        Application application;
-        for (Role role: userRoles) {
-            application = applicationMapper.selectByPrimaryKey(role.getApplicationId());
-            if(application != null){
-                map.put(application.getCode(),role);
-            }
-        }
-        return map;
+
+        return null;
     }
 
     /**
