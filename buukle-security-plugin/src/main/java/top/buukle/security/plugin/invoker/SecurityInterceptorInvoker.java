@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import top.buukle.common.call.AppResourceResponse;
+import top.buukle.security.entity.common.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.security.entity.User;

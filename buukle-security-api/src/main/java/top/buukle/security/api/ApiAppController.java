@@ -10,23 +10,13 @@
  */
 package top.buukle.security.api;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import top.buukle.common.call.AppResourceResponse;
+import top.buukle.security.entity.common.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
-import top.buukle.common.call.CommonResponse;
-import top.buukle.security.entity.User;
-import top.buukle.security.plugin.util.SessionUtil;
-import top.buukle.util.JsonUtil;
-import top.buukle.util.StringUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @description 〈app资源加载controller〉
@@ -46,7 +36,7 @@ public class ApiAppController{
     /**
      * @description 获取app资源目录
      * @param request
-     * @return top.buukle.common.call.AppResourceResponse
+     * @return top.buukle.security.entity.common.AppResourceResponse
      * @Author elvin
      * @Date 2019/8/2
      */

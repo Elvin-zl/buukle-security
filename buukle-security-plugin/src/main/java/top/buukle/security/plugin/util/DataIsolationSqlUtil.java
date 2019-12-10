@@ -2,20 +2,29 @@ package top.buukle.security.plugin.util;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.buukle.security.entity.Role;
+import top.buukle.security.entity.common.AppResourceResponse;
+import top.buukle.security.entity.vo.RoleTreeNodeDTO;
 import top.buukle.security.plugin.annotation.DataIsolationAnnotation;
+import top.buukle.security.plugin.cache.SecurityInterceptorCache;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
 import top.buukle.util.JsonUtil;
+import top.buukle.util.SpringContextUtil;
 import top.buukle.util.StringUtil;
 import top.buukle.common.log.BaseLogger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class DataIsolationSqlUtil {
 
@@ -50,7 +59,7 @@ public class DataIsolationSqlUtil {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String matchSql(String applicationCode, String sql, String tableName, String queryDimension, String roleFiledName) {
+	public static String matchSql(String applicationCode, String sql, String tableName, String queryDimension, String roleFiledName) throws ExecutionException {
 		// 校验参数
 		validateParam(tableName,queryDimension,roleFiledName);
 		// 处理 :回车,制表符,等
@@ -58,21 +67,21 @@ public class DataIsolationSqlUtil {
 		LOGGER.info("解析sql,拼接开始:原始sql :{},表名 :{},查询唯度 :{},角色字段名 :{},",sql, tableName,queryDimension,
 				StringUtil.isEmpty(roleFiledName) ? StringUtil.BLANK : roleFiledName);
 		String codeInCondition = StringUtil.EMPTY;
-		// 从session获取当前用户下辖角色信息
-        Map<String,List<Role>> userSubRolesMap = (Map<String, List<Role>>) SessionUtil.get(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest(), SessionUtil.USER_ROLE_SUB_MAP_KEY);
-        // 初次登录,放行
-        if(userSubRolesMap == null ){
-            return sql;
-        }
-        List<Role> userSubRoles = userSubRolesMap.get(applicationCode);
-		// 没有所辖角色信息
-		if (CollectionUtils.isEmpty(userSubRoles)) {
-		    throw new SecurityPluginException(SecurityExceptionEnum.AUTH_WRONG_DATA_ISOLATION_NO_ROLE_SUBS);
+
+		ServletRequestAttributes servletRequestAttributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
+		// 非登录状态请求
+		if(servletRequestAttributes==null){
+			return sql;
 		}
-		LOGGER.info("所辖角色信息 : userSubRoles : {}", JsonUtil.toJSONString(userSubRoles));
-		// 角色维度
+		HttpServletRequest request = servletRequestAttributes.getRequest();
+		String uri = request.getRequestURI().replace("//", "/");
+
+		// 计算该uri在该用户的层级
+		Map<String, List<Role>> userRoleMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
+		List<Role> roles = userRoleMap.get(SpringContextUtil.getBean(Environment.class).getProperty("spring.application.name"));
+
 		if(StringUtil.notEmpty(queryDimension) && queryDimension.equals(DataIsolationAnnotation.DIMENSION_ROLE)){
-			codeInCondition = new StringBuilder(roleFiledName).append(CODE_IN_PREFIX).append(getIdStringSaperatedByComma(userSubRoles)).append(CODE_IN_SUFFIX).toString();
+//			codeInCondition = new StringBuilder(roleFiledName).append(CODE_IN_PREFIX).append(getIdStringSaperatedByComma(userSubRoles)).append(CODE_IN_SUFFIX).toString();
 		}
 		String finalSql = matchSql(sql, tableName, codeInCondition);
 		LOGGER.info("解析sql,拼接结束 :finalSql:{}",finalSql);

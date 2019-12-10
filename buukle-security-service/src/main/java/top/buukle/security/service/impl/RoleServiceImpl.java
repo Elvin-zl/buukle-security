@@ -517,19 +517,57 @@ public class RoleServiceImpl implements RoleService{
         return new CommonResponse.Builder().buildSuccess();
     }
 
-    /**
-     * @description 获取应用下的用户角色
-     * @param userId
-     * @param applicationId
-     * @return top.buukle.security.entity.Role
-     * @Author elvin
-     * @Date 2019/8/17
-     */
     @Override
-    public Role getUserRole(String userId, Integer applicationId) {
-        List<Role> roles = roleMapper.getUserRoleWithAppId(userId, applicationId);
-        return CollectionUtils.isEmpty(roles) ? new Role() : roles.get(0);
+    public RoleTreeNodeDTO getUserRoleTreeNode(String applicationCode) {
+        // 查询应用
+        ApplicationExample applicationExample = new ApplicationExample();
+        ApplicationExample.Criteria applicationCriteria = applicationExample.createCriteria();
+        applicationCriteria.andCodeEqualTo(applicationCode);
+        List<Application> applications = applicationMapper.selectByExample(applicationExample);
+        if(CollectionUtils.isEmpty(applications) || applications.size() > 1 ){
+            throw new SystemException(SystemReturnEnum.USER_SET_USER_ROLE_PRE_APP_CODE_WRONG);
+        }
+        // 查询app角色列表
+        RoleExample roleExample = new RoleExample();
+        RoleExample.Criteria criteria = roleExample.createCriteria();
+        criteria.andStatusEqualTo(RoleEnums.status.PUBLISED.value());
+        criteria.andApplicationIdEqualTo(applications.get(0).getId());
+        List<Role> appRoles = roleMapper.selectByExample(roleExample);
+        RoleTreeNodeDTO roleTreeNodeDTO = new RoleTreeNodeDTO();
+        roleTreeNodeDTO.setId(0);
+        roleTreeNodeDTO.setRoleName("应用角色根节点");
+        // 组装app角色树
+        this.assAppRoleTreeNode(roleTreeNodeDTO,appRoles,applications.get(0).getId());
+        return roleTreeNodeDTO;
     }
+
+    private void assAppRoleTreeNode(RoleTreeNodeDTO roleTreeNodeDTO, List<Role> appRoles, Integer applicationId) {
+        List<RoleTreeNodeDTO> subNodes = new ArrayList<>();
+        for (Role appRole: appRoles) {
+            if(appRole.getPid().equals(roleTreeNodeDTO.getId())){
+                RoleTreeNodeDTO subNode = new RoleTreeNodeDTO();
+                BeanUtils.copyProperties(appRole,subNode);
+                this.assAppRoleTreeNode(subNode,appRoles,applicationId);
+                subNodes.add(subNode);
+            }
+        }
+        List<String> roleUrls = new ArrayList<>();
+        this.getRoleUrl(roleUrls,roleTreeNodeDTO.getId(),applicationId);
+        roleTreeNodeDTO.setSubUrl(roleUrls);
+        roleTreeNodeDTO.setSubNode(subNodes);
+    }
+
+    private void getRoleUrl(List<String> roleUrls, Integer roleId,Integer applicationId) {
+        List<Menu> roleMenuListByRoleId = menuMapper.getRoleMenuListByRoleId(roleId, applicationId);
+        for (Menu menu:roleMenuListByRoleId) {
+            roleUrls.add(menu.getUrl());
+        }
+        List<Button> roleButtonListByRoleId = buttonMapper.getRoleButtonListByRoleId(roleId, applicationId);
+        for (Button button:roleButtonListByRoleId) {
+            roleUrls.add(button.getUrl());
+        }
+    }
+
 
     /**
      * @description 寻找子节点

@@ -11,7 +11,7 @@
 package top.buukle.security.plugin.cache;
 
 import com.google.common.cache.*;
-import top.buukle.common.call.AppResourceResponse;
+import top.buukle.security.entity.common.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;

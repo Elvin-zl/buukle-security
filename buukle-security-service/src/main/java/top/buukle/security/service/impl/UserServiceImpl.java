@@ -171,18 +171,6 @@ public class UserServiceImpl implements UserService{
         if(CollectionUtils.isEmpty(applications) || applications.size() != 1){
             throw new SystemException(SystemReturnEnum.USER_SAVE_OR_EDIT_APP_NOT_EXIST);
         }
-        // 获取操作者下辖角色列表
-        PageResponse userSubRolesByAppCode = SessionUtil.getUserSubRolesByAppCode(httpServletRequest,env.getProperty("spring.application.name"));
-        List<Role> userSubRoleList = (List<Role>) userSubRolesByAppCode.getBody().getList();
-        List<Integer> operatorSubRoleIds = new ArrayList<>();
-        for (Role subRole: userSubRoleList) {
-            operatorSubRoleIds.add(subRole.getId());
-        }
-        // 获取被操作用户的角色
-        Role userRole = roleService.getUserRole(user.getUserId(),applications.get(0).getId());
-        if(!operatorSubRoleIds.contains(userRole.getId())){
-            throw new SystemException(SystemReturnEnum.USER_SAVE_OR_EDIT_NO_PERM);
-        }
     }
 
     /**

@@ -5,7 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import top.buukle.common.call.AppResourceResponse;
+import top.buukle.security.entity.common.AppResourceResponse;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.code.BaseReturnEnum;
 import top.buukle.common.exception.CommonException;

@@ -5,6 +5,7 @@ import top.buukle.common.call.PageResponse;
 import top.buukle.security.entity.Role;
 import top.buukle.security.entity.vo.RoleQuery;
 import top.buukle.common.mvc.BaseService;
+import top.buukle.security.entity.vo.RoleTreeNodeDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,5 +29,5 @@ public interface RoleService extends BaseService {
 
     CommonResponse roleMenuSet(String ids, Integer id, HttpServletRequest request, HttpServletResponse response);
 
-    Role getUserRole(String userId, Integer applicationId);
+    RoleTreeNodeDTO getUserRoleTreeNode(String applicationCode);
 }

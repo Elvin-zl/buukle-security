@@ -5,12 +5,13 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import top.buukle.common.call.AppResourceResponse;
+import top.buukle.security.entity.common.AppResourceResponse;
 import top.buukle.common.call.CommonRequest;
 import top.buukle.common.exception.CommonException;
 import top.buukle.security.api.ApiAppService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
+import top.buukle.security.service.RoleService;
 import top.buukle.security.service.constants.ApplicationEnums;
 import top.buukle.security.service.constants.SystemReturnEnum;
 import top.buukle.security.service.exception.SystemException;
@@ -33,6 +34,8 @@ public class ApiAppServiceImpl implements ApiAppService {
     @Autowired
     private MenuMapper menuMapper;
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private ButtonMapper buttonMapper;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -43,7 +46,7 @@ public class ApiAppServiceImpl implements ApiAppService {
      * @description 查询app资源目录
      * @param request
      * @param buukleAppResourceKeyPrefix
-     * @return top.buukle.common.call.AppResourceResponse
+     * @return top.buukle.security.entity.common.AppResourceResponse
      * @Author elvin
      * @Date 2019/8/2
      */
@@ -85,8 +88,10 @@ public class ApiAppServiceImpl implements ApiAppService {
                 appUrlList.add(btn.getUrl());
             }
         }
+
         AppResourceResponse appResourceResponse = new AppResourceResponse();
         appResourceResponse.setPermResourceList(appUrlList);
+        // 更新缓存
         stringRedisTemplate.opsForValue().set(buukleAppResourceKeyPrefix + request.getHead().getApplicationCode(),JsonUtil.toJSONString(appResourceResponse));
         return appResourceResponse;
     }
