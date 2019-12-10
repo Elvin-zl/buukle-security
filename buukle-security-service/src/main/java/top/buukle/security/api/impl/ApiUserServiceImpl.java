@@ -1,7 +1,9 @@
 package top.buukle.security.api.impl;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import top.buukle.common.call.CommonResponse;
@@ -15,11 +17,13 @@ import top.buukle.security.plugin.exception.SecurityPluginException;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security.entity.constants.MenuEnums;
 import top.buukle.security.service.constants.RoleEnums;
+import top.buukle.util.JsonUtil;
 import top.buukle.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
 * @author elvin
@@ -40,8 +44,11 @@ public class ApiUserServiceImpl implements ApiUserService{
     @Autowired
     private ApplicationMapper applicationMapper;
     @Autowired
-    private SecuritySessionContext sessionContext;
+    private StringRedisTemplate stringRedisTemplate;
 
+    private static final String SPRING_SESSION_KEY_PREFIX = "spring:session:sessions:";
+    private static final String SPRING_SESSION_KEY_EXPIRE_PREFIX = "spring:session:sessions:expires:";
+    public static final String SESSION_ATTR_PREFIX = "sessionAttr:";
     /**
      * @description 内部登陆
      * @param user
@@ -64,11 +71,11 @@ public class ApiUserServiceImpl implements ApiUserService{
         user1.setGmtLastLogin(new Date());
         userMapper.updateByPrimaryKeySelective(user1);
         // 剔除已经在线的会话
-        sessionContext.kickOutUser(userInfo.getUserId(),new User(SecurityExceptionEnum.AUTH_WRONG_COOKIE_OTHER.getCode()),SessionUtil.getUserExpire(userInfo));
+        this.kickOutUser(userInfo.getUserId(),new User(SecurityExceptionEnum.AUTH_WRONG_COOKIE_OTHER.getCode()),SessionUtil.getUserExpire(userInfo));
         // 创建新的会话
         SessionUtil.cacheUser(userInfo, request, response);
         // 更新用户活跃域
-        sessionContext.registerInSessionContext(request,userInfo.getUserId(),SessionUtil.getUserExpire(user));
+        this.registerInSessionContext(request,userInfo.getUserId(),SessionUtil.getUserExpire(user));
         // 缓存用户信息
         this.sessionUserResource(request,userInfo,false);
         return new CommonResponse.Builder().buildSuccess();
@@ -124,13 +131,13 @@ public class ApiUserServiceImpl implements ApiUserService{
             List<Role> allRoles = roleMapper.selectByExample(roleExample);
             if(isUpdate){
                 // 刷新用户可见菜单数组
-                sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
                 // 刷新用户角色目录
-                sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles),SessionUtil.getUserExpire(userInfo));
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles),SessionUtil.getUserExpire(userInfo));
                 // 刷新用户下辖角色映射
-                sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,this.assUserSubRoleMap(userRoles,allRoles),SessionUtil.getUserExpire(userInfo));
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,this.assUserSubRoleMap(userRoles,allRoles),SessionUtil.getUserExpire(userInfo));
                 // 刷新用户所有资源url清单
-                sessionContext.refreshSession(userInfo.getUserId(),SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)),SessionUtil.getUserExpire(userInfo));
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)),SessionUtil.getUserExpire(userInfo));
             }else{
                 // 刷新用户可见菜单数组
                 SessionUtil.cache(request,SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed);
@@ -142,6 +149,111 @@ public class ApiUserServiceImpl implements ApiUserService{
                 SessionUtil.cache(request,SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)));
             }
         }
+    }
+
+    /**
+     * @description 删除用户会话
+     * @param userId
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public void deleteSession(String userId) {
+        stringRedisTemplate.delete(SPRING_SESSION_KEY_PREFIX + stringRedisTemplate.opsForValue().get(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX+userId));
+
+    }
+
+    /**
+     * @description 剔除用户
+     * @param userId
+     * @param user
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public void kickOutUser(String userId, User user, int expire) {
+        String oldSid = stringRedisTemplate.opsForValue().get(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX + userId);
+        if(!StringUtil.isEmpty(oldSid)){
+            stringRedisTemplate.opsForHash().put(SPRING_SESSION_KEY_PREFIX + oldSid, SESSION_ATTR_PREFIX + SessionUtil.USER_SESSION_KEY, JsonUtil.toJSONString(user, SerializerFeature.WriteClassName));
+            stringRedisTemplate.expire(SPRING_SESSION_KEY_PREFIX + oldSid,expire, TimeUnit.SECONDS);
+        }
+    }
+
+    /**
+     * @description 刷新用户会话
+     * @param userId
+     * @param k
+     * @param v
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public void refreshSession(String userId, String k, Object v, int expire) {
+        String oldSid = stringRedisTemplate.opsForValue().get(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX + userId);
+        if(!StringUtil.isEmpty(oldSid)){
+            stringRedisTemplate.opsForHash().put(SPRING_SESSION_KEY_PREFIX + oldSid, SESSION_ATTR_PREFIX + k, JsonUtil.toJSONString(v, SerializerFeature.WriteClassName));
+            stringRedisTemplate.expire(SPRING_SESSION_KEY_PREFIX + oldSid,expire,TimeUnit.SECONDS);
+        }
+    }
+
+    /**
+     * @description 刷新expire
+     * @param userId
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public void refreshDDL(String userId, int expire) {
+        stringRedisTemplate.expire(SPRING_SESSION_KEY_PREFIX + stringRedisTemplate.opsForValue().get(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX+userId),expire,TimeUnit.SECONDS);
+        stringRedisTemplate.expire(SPRING_SESSION_KEY_EXPIRE_PREFIX + stringRedisTemplate.opsForValue().get(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX+userId),expire,TimeUnit.SECONDS);
+    }
+
+    /**
+     * @description 注册用户
+     * @param request
+     * @param userId
+     * @param expire
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public void registerInSessionContext(HttpServletRequest request, String userId, Integer expire) {
+        stringRedisTemplate.opsForValue().set(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX + userId, request.getSession().getId());
+        stringRedisTemplate.expire(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX + userId, expire, TimeUnit.SECONDS);
+    }
+
+    /**
+     * @description 删除用户会话key
+     * @param userId
+     * @return void
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public void removeFromSessionContext(String userId) {
+        stringRedisTemplate.delete(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX + userId);
+    }
+
+    /**
+     * @description 获取在线人数
+     * @param
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @Override
+    public CommonResponse countSessionContext() {
+        CommonResponse commonResponse = new CommonResponse.Builder().buildSuccess();
+        commonResponse.getHead().setMsg(stringRedisTemplate.keys(SessionUtil.SECURITY_SESSION_CONTEXT_KEY_PREFIX + "*").size()+StringUtil.EMPTY);
+        return commonResponse;
     }
 
     /**

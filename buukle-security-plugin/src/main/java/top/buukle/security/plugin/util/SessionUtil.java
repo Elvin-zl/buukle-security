@@ -10,6 +10,8 @@
  */
 package top.buukle.security.plugin.util;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.PageResponse;
 import top.buukle.security.entity.Application;
@@ -188,7 +190,7 @@ public class SessionUtil {
     }
 
     /**
-     * @description 获取当前用户拥有角色的应用
+     * @description 获取当前用户拥有管理员角色的应用
      * @param request
      * @return java.util.List<top.buukle.security.entity.Application>
      * @Author zhanglei1102
@@ -198,14 +200,31 @@ public class SessionUtil {
         Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
         List<SelectTreeNodeResult> applications = new ArrayList<>();
         for (String applicationCode : roleMap.keySet()) {
-            if(null != roleMap.get(applicationCode)){
-                SelectTreeNodeResult application = new SelectTreeNodeResult();
-                application.setTitle(applicationCode);
-                application.setId(roleMap.get(applicationCode).getApplicationId());
-                applications.add(application);
+            Role role = roleMap.get(applicationCode);
+            if(role.getPid() != null && role.getPid().equals(0)){
+                if(null != roleMap.get(applicationCode)){
+                    SelectTreeNodeResult application = new SelectTreeNodeResult();
+                    application.setTitle(applicationCode);
+                    application.setId(roleMap.get(applicationCode).getApplicationId());
+                    applications.add(application);
+                }
             }
         }
         PageResponse commonResponse = new PageResponse.Builder().build(applications,1,-1,applications.size());
         return commonResponse;
+    }
+
+    /**
+     * @description 获取用户下辖角色列表
+     * @param request
+     * @param applicationCode
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    public static PageResponse getUserSubRolesByAppCode(HttpServletRequest request, String applicationCode) {
+        Map<String,List<Role>> userSubRolesMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
+        List<Role> roles = userSubRolesMap.get(applicationCode);
+        return new PageResponse.Builder().buildWithoutPage(roles);
     }
 }

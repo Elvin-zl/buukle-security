@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.PageResponse;
+import top.buukle.security.entity.Role;
 import top.buukle.security.plugin.cache.SecuritySessionContext;
 import top.buukle.security.plugin.util.SessionUtil;
 
@@ -77,5 +78,36 @@ public class SecurityDefaultController {
     @ResponseBody
     public PageResponse getUserApplication(HttpServletRequest request){
         return SessionUtil.getUserApplication(request);
+    }
+
+    /**
+     * @description 获取当前用户指定应用下的角色
+     * @param request
+     * @param applicationCode
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @RequestMapping("/getUserRoleIdByAppCode")
+    @ResponseBody
+    public CommonResponse getUserRoleIdByAppCode(HttpServletRequest request, String applicationCode){
+        Role userRoleId = SessionUtil.getUserRoleId(request, applicationCode);
+        CommonResponse commonResponse = new CommonResponse.Builder().buildSuccess();
+        commonResponse.setBody(userRoleId);
+        return commonResponse;
+    }
+
+    /**
+     * @description 获取当前用户下辖角色列表
+     * @param request
+     * @param applicationCode
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    @RequestMapping("/getUserSubRolesByAppCode")
+    @ResponseBody
+    public PageResponse getUserSubRolesByAppCode(HttpServletRequest request, String applicationCode){
+        return  SessionUtil.getUserSubRolesByAppCode(request, applicationCode);
     }
 }

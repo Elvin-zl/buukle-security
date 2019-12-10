@@ -20,4 +20,18 @@ public interface ApiUserService {
     CommonResponse innerLogin(User user, HttpServletRequest request, HttpServletResponse response);
 
     void sessionUserResource(HttpServletRequest request, User userInfo, boolean isUpdate);
+
+    void deleteSession(String userId);
+
+    void kickOutUser(String userId, User user, int expire);
+
+    void refreshSession(String userId, String k, Object v, int expire);
+
+    void refreshDDL(String userId, int expire);
+
+    void registerInSessionContext(HttpServletRequest request, String userId, Integer expire);
+
+    void removeFromSessionContext(String userId);
+
+    CommonResponse countSessionContext();
 }

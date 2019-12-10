@@ -34,7 +34,7 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/deleteSession")
+    @PostMapping(value = "/api/user/deleteSession")
     void deleteSession(@RequestParam("userId") String userId);
 
     /**
@@ -46,7 +46,7 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/kickOutUser")
+    @PostMapping(value = "/api/user/kickOutUser")
     void kickOutUser(@RequestParam("userId") String userId, @RequestBody User user, @RequestParam("expire") int expire);
 
     /**
@@ -59,7 +59,7 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/refreshSession")
+    @PostMapping(value = "/api/user/refreshSession")
     void refreshSession(@RequestParam("userId") String userId,@RequestParam("k") String k, @RequestBody Object v, @RequestParam("expire") int expire);
 
     /**
@@ -70,7 +70,7 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/refreshDDL")
+    @PostMapping(value = "/api/user/refreshDDL")
     void refreshDDL(@RequestParam("userId") String userId,@RequestParam("expire")  int expire);
 
     /**
@@ -82,7 +82,7 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/registerInSessionContext")
+    @PostMapping(value = "/api/user/registerInSessionContext")
     void registerInSessionContext(@RequestParam("sessionId") String sessionId, @RequestParam("userId") String userId, @RequestParam("expire") Integer expire);
 
     /**
@@ -92,7 +92,7 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/removeFromSessionContext")
+    @PostMapping(value = "/api/user/removeFromSessionContext")
     void removeFromSessionContext(@RequestParam("userId") String userId);
 
     /**
@@ -102,6 +102,6 @@ public interface SecurityInterceptorInvoker {
      * @Author zhanglei1102
      * @Date 2019/11/28
      */
-    @PostMapping(value = "/api/app/countSessionContext")
+    @PostMapping(value = "/api/user/countSessionContext")
     CommonResponse countSessionContext();
 }
