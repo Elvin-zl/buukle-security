@@ -318,7 +318,6 @@ public class ApiUserServiceImpl implements ApiUserService{
         return map;
     }
 
-
     /**
      * @description 组装用户所有资源url清单
      * @param menuList

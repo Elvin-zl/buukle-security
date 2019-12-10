@@ -91,7 +91,7 @@ public class SecurityDefaultController {
     @RequestMapping("/getUserRoleIdByAppCode")
     @ResponseBody
     public CommonResponse getUserRoleIdByAppCode(HttpServletRequest request, String applicationCode){
-        Role userRoleId = SessionUtil.getUserRoleId(request, applicationCode);
+        Role userRoleId = SessionUtil.getUserRoleIdByAppCode(request, applicationCode);
         CommonResponse commonResponse = new CommonResponse.Builder().buildSuccess();
         commonResponse.setBody(userRoleId);
         return commonResponse;

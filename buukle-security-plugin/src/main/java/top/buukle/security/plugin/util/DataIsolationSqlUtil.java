@@ -50,7 +50,7 @@ public class DataIsolationSqlUtil {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String matchSql(String applicationCode, String sql, String tableName, String queryDimension, String roleFiledName) throws Exception {
+	public static String matchSql(String applicationCode, String sql, String tableName, String queryDimension, String roleFiledName) {
 		// 校验参数
 		validateParam(tableName,queryDimension,roleFiledName);
 		// 处理 :回车,制表符,等

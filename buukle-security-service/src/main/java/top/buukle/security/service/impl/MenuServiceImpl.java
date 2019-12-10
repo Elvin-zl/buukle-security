@@ -205,7 +205,7 @@ public class MenuServiceImpl implements MenuService{
         validateParamForSaveOrEdit(query);
         // 新增
         if(query.getId() == null){
-            query.setCreatorRoleId(SessionUtil.getUserRoleId(request,env.getProperty("spring.application.name")).getId());
+            query.setCreatorRoleId(SessionUtil.getUserRoleIdByAppCode(request,env.getProperty("spring.application.name")).getId());
             this.save(query,request,response);
         }
         // 更新

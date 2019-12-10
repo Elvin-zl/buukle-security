@@ -10,11 +10,7 @@
  */
 package top.buukle.security.plugin.util;
 
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.PageResponse;
-import top.buukle.security.entity.Application;
 import top.buukle.security.entity.Role;
 import top.buukle.security.entity.User;
 import top.buukle.security.entity.vo.SelectTreeNodeResult;
@@ -38,9 +34,6 @@ import java.util.Map;
  */
 public class SessionUtil {
 
-    public static int getUserExpire(User userInfo) {
-        return (userInfo.getLoginStrategy() == null || userInfo.getLoginStrategy() == 0)  ? NumberUtil.INTEGER_ONE_MINUTES_SECOND * 6 : NumberUtil.INTEGER_ONE_WEEK_SECOND;
-    }
 
     /**  【当前用户】 拥有菜单信息在session中的key*/
     public static final String USER_MENU_TREE_KEY = "USER_MENU_TREE_KEY";
@@ -56,7 +49,7 @@ public class SessionUtil {
     public static final String SECURITY_SESSION_CONTEXT_KEY_PREFIX = "SECURITY_SESSION_CONTEXT_KEY_PREFIX:";
 
     /**
-     * @description 缓存session 【当前用户】 信息
+     * @description 缓存session【当前用户】信息
      * @param user
      * @param request
      * @param response
@@ -73,7 +66,7 @@ public class SessionUtil {
     }
 
     /**
-     * @description 获取session 【当前用户】 信息
+     * @description 获取【当前用户】session信息
      * @param request
      * @param response
      * @return top.buukle.security.entity.User
@@ -108,8 +101,9 @@ public class SessionUtil {
         }
         return null;
     }
+
     /**
-     * @description 获取session 【当前用户】 信息
+     * @description 获取【当前用户】session信息
      * @param request
      * @param response
      * @return top.buukle.security.entity.User
@@ -122,6 +116,78 @@ public class SessionUtil {
             throw new SecurityPluginException(SecurityExceptionEnum.AUTH_WRONG_OUT_OF_TIME);
         }
         return user;
+    }
+
+    /**
+     * @description 登出【当前用户】
+     * @param request
+     * @param response
+     * @return void
+     * @Author elvin
+     * @Date 2019/8/15
+     */
+    public static void logout(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.delUserCookie(response,SecurityInterceptorConstants.LOGIN_COOKIE_DOMAIN);
+        HttpSession session = request.getSession(false);
+        if(session!=null){
+            session.invalidate();
+        }
+    }
+
+    /**
+     * @description 获取【当前用户】 拥有管理员角色的应用
+     * @param request
+     * @return java.util.List<top.buukle.security.entity.Application>
+     * @Author zhanglei1102
+     * @Date 2019/12/4
+     */
+    public static PageResponse getUserApplication(HttpServletRequest request) {
+        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
+        List<SelectTreeNodeResult> applications = new ArrayList<>();
+        for (String applicationCode : roleMap.keySet()) {
+            Role role = roleMap.get(applicationCode);
+            if(role.getPid() != null && role.getPid().equals(0)){
+                if(null != roleMap.get(applicationCode)){
+                    SelectTreeNodeResult application = new SelectTreeNodeResult();
+                    application.setTitle(applicationCode);
+                    application.setId(roleMap.get(applicationCode).getApplicationId());
+                    applications.add(application);
+                }
+            }
+        }
+        PageResponse commonResponse = new PageResponse.Builder().build(applications,1,-1,applications.size());
+        return commonResponse;
+    }
+
+    /**
+     * @description 获取【当前用户】指定应用下的角色
+     * @param request
+     * @param applicationCode
+     * @return top.buukle.security.entity.Role
+     * @Author elvin
+     * @Date 2019/8/19
+     */
+    public static Role getUserRoleIdByAppCode(HttpServletRequest request, String applicationCode) {
+        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
+        Role role = roleMap.get(applicationCode);
+        if(role == null){
+            throw new SecurityPluginException(SecurityExceptionEnum.AUTH_WRONG_NO_ROLE);
+        }
+        return role;
+    }
+
+    /**
+     * @description 获取【当前用户】下辖角色列表
+     * @param request
+     * @param applicationCode
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    public static PageResponse getUserSubRolesByAppCode(HttpServletRequest request, String applicationCode) {
+        Map<String,List<Role>> userSubRolesMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
+        List<Role> roles = userSubRolesMap.get(applicationCode);
+        return new PageResponse.Builder().buildWithoutPage(roles);
     }
 
     /**
@@ -157,74 +223,13 @@ public class SessionUtil {
     }
 
     /**
-     * @description 登出
-     * @param request
-     * @param response
-     * @return void
-     * @Author elvin
-     * @Date 2019/8/15
-     */
-    public static void logout(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.delUserCookie(response,SecurityInterceptorConstants.LOGIN_COOKIE_DOMAIN);
-        HttpSession session = request.getSession(false);
-        if(session!=null){
-            session.invalidate();
-        }
-    }
-
-    /**
-     * @description 获取指定应用下 【当前用户】 的角色
-     * @param request
-     * @param applicationCode
-     * @return top.buukle.security.entity.Role
-     * @Author elvin
-     * @Date 2019/8/19
-     */
-    public static Role getUserRoleId(HttpServletRequest request, String applicationCode) {
-        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
-        Role role = roleMap.get(applicationCode);
-        if(role == null){
-            throw new SecurityPluginException(SecurityExceptionEnum.AUTH_WRONG_NO_ROLE);
-        }
-        return role;
-    }
-
-    /**
-     * @description 获取当前用户拥有管理员角色的应用
-     * @param request
-     * @return java.util.List<top.buukle.security.entity.Application>
-     * @Author zhanglei1102
-     * @Date 2019/12/4
-     */
-    public static PageResponse getUserApplication(HttpServletRequest request) {
-        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
-        List<SelectTreeNodeResult> applications = new ArrayList<>();
-        for (String applicationCode : roleMap.keySet()) {
-            Role role = roleMap.get(applicationCode);
-            if(role.getPid() != null && role.getPid().equals(0)){
-                if(null != roleMap.get(applicationCode)){
-                    SelectTreeNodeResult application = new SelectTreeNodeResult();
-                    application.setTitle(applicationCode);
-                    application.setId(roleMap.get(applicationCode).getApplicationId());
-                    applications.add(application);
-                }
-            }
-        }
-        PageResponse commonResponse = new PageResponse.Builder().build(applications,1,-1,applications.size());
-        return commonResponse;
-    }
-
-    /**
-     * @description 获取用户下辖角色列表
-     * @param request
-     * @param applicationCode
-     * @return top.buukle.common.call.CommonResponse
+     * @description 获取指定用户的超时时间
+     * @param userInfo
+     * @return int
      * @Author zhanglei1102
      * @Date 2019/12/10
      */
-    public static PageResponse getUserSubRolesByAppCode(HttpServletRequest request, String applicationCode) {
-        Map<String,List<Role>> userSubRolesMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
-        List<Role> roles = userSubRolesMap.get(applicationCode);
-        return new PageResponse.Builder().buildWithoutPage(roles);
+    public static int getUserExpire(User userInfo) {
+        return (userInfo.getLoginStrategy() == null || userInfo.getLoginStrategy() == 0)  ? NumberUtil.INTEGER_ONE_MINUTES_SECOND * 6 : NumberUtil.INTEGER_ONE_WEEK_SECOND;
     }
 }
