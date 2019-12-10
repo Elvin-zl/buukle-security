@@ -132,7 +132,7 @@ public class Role implements Serializable {
     /**
      *
      *
-     * @mbg.generated Sun Aug 18 22:53:10 CST 2019
+     * applicationCode 应用编码
      */
     private String bak01;
 

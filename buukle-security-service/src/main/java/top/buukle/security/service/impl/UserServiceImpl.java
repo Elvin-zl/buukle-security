@@ -19,7 +19,6 @@ import top.buukle.security .entity.vo.UserQuery;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security.service.RoleService;
 import top.buukle.security .service.UserService;
-import top.buukle.security.service.constants.RoleEnums;
 import top.buukle.security.service.constants.SystemConstants;
 import top.buukle.security .service.constants.UserEnums;
 import top.buukle.security .service.constants.SystemReturnEnum;
@@ -172,21 +171,13 @@ public class UserServiceImpl implements UserService{
         if(CollectionUtils.isEmpty(applications) || applications.size() != 1){
             throw new SystemException(SystemReturnEnum.USER_SAVE_OR_EDIT_APP_NOT_EXIST);
         }
-        // 获取操作者在app的角色映射
-        Map<String, Role> operatorRoleMap = (Map<String, Role>) SessionUtil.get(httpServletRequest, SessionUtil.USER_ROLE_MAP_KEY);
-        Role operatorRoleInCurrentApp = operatorRoleMap.get(applications.get(0).getCode());
-        if(operatorRoleInCurrentApp == null){
-            throw new SystemException(SystemReturnEnum.USER_SET_USER_ROLE_NO_ROLE);
-        }
-        // 查询app角色列表
-        RoleExample roleExample = new RoleExample();
-        RoleExample.Criteria appCriteria = roleExample.createCriteria();
-        appCriteria.andStatusEqualTo(RoleEnums.status.PUBLISED.value());
-        appCriteria.andApplicationIdEqualTo(applications.get(0).getId());
-        List<Role> appRoles = roleMapper.selectByExample(roleExample);
         // 获取操作者下辖角色列表
+        PageResponse userSubRolesByAppCode = SessionUtil.getUserSubRolesByAppCode(httpServletRequest,env.getProperty("spring.application.name"));
+        List<Role> userSubRoleList = (List<Role>) userSubRolesByAppCode.getBody().getList();
         List<Integer> operatorSubRoleIds = new ArrayList<>();
-        roleService.getUserSubRoles(operatorSubRoleIds,operatorRoleInCurrentApp,appRoles);
+        for (Role subRole: userSubRoleList) {
+            operatorSubRoleIds.add(subRole.getId());
+        }
         // 获取被操作用户的角色
         Role userRole = roleService.getUserRole(user.getUserId(),applications.get(0).getId());
         if(!operatorSubRoleIds.contains(userRole.getId())){
@@ -395,7 +386,7 @@ public class UserServiceImpl implements UserService{
         query.setGmtModified(new Date());
         query.setModifier(operator.getUsername());
         query.setModifierCode(operator.getUserId());
-        query.setCreatorRoleId(SessionUtil.getUserRoleIdByAppCode(request,env.getProperty("spring.application.name")).getId());
+        query.setCreatorRoleId(SessionUtil.getUserTopRoleLevel(request,env.getProperty("spring.application.name")));
         return query;
     }
 

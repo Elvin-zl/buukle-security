@@ -132,8 +132,6 @@ public class ApiUserServiceImpl implements ApiUserService{
             if(isUpdate){
                 // 刷新用户可见菜单数组
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
-                // 刷新用户角色目录
-                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles),SessionUtil.getUserExpire(userInfo));
                 // 刷新用户下辖角色映射
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,userSubRoleMap,SessionUtil.getUserExpire(userInfo));
                 // 刷新用户所有资源url清单
@@ -141,8 +139,6 @@ public class ApiUserServiceImpl implements ApiUserService{
             }else{
                 // 刷新用户可见菜单数组
                 SessionUtil.cache(request,SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed);
-                // 刷新用户角色目录
-                SessionUtil.cache(request,SessionUtil.USER_ROLE_MAP_KEY,this.assUserRoleMap(userRoles));
                 // 刷新用户下辖角色映射
                 SessionUtil.cache(request,SessionUtil.USER_ROLE_SUB_MAP_KEY,userSubRoleMap);
                 // 刷新用户所有资源url清单

@@ -81,23 +81,6 @@ public class SecurityDefaultController {
     }
 
     /**
-     * @description 获取当前用户指定应用下的角色
-     * @param request
-     * @param applicationCode
-     * @return top.buukle.common.call.CommonResponse
-     * @Author zhanglei1102
-     * @Date 2019/12/10
-     */
-    @RequestMapping("/getUserRoleIdByAppCode")
-    @ResponseBody
-    public CommonResponse getUserRoleIdByAppCode(HttpServletRequest request, String applicationCode){
-        Role userRoleId = SessionUtil.getUserRoleIdByAppCode(request, applicationCode);
-        CommonResponse commonResponse = new CommonResponse.Builder().buildSuccess();
-        commonResponse.setBody(userRoleId);
-        return commonResponse;
-    }
-
-    /**
      * @description 获取当前用户下辖角色列表
      * @param request
      * @param applicationCode

@@ -56,8 +56,7 @@ public class SecurityController {
         modelAndView.addObject("welcome",menuTreeNode == null ? new MenuTreeNode() : menuTreeNode.getSubMenuList().get(0));
         // 返回顶部菜单树的引用
         modelAndView.addObject("topMenuList",menuTreeNode == null ? new ArrayList<MenuTreeNode>() : this.getTopMenuList(menuTreeNode.getSubMenuList()));
-        // 返回角色引用
-        modelAndView.addObject("role",((Map<String,Role>)SessionUtil.get(request,SessionUtil.USER_ROLE_MAP_KEY)).get(applicationName));
+
         modelAndView.setViewName("home");
         return modelAndView;
     }

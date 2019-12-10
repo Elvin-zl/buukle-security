@@ -10,21 +10,22 @@
  */
 package top.buukle.security.plugin.util;
 
+import org.springframework.util.CollectionUtils;
 import top.buukle.common.call.PageResponse;
 import top.buukle.security.entity.Role;
 import top.buukle.security.entity.User;
 import top.buukle.security.entity.vo.SelectTreeNodeResult;
+import top.buukle.security.plugin.cache.SecuritySessionContext;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
 import top.buukle.util.NumberUtil;
+import top.buukle.util.SpringContextUtil;
 import top.buukle.util.StringUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description 〈session 工具类〉
@@ -37,8 +38,6 @@ public class SessionUtil {
 
     /**  【当前用户】 拥有菜单信息在session中的key*/
     public static final String USER_MENU_TREE_KEY = "USER_MENU_TREE_KEY";
-    /**  【当前用户】 拥有角色信息在session中的key*/
-    public static final String USER_ROLE_MAP_KEY = "USER_ROLE_MAP_KEY";
     /**  【当前用户】 下辖角色信息在session中的key*/
     public static final String USER_ROLE_SUB_MAP_KEY = "USER_ROLE_SUB_MAP_KEY";
     /**  【当前用户】 下拥有url信息在session中的key*/
@@ -142,20 +141,16 @@ public class SessionUtil {
      * @Date 2019/12/4
      */
     public static PageResponse getUserApplication(HttpServletRequest request) {
-        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
-        List<SelectTreeNodeResult> applications = new ArrayList<>();
-        for (String applicationCode : roleMap.keySet()) {
-            Role role = roleMap.get(applicationCode);
-            if(role.getPid() != null && role.getPid().equals(0)){
-                if(null != roleMap.get(applicationCode)){
-                    SelectTreeNodeResult application = new SelectTreeNodeResult();
-                    application.setTitle(applicationCode);
-                    application.setId(roleMap.get(applicationCode).getApplicationId());
-                    applications.add(application);
-                }
-            }
+        Set<SelectTreeNodeResult> applications = new HashSet<>();
+        PageResponse userSubRoles = getUserSubRoles(request);
+        List<Role> list = (List<Role>) userSubRoles.getBody().getList();
+        for (Role role: list) {
+            SelectTreeNodeResult application = new SelectTreeNodeResult();
+            application.setTitle(role.getBak01());
+            application.setId(role.getApplicationId());
+            applications.add(application);
         }
-        PageResponse commonResponse = new PageResponse.Builder().build(applications,1,-1,applications.size());
+        PageResponse commonResponse = new PageResponse.Builder().build(new ArrayList<>(applications),1,-1,applications.size());
         return commonResponse;
     }
 
@@ -167,17 +162,64 @@ public class SessionUtil {
      * @Author elvin
      * @Date 2019/8/19
      */
-    public static Role getUserRoleIdByAppCode(HttpServletRequest request, String applicationCode) {
-        Map<String, Role> roleMap = (Map<String, Role>) SessionUtil.get(request, SessionUtil.USER_ROLE_MAP_KEY);
-        Role role = roleMap.get(applicationCode);
-        if(role == null){
-            throw new SecurityPluginException(SecurityExceptionEnum.AUTH_WRONG_NO_ROLE);
+    public static List<Role> getUserRoleByAppCode(HttpServletRequest request, String applicationCode) {
+        PageResponse userSubRolesByAppCode = getUserSubRolesByAppCode(request, applicationCode);
+        return (List<Role>) userSubRolesByAppCode.getBody().getList();
+    }
+    /**
+     * @description 获取【当前用户】指定应用下定级
+     * @param request
+     * @param applicationCode
+     * @return top.buukle.security.entity.Role
+     * @Author elvin
+     * @Date 2019/8/19
+     */
+    public static Integer getUserTopRoleLevel(HttpServletRequest request, String applicationCode) {
+        Map<String,List<Role>> userSubRolesMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
+        List<Role> list = userSubRolesMap.get(applicationCode);
+        Integer userTopRoleLevel = 99999999;
+        for (Role role: list) {
+
         }
-        return role;
+        return userTopRoleLevel;
     }
 
     /**
-     * @description 获取【当前用户】下辖角色列表
+     * @description 获取【当前用户】下辖角色实例列表
+     * @param request
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    public static PageResponse getUserSubRoles(HttpServletRequest request) {
+        Map<String,List<Role>> userSubRolesMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
+        List<Role> roles = new ArrayList<>();
+        for (String applicationCode: userSubRolesMap.keySet()) {
+            if(!CollectionUtils.isEmpty(userSubRolesMap.get(applicationCode))){
+                roles.addAll(userSubRolesMap.get(applicationCode));
+            }
+        }
+        return new PageResponse.Builder().buildWithoutPage(roles);
+    }
+
+    /**
+     * @description 获取【当前用户】下辖角色id列表
+     * @param request
+     * @return java.util.List<java.lang.Integer>
+     * @Author zhanglei1102
+     * @Date 2019/12/10
+     */
+    public static List<Integer> getUserSubRolesIdList(HttpServletRequest request) {
+        List<Integer> operatorSubRoleIds = new ArrayList<>();
+        List<Role> userSubRoleList = (List<Role>) getUserSubRoles(request).getBody().getList();
+        for (Role role: userSubRoleList) {
+            operatorSubRoleIds.add(role.getId());
+        }
+        return operatorSubRoleIds;
+    }
+
+    /**
+     * @description 获取【当前用户】下辖角色列表(指定应用)
      * @param request
      * @param applicationCode
      * @return top.buukle.common.call.CommonResponse
@@ -232,4 +274,5 @@ public class SessionUtil {
     public static int getUserExpire(User userInfo) {
         return (userInfo.getLoginStrategy() == null || userInfo.getLoginStrategy() == 0)  ? NumberUtil.INTEGER_ONE_MINUTES_SECOND * 6 : NumberUtil.INTEGER_ONE_WEEK_SECOND;
     }
+
 }
