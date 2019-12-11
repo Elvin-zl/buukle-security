@@ -80,16 +80,16 @@ public class AppConfigure implements WebMvcConfigurer {
      * @Author elvin
      * @Date 2019/8/4
      */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(getSecurityInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/static/**")
-                .excludePathPatterns("/api/**")
-                .excludePathPatterns("/login.html")
-                .excludePathPatterns("/logout")
-                // 放行錯誤請求
-                .excludePathPatterns("/error")
-        ;
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(getSecurityInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/static/**")
+//                .excludePathPatterns("/api/**")
+//                .excludePathPatterns("/login.html")
+//                .excludePathPatterns("/logout")
+//                // 放行錯誤請求
+//                .excludePathPatterns("/error")
+//        ;
+//    }
 }

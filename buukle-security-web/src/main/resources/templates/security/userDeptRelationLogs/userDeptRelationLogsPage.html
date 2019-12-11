@@ -1,0 +1,40 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<table class="layui-table" lay-even lay-skin="nob">
+	<thead>
+	<tr>
+		<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+		<th class="hidden-xs">ID</th>
+		<th class="hidden-xs">状态</th>
+		<th>操作</th>
+	</tr>
+	</thead>
+	<tbody id="tbody-userDeptRelationLogs">
+		<tr th:each="userDeptRelationLogsRecord:*@forDoller@*{response?.body?.list}">
+			<td><input type="checkbox" name="batchCheckBox" lay-skin="primary" th:attr="data-id = *@forDoller@*{userDeptRelationLogsRecord?.id}"  /></td>
+			<td th:text="*@forDoller@*{userDeptRelationLogsRecord?.id}" class="hidden-xs"></td>
+			<td th:switch="*@forDoller@*{userDeptRelationLogsRecord?.status}">
+				<button th:case="0" class="layui-btn layui-btn-xs layui-btn-danger" > 初始化</button>
+				<button th:case="1" class="layui-btn layui-btn-xs layui-btn-normal" > 处理中</button>
+				<button th:case="2" class="layui-btn layui-btn-xs layui-btn-default"> 审核不通过</button>
+				<button th:case="3" class="layui-btn layui-btn-xs layui-btn-default"> 审核通过</button>
+				<button th:case="4" class="layui-btn layui-btn-xs layui-btn-default"> 已被封禁</button>
+				<button th:case="*" class="layui-btn layui-btn-xs layui-btn-unknown"> 未知</button>
+			</td>
+			<td>
+				<div class="layui-inline">
+					<hp url="/security/userDeptRelationLogs/userDeptRelationLogsCrudView">
+						<div class="layui-btn layui-btn-sm layui-btn-normal editBtn" th:attr="data-id = *@forDoller@*{userDeptRelationLogsRecord?.id}" data-url="/security/userDeptRelationLogs/userDeptRelationLogsCrudView"><i class="layui-icon">&#xe642;</i></div>
+					</hp>
+					<hp url="/security/userDeptRelationLogs/userDeptRelationLogsCrudJson">
+						<div class="layui-btn layui-btn-sm layui-btn-danger delOneBtn" th:attr="data-id = *@forDoller@*{userDeptRelationLogsRecord?.id}" data-url="/security/userDeptRelationLogs/userDeptRelationLogsCrudJson"><i class="layui-icon">&#xe640;</i></div>
+                    </hp>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+	<input type="hidden" id="page" th:attr="value=*@forDoller@*{response?.body.pageNo}" />
+	<input type="hidden" id="totalPage" th:attr="value=*@forDoller@*{response?.body.totalPage}" />
+	<input type="hidden" id="total" th:attr="value=*@forDoller@*{response?.body.total}" />
+</table>
+
+
