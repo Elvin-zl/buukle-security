@@ -71,7 +71,7 @@ public class DataIsolationSqlUtil {
 		validateParam(tableName,queryDimension,dimensionFiledName);
 		// 处理 :回车,制表符,等
 		sql = sql.replace(StringUtil.NEW_LINE, StringUtil.BLANK).replace(StringUtil.TABULACTOR, StringUtil.BLANK);
-		LOGGER.info("解析sql,拼接开始:原始sql :{},表名 :{},查询唯度 :{},维度字段名 :{},",sql, tableName,queryDimension, StringUtil.isEmpty(dimensionFiledName) ? StringUtil.BLANK : dimensionFiledName);
+		LOGGER.debug("解析sql,拼接开始:原始sql :{},表名 :{},查询唯度 :{},维度字段名 :{},",sql, tableName,queryDimension, StringUtil.isEmpty(dimensionFiledName) ? StringUtil.BLANK : dimensionFiledName);
 		String codeInCondition = StringUtil.EMPTY;
 		// 部门维度
 		if(StringUtil.notEmpty(queryDimension) && queryDimension.equals(DataIsolationAnnotation.DIMENSION_DEPT)){
@@ -86,7 +86,7 @@ public class DataIsolationSqlUtil {
 			}
 		}
 		String finalSql = handleSql(sql, tableName, codeInCondition);
-		LOGGER.info("解析sql,拼接结束 :finalSql:{}",finalSql);
+		LOGGER.debug("解析sql,拼接结束 :finalSql:{}",finalSql);
 		return finalSql;
 	}
 	
