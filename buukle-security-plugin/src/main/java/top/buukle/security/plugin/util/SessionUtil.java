@@ -11,9 +11,12 @@
 package top.buukle.security.plugin.util;
 
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import top.buukle.common.call.PageResponse;
 import top.buukle.security.entity.Role;
 import top.buukle.security.entity.User;
+import top.buukle.security.entity.vo.DeptSessionVo;
 import top.buukle.security.entity.vo.SelectTreeNodeResult;
 import top.buukle.security.plugin.constants.SecurityInterceptorConstants;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
@@ -43,7 +46,7 @@ public class SessionUtil {
     /**  【当前用户】 拥有部门信息在session中的key*/
     public static final String USER_DEPT_SUB_LIST_KEY = "USER_DEPT_LIST_KEY";
     /**  【当前用户】 拥有部门ID信息在session中的key*/
-    public static final String USER_DEPT_SUB_ID_LIST_KEY = "USER_DEPT_LIST_KEY";
+    public static final String USER_DEPT_SUB_ID_LIST_KEY = "USER_DEPT_SUB_ID_LIST_KEY";
 
 
     /**  【当前用户】 信息在session中的key*/
@@ -175,8 +178,20 @@ public class SessionUtil {
      * @Date 2019/8/19
      */
     public static Integer getUserDeptId(HttpServletRequest request) {
+        List<Integer> userSubDeptIdList = (List<Integer>) SessionUtil.get(request, SessionUtil.USER_DEPT_SUB_ID_LIST_KEY);
+        return  CollectionUtils.isEmpty(userSubDeptIdList) ? null : userSubDeptIdList.get(0);
+    }
 
-        return null;
+    /**
+     * @description 获取【当前用户】部门信息
+     * @param request
+     * @return top.buukle.security.entity.vo.DeptSessionVo
+     * @Author zhanglei1102
+     * @Date 2019/12/11
+     */
+    public static DeptSessionVo getUserDept(HttpServletRequest request) {
+        List<DeptSessionVo> deptSessionVos = (List<DeptSessionVo>) SessionUtil.get(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest(), SessionUtil.USER_DEPT_SUB_LIST_KEY);
+        return CollectionUtils.isEmpty(deptSessionVos) ? null : deptSessionVos.get(0);
     }
 
     /**
@@ -187,8 +202,7 @@ public class SessionUtil {
      * @Date 2019/12/10
      */
     public static List<Integer> getUserSubDeptIdList(HttpServletRequest request) {
-
-        return null;
+        return (List<Integer>) SessionUtil.get(request, SessionUtil.USER_DEPT_SUB_ID_LIST_KEY);
     }
 
     /**
@@ -255,5 +269,4 @@ public class SessionUtil {
     public static int getUserExpire(User userInfo) {
         return (userInfo.getLoginStrategy() == null || userInfo.getLoginStrategy() == 0)  ? NumberUtil.INTEGER_ONE_MINUTES_SECOND * 6 : NumberUtil.INTEGER_ONE_WEEK_SECOND;
     }
-
 }

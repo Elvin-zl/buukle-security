@@ -9,18 +9,24 @@ import org.springframework.util.CollectionUtils;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import top.buukle.common.call.code.BaseReturnEnum;
+import top.buukle.common.exception.CommonException;
+import top.buukle.security.entity.User;
+import top.buukle.security.entity.constants.DeptEnums;
+import top.buukle.security.entity.vo.DeptSessionVo;
 import top.buukle.security.plugin.annotation.DataIsolationAnnotation;
 import top.buukle.util.StringUtil;
 import top.buukle.common.log.BaseLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DataIsolationSqlUtil {
 
 	private final static BaseLogger LOGGER = BaseLogger.getLogger(DataIsolationSqlUtil.class);
 	
 	/** 无记录时默认in条件 */
-	private static final String NO_CODE_LIST = "NO_CODE_LIST";
+	private static final String NO_CODE_LIST = "-95272795";
 
 	/** in条件前缀 */
 	private static final String CODE_IN_PREFIX = " in ( ";
@@ -48,27 +54,36 @@ public class DataIsolationSqlUtil {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String handleSql( String sql, String tableName, String queryDimension, String roleFiledName) throws ExecutionException {
-		// 校验参数
-		validateParam(tableName,queryDimension,roleFiledName);
-		// 处理 :回车,制表符,等
-		sql = sql.replace(StringUtil.NEW_LINE, StringUtil.BLANK).replace(StringUtil.TABULACTOR, StringUtil.BLANK);
-		LOGGER.info("解析sql,拼接开始:原始sql :{},表名 :{},查询唯度 :{},角色字段名 :{},",sql, tableName,queryDimension,
-				StringUtil.isEmpty(roleFiledName) ? StringUtil.BLANK : roleFiledName);
-		String codeInCondition = StringUtil.EMPTY;
-
-		ServletRequestAttributes servletRequestAttributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
+	public static String handleSql( String sql, String tableName, String queryDimension, String dimensionFiledName) throws ExecutionException {
+		// 获取当前用户下辖部门id列表
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+		List<Integer> subDeptIdList = (List<Integer>) SessionUtil.get(request, SessionUtil.USER_DEPT_SUB_ID_LIST_KEY);
+		// 获取当前用户下辖部门列表
+		DeptSessionVo dept = SessionUtil.getUserDept(request);
 		// 非登录状态请求
-		if(servletRequestAttributes==null || servletRequestAttributes.getRequest() == null){
+		if(null == subDeptIdList || dept == null){
 			return sql;
 		}
-		HttpServletRequest request = servletRequestAttributes.getRequest();
-
-		// 获取当前用户下辖部门列表
-		List<Integer> subDeptIdList = (List<Integer>) SessionUtil.get(request, SessionUtil.USER_DEPT_SUB_ID_LIST_KEY);
-
+		// 获取当前用户
+		User user = SessionUtil.getUser(request, response);
+		// 校验参数
+		validateParam(tableName,queryDimension,dimensionFiledName);
+		// 处理 :回车,制表符,等
+		sql = sql.replace(StringUtil.NEW_LINE, StringUtil.BLANK).replace(StringUtil.TABULACTOR, StringUtil.BLANK);
+		LOGGER.info("解析sql,拼接开始:原始sql :{},表名 :{},查询唯度 :{},维度字段名 :{},",sql, tableName,queryDimension, StringUtil.isEmpty(dimensionFiledName) ? StringUtil.BLANK : dimensionFiledName);
+		String codeInCondition = StringUtil.EMPTY;
+		// 部门维度
 		if(StringUtil.notEmpty(queryDimension) && queryDimension.equals(DataIsolationAnnotation.DIMENSION_DEPT)){
-			codeInCondition = new StringBuilder(roleFiledName).append(CODE_IN_PREFIX).append(getIdStringSaperatedByComma(subDeptIdList)).append(CODE_IN_SUFFIX).toString();
+			if(dept.getLeader().equals(DeptEnums.leader.SELF_LEADER.level())){
+				codeInCondition = new StringBuilder("creator_code").append(CODE_IN_PREFIX).append("'").append(user.getUserId()).append("'").append(CODE_IN_SUFFIX).toString();
+			}else if(dept.getLeader().equals(DeptEnums.leader.LOCAL_LEADER.level())){
+				codeInCondition = new StringBuilder(dimensionFiledName).append(CODE_IN_PREFIX).append(dept.getId()).append(CODE_IN_SUFFIX).toString();
+			}else if(dept.getLeader().equals(DeptEnums.leader.PASS_LEADER.level())){
+				codeInCondition = new StringBuilder(dimensionFiledName).append(CODE_IN_PREFIX).append(getIdStringSaperatedByComma(subDeptIdList)).append(CODE_IN_SUFFIX).toString();
+			}else{
+				throw new CommonException(BaseReturnEnum.FAILED,"数据权限异常!用户部门级别非法!");
+			}
 		}
 		String finalSql = handleSql(sql, tableName, codeInCondition);
 		LOGGER.info("解析sql,拼接结束 :finalSql:{}",finalSql);

@@ -63,7 +63,7 @@
 							</li>
 						</th:block>
 					  <li class="layui-nav-item">
-
+							<span th:text="${user?.username}"></span>
 						  <input type="hidden" data-type="UID" th:attr="value=${user?.userId}"/>
 					  </li>
 					  <li class="layui-nav-item"><a href="/logout">登出</a></li>

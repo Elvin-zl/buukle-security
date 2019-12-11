@@ -1,8 +1,8 @@
 /**
  * Copyright (C), 2015-2019  http://www.jd.com
- * FileName: DeptSessionVo
+ * FileName: UserForCrudVo
  * Author:   zhanglei1102
- * Date:     2019/12/11 18:15
+ * Date:     2019/12/11 23:23
  * Description:
  * History:
  * <author>          <time>          <version>          <desc>
@@ -10,7 +10,7 @@
  */
 package top.buukle.security.entity.vo;
 
-import top.buukle.security.entity.Dept;
+import top.buukle.security.entity.User;
 
 /**
  * @description 〈〉
@@ -18,7 +18,7 @@ import top.buukle.security.entity.Dept;
  * @create 2019/12/11
  * @since 1.0.0
  */
-public class DeptSessionVo extends Dept {
+public class UserForCrudVo extends User {
 
     private Integer leader;
 

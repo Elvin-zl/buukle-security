@@ -30,8 +30,12 @@
 			</td>
 			<td>
 				<div class="layui-inline">
+					<hp url="/security/dept/deptCrudView">
 						<div class="layui-btn layui-btn-sm layui-btn-normal editBtn" th:attr="data-id = ${deptRecord?.id}" data-url="/security/dept/deptCrudView"><i class="layui-icon">&#xe642;</i></div>
+					</hp>
+					<hp url="/security/dept/deptCrudJson">
 						<div class="layui-btn layui-btn-sm layui-btn-danger delOneBtn" th:attr="data-id = ${deptRecord?.id}" data-url="/security/dept/deptCrudJson"><i class="layui-icon">&#xe640;</i></div>
+					</hp>
 				</div>
 			</td>
 		</tr>

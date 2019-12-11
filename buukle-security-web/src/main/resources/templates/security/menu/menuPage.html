@@ -23,9 +23,7 @@
 			<td th:text="${#dates.format(menuRecord?.gmtModified,'yyyy-MM-dd HH:mm:ss')}" class="hidden-xs"></td>
 			<td th:switch="${menuRecord?.type}">
 				<button th:case="0" class="layui-btn layui-btn-xs layui-btn-unknown" > 组件</button>
-				<button th:case="1" class="layui-btn layui-btn-xs layui-btn-unknown" >
-					<span th:text="${menuRecord?.display == 1 ? '菜单 (展示)' : '菜单 (不展示)' }"></span>
-				</button>
+				<button th:case="1" class="layui-btn layui-btn-xs layui-btn-blue" > 菜单</button>
 				<button th:case="*" class="layui-btn layui-btn-xs layui-btn-unknown" > 组件</button>
 			</td>
 			<td th:switch="${menuRecord?.status}">

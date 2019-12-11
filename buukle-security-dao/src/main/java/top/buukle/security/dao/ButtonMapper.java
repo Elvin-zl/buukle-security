@@ -43,7 +43,7 @@ public interface ButtonMapper {
      *
      * @mbg.generated Tue Aug 06 21:36:38 CST 2019
      */
-    @DataIsolationAnnotation(tableName="button")
+    @DataIsolationAnnotation(tableName="button",dimensionFieldName = "creator_role_id")
     List<Button> selectByExample(ButtonExample example);
 
     /**

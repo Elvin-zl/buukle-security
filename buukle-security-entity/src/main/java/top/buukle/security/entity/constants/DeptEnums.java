@@ -32,20 +32,21 @@ public class DeptEnums {
     }
     public enum leader {
 
-        IS_LEADER(1,"是领导"),
-        NOT_LEADER(0,"不是领导"),
+        SELF_LEADER(0,"自身领导"),
+        LOCAL_LEADER(1,"本级领导"),
+        PASS_LEADER(2,"越级领导"),
         ;
 
-        private Integer flag;
+        private Integer level;
         private String description;
 
-        leader(int flag, String description) {
+        leader(int level, String description) {
             this.description = description;
-            this.flag = flag;
+            this.level = level;
         }
 
-        public Integer flag() {
-            return flag;
+        public Integer level() {
+            return level;
         }
 
         public String getDescription() {

@@ -43,7 +43,7 @@ public interface ApplicationMapper {
      *
      * @mbg.generated Tue Aug 06 21:36:30 CST 2019
      */
-    @DataIsolationAnnotation(tableName="application")
+    @DataIsolationAnnotation(tableName="application",dimensionFieldName = "creator_role_id")
     List<Application> selectByExample(ApplicationExample example);
 
     /**

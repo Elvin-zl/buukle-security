@@ -2,6 +2,7 @@ package top.buukle.security .service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -10,14 +11,17 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import top.buukle.common.call.code.BaseReturnEnum;
 import top.buukle.common.call.vo.FuzzyVo;
+import top.buukle.common.exception.CommonException;
 import top.buukle.common.status.StatusConstants;
 import top.buukle.security.api.ApiUserService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
+import top.buukle.security.entity.vo.DeptSessionVo;
+import top.buukle.security.entity.vo.UserForCrudVo;
 import top.buukle.security .entity.vo.UserQuery;
 import top.buukle.security.plugin.util.SessionUtil;
-import top.buukle.security.service.RoleService;
 import top.buukle.security .service.UserService;
 import top.buukle.security.service.constants.SystemConstants;
 import top.buukle.security .service.constants.UserEnums;
@@ -52,17 +56,19 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
-    private RoleService roleService;
+    private DeptMapper deptMapper;
     @Autowired
     private UserRoleRelationMapper userRoleRelationMapper;
     @Autowired
+    private UserDeptRelationMapper userDeptRelationMapper;
+    @Autowired
     private UserRoleRelationLogsMapper userRoleRelationLogsMapper;
+    @Autowired
+    private UserDeptRelationLogsMapper userDeptRelationLogsMapper;
     @Autowired
     private CommonMapper commonMapper;
     @Autowired
     private ApiUserService apiUserService;
-    @Autowired
-    private Environment env;
 
     /**
      * 分页获取列表
@@ -140,15 +146,19 @@ public class UserServiceImpl implements UserService{
      * @Date 2019/8/4
      */
     @Override
-    public User selectByPrimaryKeyForCrud(HttpServletRequest httpServletRequest, Integer id) {
+    public UserForCrudVo selectByPrimaryKeyForCrud(HttpServletRequest httpServletRequest, Integer id) {
         if(id == null){
-            return new User();
+            return new UserForCrudVo();
         }
         User user = userMapper.selectByPrimaryKey(id);
+        UserForCrudVo userForCrudVo = new UserForCrudVo();
         if(user!=null){
+            DeptSessionVo deptSessionVo = deptMapper.selectUserDept(user.getUserId());
+            BeanUtils.copyProperties(user,userForCrudVo);
+            userForCrudVo.setLeader(deptSessionVo == null ? null : deptSessionVo.getLeader());
             this.validatePerm(httpServletRequest,user);
         }
-        return user == null ? new User() : user;
+        return user == null ? new UserForCrudVo() : userForCrudVo;
     }
 
     /**
@@ -162,14 +172,6 @@ public class UserServiceImpl implements UserService{
     private void validatePerm(HttpServletRequest httpServletRequest, User user) {
         if(UserEnums.superManager.SYSTEM_MANAGER.value().equals(user.getSuperManager())){
             throw new SystemException(SystemReturnEnum.OPERATE_INFO_SYSTEM_PROTECT_EXCEPTION);
-        }
-        // 查询应用
-        ApplicationExample applicationExample = new ApplicationExample();
-        ApplicationExample.Criteria criteria = applicationExample.createCriteria();
-        criteria.andCodeEqualTo(env.getProperty("spring.application.name"));
-        List<Application> applications = applicationMapper.selectByExample(applicationExample);
-        if(CollectionUtils.isEmpty(applications) || applications.size() != 1){
-            throw new SystemException(SystemReturnEnum.USER_SAVE_OR_EDIT_APP_NOT_EXIST);
         }
     }
 
@@ -228,11 +230,8 @@ public class UserServiceImpl implements UserService{
         User operator = SessionUtil.getOperator(request, response);
         // 查询现有角色
         List<Role> userRoles = roleMapper.getUserRoleWithAppId(query.getUserId(), applications.get(0).getId());
-        String roleIdCollection = StringUtil.EMPTY;
         if(!CollectionUtils.isEmpty(userRoles)){
             for (Role role: userRoles) {
-                // 缓存用户历史角色id
-                roleIdCollection += role.getId() + StringUtil.COMMA;
                 // 清空该用户的角色
                 UserRoleRelationExample userRoleRelationExample = new UserRoleRelationExample();
                 UserRoleRelationExample.Criteria criteria = userRoleRelationExample.createCriteria();
@@ -260,13 +259,59 @@ public class UserServiceImpl implements UserService{
         userRoleRelationLogs.setGmtCreated(new Date());
         userRoleRelationLogs.setCreator(operator.getUsername());
         userRoleRelationLogs.setCreatorCode(operator.getUserId());
-        userRoleRelationLogs.setRoleIdCollection(roleIdCollection);
+        userRoleRelationLogs.setRoleIdCollection(ids);
         userRoleRelationLogs.setUserId(query.getUserId());
         // 记录日志
         userRoleRelationLogsMapper.insert(userRoleRelationLogs);
         // 刷新session
         apiUserService.sessionUserResource(null,query,true);
         return new CommonResponse.Builder().buildSuccess();
+    }
+
+    /**
+     * @description 为用户分配部门
+     * @param deptId
+     * @param query
+     * @param request
+     * @param response
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/11
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
+    public CommonResponse userDeptSet(Integer deptId, Integer leader, UserQuery query, HttpServletRequest request, HttpServletResponse response) {
+        validateParamForUserDeptSet(deptId,leader,query);
+        // 删除老的部门信息
+        UserDeptRelationExample userDeptRelationExample = new UserDeptRelationExample();
+        UserDeptRelationExample.Criteria criteria = userDeptRelationExample.createCriteria();
+        criteria.andUserIdEqualTo(query.getUserId());
+        userDeptRelationMapper.deleteByExample(userDeptRelationExample);
+
+        // 插入新的部门信息
+        UserDeptRelation userDeptRelation = new UserDeptRelation();
+        userDeptRelation.setUserId(query.getUserId());
+        userDeptRelation.setDeptId(deptId);
+        userDeptRelation.setLeader(leader);
+        userDeptRelationMapper.insert(userDeptRelation);
+
+        // 写入日志
+        UserDeptRelationLogs userRoleRelationLogs = new UserDeptRelationLogs();
+        BeanUtils.copyProperties(userDeptRelation,userRoleRelationLogs);
+        userDeptRelationLogsMapper.insert(userRoleRelationLogs);
+        return new CommonResponse.Builder().buildSuccess();
+    }
+
+    private void validateParamForUserDeptSet(Integer deptId, Integer leader, UserQuery query) {
+        if(deptId == null){
+            throw new CommonException(BaseReturnEnum.FAILED,"参数错误!部门id不能为空!");
+        }
+        if(leader == null){
+            throw new CommonException(BaseReturnEnum.FAILED,"参数错误!部门等级不能为空");
+        }
+        if(query == null || query.getUserId() == null){
+            throw new CommonException(BaseReturnEnum.FAILED,"参数错误!用户信息不全!");
+        }
     }
 
     /**

@@ -296,5 +296,19 @@ function getZTreeSelected(setModuleZTreeObj) {
         throw new Error("没有可选择的数据!");
         return;
     }
+    if(ids.indexOf(",") == 1){
+        ids = ids.replace(",","");
+    }
     return ids;
+}
+/*获取zTree选中id值*/
+function getZTreeRadioSelected(setModuleZTreeObj) {
+    try{
+        var nodes = setModuleZTreeObj.getCheckedNodes(true);
+        return nodes[0].id;
+    }catch(error){
+        layer.msg("没有可选择的数据!");
+        throw new Error("没有可选择的数据!");
+        return;
+    }
 }

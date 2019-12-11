@@ -19,10 +19,7 @@ import top.buukle.security.entity.User;
 import top.buukle.security .entity.Dept;
 import top.buukle.security .entity.DeptExample;
 import top.buukle.common.mvc.BaseQuery;
-import top.buukle.security.entity.vo.DeptCrudModelVo;
-import top.buukle.security .entity.vo.DeptQuery;
-import top.buukle.security.entity.vo.DeptTreeResult;
-import top.buukle.security.entity.vo.SelectTreeNodeResult;
+import top.buukle.security.entity.vo.*;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security .service.DeptService;
 import top.buukle.security .service.constants.SystemReturnEnum;
@@ -211,32 +208,46 @@ public class DeptServiceImpl implements DeptService{
      */
     @Override
     public PageResponse getUserDept(String userId, HttpServletRequest request, HttpServletResponse response) {
-        // 查询被操作用户在app拥有的角色列表
+        // 查询部门列表
         DeptExample applicationExample = new DeptExample();
         List<Dept> depts = deptMapper.selectByExample(applicationExample);
+        // 从 session 查询操作者下辖的部门id
+        List<Integer> userSubDeptIdList = SessionUtil.getUserSubDeptIdList(request);
+        // 从 session 查询操作者所属部门
+        DeptSessionVo userDept = SessionUtil.getUserDept(request);
+        // 查询被操作者的当前部门
+        DeptSessionVo operatedUserDept = deptMapper.selectUserDept(userId);
+        boolean isSelfLeader = userDept.getLeader().equals(DeptEnums.leader.SELF_LEADER.level());
         List<DeptTreeResult> deptTreeResults = new ArrayList<>();
         for (Dept dept : depts) {
             DeptTreeResult treeResult = new DeptTreeResult();
             BeanUtils.copyProperties(dept,treeResult);
+            if(!isSelfLeader){
+                treeResult.setNocheck(!userSubDeptIdList.contains(dept.getId()));
+            }else{
+                treeResult.setNocheck(true);
+            }
+            if(operatedUserDept != null && operatedUserDept.getId().equals(dept.getId())){
+                treeResult.setChecked(true);
+            }
             deptTreeResults.add(treeResult);
-            /* TODO 屏蔽当前用户不能操作的  */
         }
         return new PageResponse.Builder().build(deptTreeResults, 0, 0, 0);
     }
 
     private void findChildren(SelectTreeNodeResult node, List<Dept> depts, List<Integer> operatorSubDeptIds) {
         List<SelectTreeNodeResult> nodes = new ArrayList<>();
-        for (Dept dept: depts) {
-            if(dept.getPid().equals(node.getId())){
-                SelectTreeNodeResult nodeNew = new SelectTreeNodeResult();
-                nodeNew.setDisabled(!operatorSubDeptIds.contains(dept.getId()));
-                nodeNew.setId(dept.getId());
-                nodeNew.setTitle(dept.getDeptName());
-                nodeNew.setSpread(true);
-                nodes.add(nodeNew);
-                this.findChildren(nodeNew,depts, operatorSubDeptIds);
+            for (Dept dept: depts) {
+                if(dept.getPid().equals(node.getId())){
+                    SelectTreeNodeResult nodeNew = new SelectTreeNodeResult();
+                    nodeNew.setDisabled(!operatorSubDeptIds.contains(dept.getId()));
+                    nodeNew.setId(dept.getId());
+                    nodeNew.setTitle(dept.getDeptName());
+                    nodeNew.setSpread(true);
+                    nodes.add(nodeNew);
+                    this.findChildren(nodeNew,depts, operatorSubDeptIds);
+                }
             }
-        }
         node.setChildren(nodes);
     }
 

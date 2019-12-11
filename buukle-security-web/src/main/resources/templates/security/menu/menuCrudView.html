@@ -13,7 +13,7 @@
 	<!--表单-->
 	<form class="layui-form column-content-detail" id="menuCrudForm">
 		<!--hidden area-->
-		<input type="hidden" name="id" th:attr="value = ${record?.id}" />
+		<input id="id" type="hidden" name="id" th:attr="value = ${record?.id}" />
 		<div class="layui-tab">
 			<div class="layui-tab-content">
 				<div class="layui-tab-item layui-show">
@@ -67,46 +67,36 @@
 							<i class="require">*</i>
 							类型：
 						</label>
-						<div class="layui-input-block">
-							<input type="radio" name="type" th:field="*{record.type}" value="1" title="菜单" checked>
-							<input type="radio" name="type" th:field="*{record.type}" value="0"  title="组件">
+						<div class="layui-input-block" id="whatsType">
+							<input type="radio" name="type" th:field="*{record.type}" value="1" title="菜单" lay-filter="type">
+							<input type="radio" name="type" th:field="*{record.type}" value="0"  title="组件" lay-filter="type">
 						</div>
 					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">
-							<i class="require">*</i>
-							是否展示：
-						</label>
-						<div class="layui-input-block">
-							<input type="radio" name="display" th:field="*{record.display}" value="1" title="是" checked>
-							<input type="radio" name="display" th:field="*{record.display}" value="0"  title="否">
-						</div>
-					</div>
-					<div class="layui-form-item">
+					<div class="layui-form-item menu-display">
 						<label class="layui-form-label">展示位置：</label>
 						<div class="layui-input-block">
-							<input type="radio" name="positionType" th:field="*{record.positionType}" value="0" title="仅左侧" checked>
-							<input type="radio" name="positionType" th:field="*{record.positionType}" value="1"  title="左侧+顶部">
+							<input type="radio" class="menu-display-data" name="positionType" th:field="*{record.positionType}" value="0" title="仅左侧" checked>
+							<input type="radio" class="menu-display-data" name="positionType" th:field="*{record.positionType}" value="1"  title="左侧+顶部">
 						</div>
 					</div>
-					<div class="layui-form-item">
+					<div class="layui-form-item menu-display">
 						<label class="layui-form-label">顶部别名：</label>
 						<div class="layui-input-block">
-							<input type="text"  name="aliasName" th:attr="value = ${record?.aliasName}" placeholder="顶部别名" autocomplete="off" class="layui-input">
+							<input type="text"   name="aliasName" th:attr="value = ${record?.aliasName}" placeholder="顶部别名" autocomplete="off" class="layui-input menu-display-data">
 						</div>
 					</div>
-					<div class="layui-form-item">
+					<div class="layui-form-item menu-display">
 						<label class="layui-form-label">图标：</label>
 						<div class="layui-input-block">
-							<input type="text"  name="icon" th:attr="value = ${record?.icon}" placeholder="图标" autocomplete="off" class="layui-input">
+							<input type="text"   name="icon" th:attr="value = ${record?.icon}" placeholder="图标" autocomplete="off" class="layui-input menu-display-data">
 						</div>
 					</div>
-					<div class="layui-form-item">
+					<div class="layui-form-item menu-display">
 						<label class="layui-form-label">
 							排序号：
 						</label>
 						<div class="layui-input-block">
-							<input type="text"  name="orderNo" th:attr="value = ${record?.orderNo}" placeholder="排序号" autocomplete="off" class="layui-input">
+							<input type="text"   name="orderNo" th:attr="value = ${record?.orderNo}" placeholder="排序号" autocomplete="off" class="layui-input menu-display-data">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -163,8 +153,35 @@
             bindPidClick(tree);
             // 绑定保存更新
 			bindSaveOrEdit();
+			// 绑定类型点击
+			bindTypeClick();
 
 		});
+		/** 绑定类型点击*/
+		function bindTypeClick() {
+			if($('#id')){
+				if($('#type')){
+					control();
+				}
+			}
+			layui.use('form', function () {
+				var form = layui.form;
+				form.on('radio(type)', function (data) {
+					control();
+					form.render();
+				});
+			});
+		}
+
+		function control() {
+			if ($('#whatsType input[name="type"]:checked ').val() == "1") {
+				$('.menu-display').show();
+			}
+			else {
+				$('.menu-display').hide();
+				$('.menu-display-data').val('');
+			}
+		}
         /** 绑定上级选择*/
         function bindPidClick(tree) {
             $('#superMenu').off().on('click',function () {

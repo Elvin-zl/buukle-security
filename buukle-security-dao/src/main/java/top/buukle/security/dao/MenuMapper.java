@@ -43,7 +43,7 @@ public interface MenuMapper {
      *
      * @mbg.generated Thu Aug 15 14:43:20 CST 2019
      */
-    @DataIsolationAnnotation(tableName="menu")
+    @DataIsolationAnnotation(tableName="menu",dimensionFieldName = "creator_role_id")
     List<Menu> selectByExample(MenuExample example);
 
     /**

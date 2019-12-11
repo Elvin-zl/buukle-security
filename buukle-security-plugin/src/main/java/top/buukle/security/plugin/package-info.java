@@ -44,7 +44,7 @@
  *              }<br>
  *         }<br>
  *  ④ how to use data-isolation : <br>
- *     @DataIsolationAnnotation(tableName="user",roleFieldName = "creator_role_id",queryDimension =  DataIsolationAnnotation.DIMENSION_ROLE)<br>
+ *     @DataIsolationAnnotation(tableName="example",dimensionFieldName = "creator_dept_id",queryDimension =  DataIsolationAnnotation.DIMENSION_DEPT)<br>
  *     List<User> selectByExample(UserExample example);<br>
  *     (data-isolation require you make sure that your data record has the roleFieldName filed exist and it's not null )<br>
  *

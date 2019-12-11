@@ -7,6 +7,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import top.buukle.common.call.CommonResponse;
+import top.buukle.common.call.code.BaseReturnEnum;
+import top.buukle.common.exception.CommonException;
 import top.buukle.security.api.ApiUserService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
@@ -102,7 +104,7 @@ public class ApiUserServiceImpl implements ApiUserService{
             // 筛选可见菜单
             for (Menu menu: menuList) {
                 // 菜单类型 && 菜单可见 && 排序
-                if(MenuEnums.type.MENU.value().equals(menu.getType()) && MenuEnums.display.DISPLAY_BLOCK.value().equals(menu.getDisplay()) && menu.getOrderNo() != null){
+                if(MenuEnums.type.MENU.value().equals(menu.getType()) && MenuEnums.display.DISPLAY_BLOCK.value().equals(menu.getDisplay())){
                     menuDisplay.add(menu);
                 }
             }
@@ -145,11 +147,13 @@ public class ApiUserServiceImpl implements ApiUserService{
             // 初始化并组装用户下辖部门
             List<DeptSessionVo> userSubDeptList = new ArrayList<>();
             List<Integer> userSubDeptIdList = new ArrayList<>();
-            if(DeptEnums.leader.IS_LEADER.flag().equals(userDept.getLeader())){
-                this.assUserSubDeptList(userDept, allDept,userSubDeptList,userSubDeptIdList);
-            }else{
+            if(DeptEnums.leader.LOCAL_LEADER.level().equals(userDept.getLeader()) || DeptEnums.leader.SELF_LEADER.level().equals(userDept.getLeader())){
                 userSubDeptList.add(userDept);
                 userSubDeptIdList.add(userDept.getId());
+            }else if(DeptEnums.leader.PASS_LEADER.level().equals(userDept.getLeader())){
+                this.assUserSubDeptList(userDept, allDept,userSubDeptList,userSubDeptIdList);
+            }else{
+                throw new CommonException(BaseReturnEnum.FAILED,"登陆失败,用户部门信息非法!");
             }
 
             if(isUpdate){

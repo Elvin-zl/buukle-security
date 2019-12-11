@@ -43,7 +43,7 @@ public interface RoleMapper {
      *
      * @mbg.generated Thu Aug 08 11:42:39 CST 2019
      */
-    @DataIsolationAnnotation(tableName="role")
+    @DataIsolationAnnotation(tableName="role",dimensionFieldName = "creator_role_id")
     List<Role> selectByExample(RoleExample example);
 
     /**

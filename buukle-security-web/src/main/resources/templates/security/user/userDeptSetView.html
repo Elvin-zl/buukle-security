@@ -13,30 +13,40 @@
 	</head>
 	<body>
 	<!--表单-->
-	<form class="layui-form column-content-detail" id="userRoleSetForm">
+	<form class="layui-form column-content-detail" id="userDeptSetForm">
 		<!--hidden area-->
 		<input type="hidden" name="id" th:attr="value = ${record?.id}" />
 		<input type="hidden" id="userId" name="userId" th:attr="value = ${record?.userId}" />
-		<input type="hidden" id="ids" name="ids" />
+		<input type="hidden" id="deptId" name="deptId" />
 		<div class="layui-tab">
-		<span> 部门设置</span>
-		<hr/>
-		<div class="layui-tab-item layui-show" style="height: 393px; margin-top: 29px;">
-			<div class="layui-form-item">
-				<div id="choseRole" style="margin-top: 20px;overflow: auto; height: 273px; background-color: #4c786c2e;">
-					<ul id="tree" data-url="/dept/getUserDept" class="ztree buukle-zTree"></ul>
+			<span> 部门设置</span>
+			<hr/>
+			<div class="layui-tab-item layui-show" style="height: 393px; margin-top: 29px;">
+				<div class="layui-form-item">
+					<div id="choseRole" style="margin-top: 20px;overflow: auto; height: 273px; background-color: #4c786c2e;">
+						<ul id="tree" data-url="/dept/getUserDept" class="ztree buukle-zTree"></ul>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">部门等级：</label>
+					<div class="layui-input-block">
+						<select name="leader">
+							<option th:field="*{record.leader}" value="0">普通成员</option>
+							<option th:field="*{record.leader}" value="1">部门领导</option>
+							<option th:field="*{record.leader}" value="2">跨部门领导</option>
+						</select>
+					</div>
 				</div>
 			</div>
-		</div>
-		<!--操作-->
-		<div class="layui-form-item" style="padding-left: 10px;">
-			<div class="layui-input-block">
-				<!--hp url="/user/userRoleSet">
-					<div id="saveOrEdit" class="layui-btn layui-btn-normal" data-url="/user/userRoleSet">提交</div>
-				</hp>-->
-					<div id="saveOrEdit" class="layui-btn layui-btn-normal" data-url="/user/userDeptSet">提交</div>
-				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-				<div id="back" data-url="/user/saveOrEdit" class="layui-btn layui-btn-primary">取消</div>
+			<!--操作-->
+			<div class="layui-form-item" style="padding-left: 10px;">
+				<div class="layui-input-block">
+					<hp url="/user/userDeptSet">
+						<div id="saveOrEdit" class="layui-btn layui-btn-normal" data-url="/user/userDeptSet">提交</div>
+					</hp>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					<div id="back" data-url="/user/saveOrEdit" class="layui-btn layui-btn-primary">取消</div>
+				</div>
 			</div>
 		</div>
 	</form>
@@ -80,14 +90,18 @@
 		/** 绑定提交*/
         function bindSaveOrEdit() {
             $('#saveOrEdit').off().on('click',function () {
-				$('#ids').val(getZTreeSelected(userRoleTree));
-                var obj = $(this);
+				$('#deptId').val(getZTreeRadioSelected(userRoleTree));
+                if($('#deptId').val() == ''){
+					layer.msg('请选择部门!');
+					return;
+				}
+				var obj = $(this);
                 banThis(obj,"保存中..");
                 $.ajax({
 					url:obj.attr('data-url'),
 					method:"post",
 					dataType:"json",
-					data:$('#userRoleSetForm').serialize(),
+					data:$('#userDeptSetForm').serialize(),
 					success:function (data) {
 						if(data.head.status == 'S'){
                             banThis(obj,"完成");

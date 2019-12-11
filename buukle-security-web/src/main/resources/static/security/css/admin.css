@@ -2158,6 +2158,9 @@
 .layui-btn-green{
   background-color: rgba(41, 217, 22, 0.53);
 }
+.layui-btn-blue{
+  background-color: rgba(28, 169, 144, 0.88);
+}
 .layui-btn-froze{
   background-color: rgba(2, 1, 1, 0.56);
 }

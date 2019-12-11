@@ -65,4 +65,19 @@ public class UserController {
     public CommonResponse userRoleSet(Integer applicationId,String ids, UserQuery query, HttpServletRequest request, HttpServletResponse response) throws Exception {
         return userService.userRoleSet(applicationId,ids,query,request,response);
     }
+
+    /**
+     * @description
+     * @param query
+     * @param request
+     * @param response
+     * @return top.buukle.common.call.CommonResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/11
+     */
+    @RequestMapping("/userDeptSet")
+    @ResponseBody
+    public CommonResponse userDeptSet(Integer deptId,Integer leader, UserQuery query, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return userService.userDeptSet(deptId,leader,query,request,response);
+    }
 }
