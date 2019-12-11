@@ -104,21 +104,6 @@ public class ApplicationServiceImpl implements ApplicationService{
             if(UserEnums.superManager.SYSTEM_MANAGER.value().equals(users.get(0).getSuperManager())){
                 throw new SystemException(SystemReturnEnum.OPERATE_INFO_SYSTEM_PROTECT_EXCEPTION);
             }
-            List<Role> userRoleByAppCode = SessionUtil.getUserRoleByAppCode(request, application.getCode());
-            if(CollectionUtils.isEmpty(userRoleByAppCode)){
-                throw new SystemException(SystemReturnEnum.APPLICATION_SAVE_OR_EDIT_NO_PERM);
-            }
-
-            boolean isManager = false;
-            for (Role role: userRoleByAppCode) {
-                if(role.getPid().equals(0)){
-                    isManager = true;
-                    break;
-                }
-            }
-            if(!isManager){
-                throw new SystemException(SystemReturnEnum.APPLICATION_SAVE_OR_EDIT_NO_PERM);
-            }
         }
     }
 

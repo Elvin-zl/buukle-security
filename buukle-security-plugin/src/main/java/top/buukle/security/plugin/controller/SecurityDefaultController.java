@@ -79,18 +79,4 @@ public class SecurityDefaultController {
     public PageResponse getUserApplication(HttpServletRequest request){
         return SessionUtil.getUserApplication(request);
     }
-
-    /**
-     * @description 获取当前用户下辖角色列表
-     * @param request
-     * @param applicationCode
-     * @return top.buukle.common.call.CommonResponse
-     * @Author zhanglei1102
-     * @Date 2019/12/10
-     */
-    @RequestMapping("/getUserSubRolesByAppCode")
-    @ResponseBody
-    public PageResponse getUserSubRolesByAppCode(HttpServletRequest request, String applicationCode){
-        return  SessionUtil.getUserSubRolesByAppCode(request, applicationCode);
-    }
 }

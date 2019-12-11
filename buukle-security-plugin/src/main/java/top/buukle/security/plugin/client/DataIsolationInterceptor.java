@@ -143,7 +143,7 @@ public class DataIsolationInterceptor implements Interceptor {
 					if (originalSql.matches(SQL_SELECT) || Pattern.matches(SQL_COUNT, originalSql)) {
 						// 此处直接new ,缓存后会被...CACHE_MAP 一直引用,下次不再执行反射和循环,空间换时间吧
 						DataIsolationCache sCacheVo = new DataIsolationCache();
-						sCacheVo.setRoleFieldName(method.getAnnotation(DataIsolationAnnotation.class).roleFieldName());
+						sCacheVo.setDimensionFieldName(method.getAnnotation(DataIsolationAnnotation.class).dimensionFieldName());
 						sCacheVo.setQueryDimension(method.getAnnotation(DataIsolationAnnotation.class).queryDimension());
 						sCacheVo.setTableName(method.getAnnotation(DataIsolationAnnotation.class).tableName());
 						// 本地MAP缓存mapper接口方法id ,以及该方法上注解的值;
@@ -171,16 +171,16 @@ public class DataIsolationInterceptor implements Interceptor {
 	 */
 	private String matchSql(String sql, Method method, DataIsolationCache vo) throws Exception {
 		if(null != method){
-			String matchSql = DataIsolationSqlUtil.matchSql(env.getProperty("spring.application.name"),sql,
+			String matchSql = DataIsolationSqlUtil.handleSql(sql,
 					method.getAnnotation(DataIsolationAnnotation.class).tableName(),
 					method.getAnnotation(DataIsolationAnnotation.class).queryDimension(),
-					method.getAnnotation(DataIsolationAnnotation.class).roleFieldName());
+					method.getAnnotation(DataIsolationAnnotation.class).dimensionFieldName());
 			return matchSql;
 		}
-		String matchSql = DataIsolationSqlUtil.matchSql(env.getProperty("spring.application.name"),sql,
+		String matchSql = DataIsolationSqlUtil.handleSql(sql,
 				vo.getTableName(), 
 				vo.getQueryDimension(), 
-				vo.getRoleFieldName()
+				vo.getDimensionFieldName()
 				);
 		return matchSql;
 	}

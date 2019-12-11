@@ -10,6 +10,8 @@ import top.buukle.common.call.CommonResponse;
 import top.buukle.security.api.ApiUserService;
 import top.buukle.security.dao.*;
 import top.buukle.security.entity.*;
+import top.buukle.security.entity.constants.DeptEnums;
+import top.buukle.security.entity.vo.DeptSessionVo;
 import top.buukle.security.entity.vo.MenuTreeNode;
 import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
@@ -38,6 +40,8 @@ public class ApiUserServiceImpl implements ApiUserService{
     private MenuMapper menuMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private DeptMapper deptMapper;
     @Autowired
     private ButtonMapper buttonMapper;
     @Autowired
@@ -121,29 +125,68 @@ public class ApiUserServiceImpl implements ApiUserService{
                 }
             }
 
-            List<Role> userRoles = roleMapper.selectUserRoles(userInfo.getUserId());
-
+            // 查询所有角色
             RoleExample roleExample = new RoleExample();
             RoleExample.Criteria roleExampleCriteria = roleExample.createCriteria();
             roleExampleCriteria.andStatusEqualTo(RoleEnums.status.PUBLISED.value());
-            // 查询所有角色
             List<Role> allRoles = roleMapper.selectByExample(roleExample);
+            // 查询用户角色
+            List<Role> userRoles = roleMapper.selectUserRoles(userInfo.getUserId());
+            // 组装用户下辖角色
             Map<String, List<Role>> userSubRoleMap = this.assUserSubRoleMap(userRoles, allRoles);
+
+            // 查询所有部门
+            DeptExample deptExample = new DeptExample();
+            DeptExample.Criteria criteria = deptExample.createCriteria();
+            criteria.andStatusEqualTo(DeptEnums.status.PUBLISED.value());
+            List<Dept> allDept = deptMapper.selectByExample(deptExample);
+            // 查询用户部门
+            DeptSessionVo userDept = deptMapper.selectUserDept(userInfo.getUserId());
+            // 初始化并组装用户下辖部门
+            List<DeptSessionVo> userSubDeptList = new ArrayList<>();
+            List<Integer> userSubDeptIdList = new ArrayList<>();
+            if(DeptEnums.leader.IS_LEADER.flag().equals(userDept.getLeader())){
+                this.assUserSubDeptList(userDept, allDept,userSubDeptList,userSubDeptIdList);
+            }else{
+                userSubDeptList.add(userDept);
+                userSubDeptIdList.add(userDept.getId());
+            }
+
             if(isUpdate){
-                // 刷新用户可见菜单数组
+                // 刷新用户可见菜单数组(用于菜单展示)
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed,SessionUtil.getUserExpire(userInfo));
-                // 刷新用户下辖角色映射
+                // 刷新用户下辖部门列表(用于编辑部门)
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_DEPT_SUB_LIST_KEY,userSubDeptList,SessionUtil.getUserExpire(userInfo));
+                // 刷新用户下辖部门id列表(用于数据权限)
+                this.refreshSession(userInfo.getUserId(),SessionUtil.USER_DEPT_SUB_ID_LIST_KEY,userSubDeptIdList,SessionUtil.getUserExpire(userInfo));
+                // 刷新用户下辖角色映射(用于编辑角色)
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_ROLE_SUB_MAP_KEY,userSubRoleMap,SessionUtil.getUserExpire(userInfo));
-                // 刷新用户所有资源url清单
+                // 刷新用户所有资源url清单(用于权限校验)
                 this.refreshSession(userInfo.getUserId(),SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)),SessionUtil.getUserExpire(userInfo));
             }else{
-                // 刷新用户可见菜单数组
+                // 刷新用户可见菜单数组(用于菜单展示)
                 SessionUtil.cache(request,SessionUtil.USER_MENU_TREE_KEY,userApplicationMenuDisplayed);
-                // 刷新用户下辖角色映射
+                // 刷新用户下辖部门列表(用于编辑部门)
+                SessionUtil.cache(request,SessionUtil.USER_DEPT_SUB_LIST_KEY,userSubDeptList);
+                // 刷新用户下辖部门id列表(用于数据权限)
+                SessionUtil.cache(request,SessionUtil.USER_DEPT_SUB_ID_LIST_KEY,userSubDeptIdList);
+                // 刷新用户下辖角色映射(用于编辑角色)
                 SessionUtil.cache(request,SessionUtil.USER_ROLE_SUB_MAP_KEY,userSubRoleMap);
-                // 刷新用户所有资源url清单
+                // 刷新用户所有资源url清单(用于权限校验)
                 SessionUtil.cache(request,SessionUtil.USER_URL_LIST_KEY,this.assUserMenuUrlList(menuList,this.getUserButtonList(userRoles)));
             }
+        }
+    }
+
+    private void assUserSubDeptList(DeptSessionVo userDept, List<Dept> allDept, List<DeptSessionVo> userSubDeptList, List<Integer> userSubDeptIdList) {
+        userSubDeptList.add(userDept);
+        userSubDeptIdList.add(userDept.getId());
+        for (Dept dept: allDept) {
+           if(dept.getPid().equals(userDept.getId())){
+               DeptSessionVo vo = new DeptSessionVo();
+               BeanUtils.copyProperties(dept,vo);
+               assUserSubDeptList(vo,allDept,userSubDeptList, userSubDeptIdList);
+           }
         }
     }
 

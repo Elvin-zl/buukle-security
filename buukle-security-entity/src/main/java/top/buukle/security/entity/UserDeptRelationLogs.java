@@ -15,7 +15,7 @@ public class UserDeptRelationLogs implements Serializable {
      * 主键id
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private Integer id;
 
@@ -23,85 +23,93 @@ public class UserDeptRelationLogs implements Serializable {
      * 应用id
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private Integer applicationId;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String userId;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    private String roleIdCollection;
+    private String deptIdCollection;
+
+    /**
+     * 是否是部门领导 1:是
+     *
+     *
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
+     */
+    private Integer leader;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String description;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String remark;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private Date gmtCreated;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String creator;
 
     /**
-     * 创建者的角色id
+     * 创建者的部门id
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    private Integer creatorRoleId;
+    private Integer creatorDeptId;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String creatorCode;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private Date gmtModified;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String modifier;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String modifierCode;
 
@@ -109,48 +117,48 @@ public class UserDeptRelationLogs implements Serializable {
      * 状态
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private Integer status;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String bak01;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String bak02;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String bak03;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String bak04;
 
     /**
      *
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private String bak05;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     private static final long serialVersionUID = 1L;
 
@@ -159,7 +167,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Integer getId() {
         return id;
@@ -167,7 +175,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withId(Integer id) {
         this.setId(id);
@@ -179,7 +187,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param id the value for buukle-security-new..user_dept_relation_logs.id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setId(Integer id) {
         this.id = id;
@@ -190,7 +198,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.application_id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Integer getApplicationId() {
         return applicationId;
@@ -198,7 +206,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withApplicationId(Integer applicationId) {
         this.setApplicationId(applicationId);
@@ -210,7 +218,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param applicationId the value for buukle-security-new..user_dept_relation_logs.application_id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setApplicationId(Integer applicationId) {
         this.applicationId = applicationId;
@@ -221,7 +229,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.user_id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getUserId() {
         return userId;
@@ -229,7 +237,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withUserId(String userId) {
         this.setUserId(userId);
@@ -241,41 +249,72 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param userId the value for buukle-security-new..user_dept_relation_logs.user_id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
     /**
-     * This method returns the value of the database column buukle-security-new..user_dept_relation_logs.role_id_collection
+     * This method returns the value of the database column buukle-security-new..user_dept_relation_logs.dept_id_collection
      *
-     * @return the value of buukle-security-new..user_dept_relation_logs.role_id_collection
+     * @return the value of buukle-security-new..user_dept_relation_logs.dept_id_collection
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    public String getRoleIdCollection() {
-        return roleIdCollection;
+    public String getDeptIdCollection() {
+        return deptIdCollection;
     }
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    public UserDeptRelationLogs withRoleIdCollection(String roleIdCollection) {
-        this.setRoleIdCollection(roleIdCollection);
+    public UserDeptRelationLogs withDeptIdCollection(String deptIdCollection) {
+        this.setDeptIdCollection(deptIdCollection);
         return this;
     }
 
     /**
-     * This method sets the value of the database column buukle-security-new..user_dept_relation_logs.role_id_collection
+     * This method sets the value of the database column buukle-security-new..user_dept_relation_logs.dept_id_collection
      *
-     * @param roleIdCollection the value for buukle-security-new..user_dept_relation_logs.role_id_collection
+     * @param deptIdCollection the value for buukle-security-new..user_dept_relation_logs.dept_id_collection
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    public void setRoleIdCollection(String roleIdCollection) {
-        this.roleIdCollection = roleIdCollection;
+    public void setDeptIdCollection(String deptIdCollection) {
+        this.deptIdCollection = deptIdCollection;
+    }
+
+    /**
+     * This method returns the value of the database column buukle-security-new..user_dept_relation_logs.leader
+     *
+     * @return the value of buukle-security-new..user_dept_relation_logs.leader
+     *
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
+     */
+    public Integer getLeader() {
+        return leader;
+    }
+
+    /**
+     *
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
+     */
+    public UserDeptRelationLogs withLeader(Integer leader) {
+        this.setLeader(leader);
+        return this;
+    }
+
+    /**
+     * This method sets the value of the database column buukle-security-new..user_dept_relation_logs.leader
+     *
+     * @param leader the value for buukle-security-new..user_dept_relation_logs.leader
+     *
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
+     */
+    public void setLeader(Integer leader) {
+        this.leader = leader;
     }
 
     /**
@@ -283,7 +322,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.description
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getDescription() {
         return description;
@@ -291,7 +330,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withDescription(String description) {
         this.setDescription(description);
@@ -303,7 +342,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param description the value for buukle-security-new..user_dept_relation_logs.description
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setDescription(String description) {
         this.description = description;
@@ -314,7 +353,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.remark
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getRemark() {
         return remark;
@@ -322,7 +361,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withRemark(String remark) {
         this.setRemark(remark);
@@ -334,7 +373,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param remark the value for buukle-security-new..user_dept_relation_logs.remark
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setRemark(String remark) {
         this.remark = remark;
@@ -345,7 +384,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.gmt_created
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Date getGmtCreated() {
         return gmtCreated;
@@ -353,7 +392,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withGmtCreated(Date gmtCreated) {
         this.setGmtCreated(gmtCreated);
@@ -365,7 +404,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param gmtCreated the value for buukle-security-new..user_dept_relation_logs.gmt_created
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setGmtCreated(Date gmtCreated) {
         this.gmtCreated = gmtCreated;
@@ -376,7 +415,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.creator
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getCreator() {
         return creator;
@@ -384,7 +423,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withCreator(String creator) {
         this.setCreator(creator);
@@ -396,41 +435,41 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param creator the value for buukle-security-new..user_dept_relation_logs.creator
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setCreator(String creator) {
         this.creator = creator;
     }
 
     /**
-     * This method returns the value of the database column buukle-security-new..user_dept_relation_logs.creator_role_id
+     * This method returns the value of the database column buukle-security-new..user_dept_relation_logs.creator_dept_id
      *
-     * @return the value of buukle-security-new..user_dept_relation_logs.creator_role_id
+     * @return the value of buukle-security-new..user_dept_relation_logs.creator_dept_id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    public Integer getCreatorRoleId() {
-        return creatorRoleId;
+    public Integer getCreatorDeptId() {
+        return creatorDeptId;
     }
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    public UserDeptRelationLogs withCreatorRoleId(Integer creatorRoleId) {
-        this.setCreatorRoleId(creatorRoleId);
+    public UserDeptRelationLogs withCreatorDeptId(Integer creatorDeptId) {
+        this.setCreatorDeptId(creatorDeptId);
         return this;
     }
 
     /**
-     * This method sets the value of the database column buukle-security-new..user_dept_relation_logs.creator_role_id
+     * This method sets the value of the database column buukle-security-new..user_dept_relation_logs.creator_dept_id
      *
-     * @param creatorRoleId the value for buukle-security-new..user_dept_relation_logs.creator_role_id
+     * @param creatorDeptId the value for buukle-security-new..user_dept_relation_logs.creator_dept_id
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
-    public void setCreatorRoleId(Integer creatorRoleId) {
-        this.creatorRoleId = creatorRoleId;
+    public void setCreatorDeptId(Integer creatorDeptId) {
+        this.creatorDeptId = creatorDeptId;
     }
 
     /**
@@ -438,7 +477,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.creator_code
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getCreatorCode() {
         return creatorCode;
@@ -446,7 +485,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withCreatorCode(String creatorCode) {
         this.setCreatorCode(creatorCode);
@@ -458,7 +497,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param creatorCode the value for buukle-security-new..user_dept_relation_logs.creator_code
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setCreatorCode(String creatorCode) {
         this.creatorCode = creatorCode;
@@ -469,7 +508,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.gmt_modified
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Date getGmtModified() {
         return gmtModified;
@@ -477,7 +516,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withGmtModified(Date gmtModified) {
         this.setGmtModified(gmtModified);
@@ -489,7 +528,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param gmtModified the value for buukle-security-new..user_dept_relation_logs.gmt_modified
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
@@ -500,7 +539,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.modifier
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getModifier() {
         return modifier;
@@ -508,7 +547,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withModifier(String modifier) {
         this.setModifier(modifier);
@@ -520,7 +559,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param modifier the value for buukle-security-new..user_dept_relation_logs.modifier
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setModifier(String modifier) {
         this.modifier = modifier;
@@ -531,7 +570,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.modifier_code
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getModifierCode() {
         return modifierCode;
@@ -539,7 +578,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withModifierCode(String modifierCode) {
         this.setModifierCode(modifierCode);
@@ -551,7 +590,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param modifierCode the value for buukle-security-new..user_dept_relation_logs.modifier_code
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setModifierCode(String modifierCode) {
         this.modifierCode = modifierCode;
@@ -562,7 +601,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.status
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Integer getStatus() {
         return status;
@@ -570,7 +609,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withStatus(Integer status) {
         this.setStatus(status);
@@ -582,7 +621,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param status the value for buukle-security-new..user_dept_relation_logs.status
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setStatus(Integer status) {
         this.status = status;
@@ -593,7 +632,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.bak01
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getBak01() {
         return bak01;
@@ -601,7 +640,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withBak01(String bak01) {
         this.setBak01(bak01);
@@ -613,7 +652,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param bak01 the value for buukle-security-new..user_dept_relation_logs.bak01
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setBak01(String bak01) {
         this.bak01 = bak01;
@@ -624,7 +663,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.bak02
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getBak02() {
         return bak02;
@@ -632,7 +671,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withBak02(String bak02) {
         this.setBak02(bak02);
@@ -644,7 +683,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param bak02 the value for buukle-security-new..user_dept_relation_logs.bak02
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setBak02(String bak02) {
         this.bak02 = bak02;
@@ -655,7 +694,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.bak03
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getBak03() {
         return bak03;
@@ -663,7 +702,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withBak03(String bak03) {
         this.setBak03(bak03);
@@ -675,7 +714,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param bak03 the value for buukle-security-new..user_dept_relation_logs.bak03
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setBak03(String bak03) {
         this.bak03 = bak03;
@@ -686,7 +725,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.bak04
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getBak04() {
         return bak04;
@@ -694,7 +733,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withBak04(String bak04) {
         this.setBak04(bak04);
@@ -706,7 +745,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param bak04 the value for buukle-security-new..user_dept_relation_logs.bak04
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setBak04(String bak04) {
         this.bak04 = bak04;
@@ -717,7 +756,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @return the value of buukle-security-new..user_dept_relation_logs.bak05
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getBak05() {
         return bak05;
@@ -725,7 +764,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogs withBak05(String bak05) {
         this.setBak05(bak05);
@@ -737,7 +776,7 @@ public class UserDeptRelationLogs implements Serializable {
      *
      * @param bak05 the value for buukle-security-new..user_dept_relation_logs.bak05
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setBak05(String bak05) {
         this.bak05 = bak05;
@@ -745,7 +784,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     @Override
     public String toString() {
@@ -756,12 +795,13 @@ public class UserDeptRelationLogs implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", applicationId=").append(applicationId);
         sb.append(", userId=").append(userId);
-        sb.append(", roleIdCollection=").append(roleIdCollection);
+        sb.append(", deptIdCollection=").append(deptIdCollection);
+        sb.append(", leader=").append(leader);
         sb.append(", description=").append(description);
         sb.append(", remark=").append(remark);
         sb.append(", gmtCreated=").append(gmtCreated);
         sb.append(", creator=").append(creator);
-        sb.append(", creatorRoleId=").append(creatorRoleId);
+        sb.append(", creatorDeptId=").append(creatorDeptId);
         sb.append(", creatorCode=").append(creatorCode);
         sb.append(", gmtModified=").append(gmtModified);
         sb.append(", modifier=").append(modifier);
@@ -778,7 +818,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     @Override
     public boolean equals(Object that) {
@@ -795,12 +835,13 @@ public class UserDeptRelationLogs implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getApplicationId() == null ? other.getApplicationId() == null : this.getApplicationId().equals(other.getApplicationId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getRoleIdCollection() == null ? other.getRoleIdCollection() == null : this.getRoleIdCollection().equals(other.getRoleIdCollection()))
+            && (this.getDeptIdCollection() == null ? other.getDeptIdCollection() == null : this.getDeptIdCollection().equals(other.getDeptIdCollection()))
+            && (this.getLeader() == null ? other.getLeader() == null : this.getLeader().equals(other.getLeader()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getGmtCreated() == null ? other.getGmtCreated() == null : this.getGmtCreated().equals(other.getGmtCreated()))
             && (this.getCreator() == null ? other.getCreator() == null : this.getCreator().equals(other.getCreator()))
-            && (this.getCreatorRoleId() == null ? other.getCreatorRoleId() == null : this.getCreatorRoleId().equals(other.getCreatorRoleId()))
+            && (this.getCreatorDeptId() == null ? other.getCreatorDeptId() == null : this.getCreatorDeptId().equals(other.getCreatorDeptId()))
             && (this.getCreatorCode() == null ? other.getCreatorCode() == null : this.getCreatorCode().equals(other.getCreatorCode()))
             && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
             && (this.getModifier() == null ? other.getModifier() == null : this.getModifier().equals(other.getModifier()))
@@ -815,7 +856,7 @@ public class UserDeptRelationLogs implements Serializable {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     @Override
     public int hashCode() {
@@ -824,12 +865,13 @@ public class UserDeptRelationLogs implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getApplicationId() == null) ? 0 : getApplicationId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getRoleIdCollection() == null) ? 0 : getRoleIdCollection().hashCode());
+        result = prime * result + ((getDeptIdCollection() == null) ? 0 : getDeptIdCollection().hashCode());
+        result = prime * result + ((getLeader() == null) ? 0 : getLeader().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getGmtCreated() == null) ? 0 : getGmtCreated().hashCode());
         result = prime * result + ((getCreator() == null) ? 0 : getCreator().hashCode());
-        result = prime * result + ((getCreatorRoleId() == null) ? 0 : getCreatorRoleId().hashCode());
+        result = prime * result + ((getCreatorDeptId() == null) ? 0 : getCreatorDeptId().hashCode());
         result = prime * result + ((getCreatorCode() == null) ? 0 : getCreatorCode().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
         result = prime * result + ((getModifier() == null) ? 0 : getModifier().hashCode());

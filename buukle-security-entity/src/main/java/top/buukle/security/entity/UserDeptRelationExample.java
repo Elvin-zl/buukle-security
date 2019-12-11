@@ -7,25 +7,25 @@ import java.util.List;
 public class UserDeptRelationExample {
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     protected String orderByClause;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     protected boolean distinct;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     protected List<Criteria> oredCriteria;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public UserDeptRelationExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -33,7 +33,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
@@ -41,7 +41,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public String getOrderByClause() {
         return orderByClause;
@@ -49,7 +49,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
@@ -57,7 +57,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public boolean isDistinct() {
         return distinct;
@@ -65,7 +65,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public List<Criteria> getOredCriteria() {
         return oredCriteria;
@@ -73,7 +73,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public void or(Criteria criteria) {
         oredCriteria.add(criteria);
@@ -81,7 +81,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public Criteria or() {
         Criteria criteria = createCriteriaInternal();
@@ -91,7 +91,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public Criteria createCriteria() {
         Criteria criteria = createCriteriaInternal();
@@ -103,7 +103,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     protected Criteria createCriteriaInternal() {
         Criteria criteria = new Criteria();
@@ -112,7 +112,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public void clear() {
         oredCriteria.clear();
@@ -122,7 +122,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -412,6 +412,66 @@ public class UserDeptRelationExample {
 
         public Criteria andDeptIdNotBetween(Integer value1, Integer value2) {
             addCriterion("dept_id not between", value1, value2, "deptId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderIsNull() {
+            addCriterion("leader is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderIsNotNull() {
+            addCriterion("leader is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderEqualTo(Integer value) {
+            addCriterion("leader =", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderNotEqualTo(Integer value) {
+            addCriterion("leader <>", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderGreaterThan(Integer value) {
+            addCriterion("leader >", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderGreaterThanOrEqualTo(Integer value) {
+            addCriterion("leader >=", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderLessThan(Integer value) {
+            addCriterion("leader <", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderLessThanOrEqualTo(Integer value) {
+            addCriterion("leader <=", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderIn(List<Integer> values) {
+            addCriterion("leader in", values, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderNotIn(List<Integer> values) {
+            addCriterion("leader not in", values, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderBetween(Integer value1, Integer value2) {
+            addCriterion("leader between", value1, value2, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderNotBetween(Integer value1, Integer value2) {
+            addCriterion("leader not between", value1, value2, "leader");
             return (Criteria) this;
         }
 
@@ -1488,7 +1548,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated do_not_delete_during_merge Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated do_not_delete_during_merge Wed Dec 11 18:13:05 CST 2019
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -1499,7 +1559,7 @@ public class UserDeptRelationExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:52 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:05 CST 2019
      */
     public static class Criterion {
         private String condition;

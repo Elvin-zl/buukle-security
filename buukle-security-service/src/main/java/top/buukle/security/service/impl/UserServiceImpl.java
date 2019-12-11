@@ -374,7 +374,7 @@ public class UserServiceImpl implements UserService{
         query.setGmtModified(new Date());
         query.setModifier(operator.getUsername());
         query.setModifierCode(operator.getUserId());
-        query.setCreatorRoleId(SessionUtil.getUserTopRoleLevel(request,env.getProperty("spring.application.name")));
+        query.setCreatorRoleId(SessionUtil.getUserDeptId(request));
         return query;
     }
 

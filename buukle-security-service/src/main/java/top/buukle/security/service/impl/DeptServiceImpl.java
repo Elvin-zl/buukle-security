@@ -184,8 +184,8 @@ public class DeptServiceImpl implements DeptService{
      */
     @Override
     public PageResponse getDeptTree(Integer applicationId, HttpServletRequest request, HttpServletResponse response) {
-        // 获取操作者下辖部门列表
-        List<Integer> operatorSubRoleIds = SessionUtil.getUserSubRolesIdList(request);
+        // 获取操作者部门列表
+        List<Integer> operatorSubDeptIds = SessionUtil.getUserSubDeptIdList(request);
 
         DeptExample applicationExample = new DeptExample();
         List<Dept> depts = deptMapper.selectByExample(applicationExample);
@@ -196,7 +196,7 @@ public class DeptServiceImpl implements DeptService{
         rootNode.setDisabled(false);
         List<SelectTreeNodeResult> nodes = new ArrayList<>();
         nodes.add(rootNode);
-        this.findChildren(rootNode,depts,operatorSubRoleIds);
+        this.findChildren(rootNode,depts,operatorSubDeptIds);
         return new PageResponse.Builder().build(nodes,0,0,0);
     }
 
@@ -224,17 +224,17 @@ public class DeptServiceImpl implements DeptService{
         return new PageResponse.Builder().build(deptTreeResults, 0, 0, 0);
     }
 
-    private void findChildren(SelectTreeNodeResult node, List<Dept> depts, List<Integer> operatorSubRoleIds) {
+    private void findChildren(SelectTreeNodeResult node, List<Dept> depts, List<Integer> operatorSubDeptIds) {
         List<SelectTreeNodeResult> nodes = new ArrayList<>();
         for (Dept dept: depts) {
             if(dept.getPid().equals(node.getId())){
                 SelectTreeNodeResult nodeNew = new SelectTreeNodeResult();
-//                nodeNew.setDisabled(!operatorSubRoleIds.contains(dept.getId()));
+                nodeNew.setDisabled(!operatorSubDeptIds.contains(dept.getId()));
                 nodeNew.setId(dept.getId());
                 nodeNew.setTitle(dept.getDeptName());
                 nodeNew.setSpread(true);
                 nodes.add(nodeNew);
-//                this.findChildren(nodeNew,depts, operatorSubRoleIds);
+                this.findChildren(nodeNew,depts, operatorSubDeptIds);
             }
         }
         node.setChildren(nodes);

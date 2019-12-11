@@ -1,30 +1,19 @@
 package top.buukle.security.plugin.util;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.buukle.security.entity.Role;
-import top.buukle.security.entity.common.AppResourceResponse;
-import top.buukle.security.entity.vo.RoleTreeNodeDTO;
 import top.buukle.security.plugin.annotation.DataIsolationAnnotation;
-import top.buukle.security.plugin.cache.SecurityInterceptorCache;
-import top.buukle.security.plugin.enums.SecurityExceptionEnum;
-import top.buukle.security.plugin.exception.SecurityPluginException;
-import top.buukle.util.JsonUtil;
-import top.buukle.util.SpringContextUtil;
 import top.buukle.util.StringUtil;
 import top.buukle.common.log.BaseLogger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 public class DataIsolationSqlUtil {
 
@@ -59,7 +48,7 @@ public class DataIsolationSqlUtil {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String matchSql(String applicationCode, String sql, String tableName, String queryDimension, String roleFiledName) throws ExecutionException {
+	public static String handleSql( String sql, String tableName, String queryDimension, String roleFiledName) throws ExecutionException {
 		// 校验参数
 		validateParam(tableName,queryDimension,roleFiledName);
 		// 处理 :回车,制表符,等
@@ -70,20 +59,18 @@ public class DataIsolationSqlUtil {
 
 		ServletRequestAttributes servletRequestAttributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
 		// 非登录状态请求
-		if(servletRequestAttributes==null){
+		if(servletRequestAttributes==null || servletRequestAttributes.getRequest() == null){
 			return sql;
 		}
 		HttpServletRequest request = servletRequestAttributes.getRequest();
-		String uri = request.getRequestURI().replace("//", "/");
 
-		// 计算该uri在该用户的层级
-		Map<String, List<Role>> userRoleMap = (Map<String, List<Role>>) SessionUtil.get(request, SessionUtil.USER_ROLE_SUB_MAP_KEY);
-		List<Role> roles = userRoleMap.get(SpringContextUtil.getBean(Environment.class).getProperty("spring.application.name"));
+		// 获取当前用户下辖部门列表
+		List<Integer> subDeptIdList = (List<Integer>) SessionUtil.get(request, SessionUtil.USER_DEPT_SUB_ID_LIST_KEY);
 
-		if(StringUtil.notEmpty(queryDimension) && queryDimension.equals(DataIsolationAnnotation.DIMENSION_ROLE)){
-//			codeInCondition = new StringBuilder(roleFiledName).append(CODE_IN_PREFIX).append(getIdStringSaperatedByComma(userSubRoles)).append(CODE_IN_SUFFIX).toString();
+		if(StringUtil.notEmpty(queryDimension) && queryDimension.equals(DataIsolationAnnotation.DIMENSION_DEPT)){
+			codeInCondition = new StringBuilder(roleFiledName).append(CODE_IN_PREFIX).append(getIdStringSaperatedByComma(subDeptIdList)).append(CODE_IN_SUFFIX).toString();
 		}
-		String finalSql = matchSql(sql, tableName, codeInCondition);
+		String finalSql = handleSql(sql, tableName, codeInCondition);
 		LOGGER.info("解析sql,拼接结束 :finalSql:{}",finalSql);
 		return finalSql;
 	}
@@ -95,7 +82,7 @@ public class DataIsolationSqlUtil {
 	 * @param codeInCondition
 	 * @return
 	 */
-	public static String matchSql(String sql, String tableName,String codeInCondition) {
+	public static String handleSql(String sql, String tableName, String codeInCondition) {
 		Matcher matcher;
 		if (sql.startsWith("select")) {
 			matcher = Pattern.compile("select\\s.+from\\s" + tableName + "\\s(.*)where\\s(.*)").matcher(sql);
@@ -178,15 +165,15 @@ public class DataIsolationSqlUtil {
 	 * 获取所辖角色 字符串,逗号分隔
 	 *
 	 * @return
-     * @param subRoleList
+	 * @param subDeptIdList
 	 */
-	private static String getIdStringSaperatedByComma(List<Role> subRoleList) {
-		if (CollectionUtils.isEmpty(subRoleList)) {
+	private static String getIdStringSaperatedByComma(List<Integer> subDeptIdList) {
+		if (CollectionUtils.isEmpty(subDeptIdList)) {
 		    return NO_CODE_LIST;
 		}
 		StringBuilder sb = new StringBuilder();
-		for (Role ro : subRoleList) {
-			sb.append(StringUtil.SINGLE_QUOTE).append(ro.getId()).append(StringUtil.SINGLE_QUOTE).append(StringUtil.COMMA);
+		for (Integer deptId : subDeptIdList) {
+			sb.append(StringUtil.SINGLE_QUOTE).append(deptId).append(StringUtil.SINGLE_QUOTE).append(StringUtil.COMMA);
 		}
 		return sb.toString().substring(0,sb.toString().lastIndexOf(StringUtil.COMMA));
 	}

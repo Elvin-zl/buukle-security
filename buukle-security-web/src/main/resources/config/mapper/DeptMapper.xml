@@ -27,6 +27,14 @@
     <result column="bak04" jdbcType="VARCHAR" property="bak04" />
     <result column="bak05" jdbcType="VARCHAR" property="bak05" />
   </resultMap>
+
+  <resultMap id="DeptSessionVoResultMap" type="top.buukle.security.entity.Dept" extends="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated  This element was generated on Wed Dec 11 14:13:46 CST 2019. by MyBatis Generator, do not modify.
+    -->
+    <result column="leader" jdbcType="INTEGER" property="leader" />
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <!--
       WARNING - @mbg.generated  This element was generated on Wed Dec 11 14:13:46 CST 2019. by MyBatis Generator, do not modify.
@@ -507,4 +515,8 @@
       bak05 = #{bak05,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectUserDept" parameterType="java.lang.Integer" resultMap="DeptSessionVoResultMap">
+    select * from dept d , user_dept_relation udr where udr.dept_id = d.id and udr.user_id = #{userId}
+  </select>
 </mapper>

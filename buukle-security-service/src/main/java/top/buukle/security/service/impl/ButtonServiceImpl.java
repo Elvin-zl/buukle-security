@@ -182,11 +182,6 @@ public class ButtonServiceImpl implements ButtonService{
         if(ButtonEnums.systemFlag.SYSTEM_PROTECTED.value().equals(button.getSystemFlag())){
             throw new SystemException(SystemReturnEnum.OPERATE_INFO_SYSTEM_PROTECT_EXCEPTION);
         }
-        // 获取操作者下辖资源列表
-        List<String> operatorSubResource = (List<String> )SessionUtil.get(httpServletRequest, SessionUtil.USER_URL_LIST_KEY);
-        if(!operatorSubResource.contains(button.getUrl())){
-            throw new SystemException(SystemReturnEnum.BUTTON_SAVE_OR_EDIT_NO_PERM);
-        }
     }
 
     /**
@@ -204,7 +199,7 @@ public class ButtonServiceImpl implements ButtonService{
         validateParamForSaveOrEdit(query);
         // 新增
         if(query.getId() == null){
-            query.setCreatorRoleId(SessionUtil.getUserTopRoleLevel(request,env.getProperty("spring.application.name")));
+            query.setCreatorRoleId(SessionUtil.getUserDeptId(request));
             this.save(query,request,response);
         }
         // 更新

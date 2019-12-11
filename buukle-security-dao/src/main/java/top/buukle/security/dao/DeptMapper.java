@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.buukle.security.entity.Dept;
 import top.buukle.security.entity.DeptExample;
+import top.buukle.security.entity.vo.DeptSessionVo;
 
 @Mapper
 public interface DeptMapper {
@@ -73,4 +74,7 @@ public interface DeptMapper {
      * @mbg.generated Wed Dec 11 14:13:46 CST 2019
      */
     int updateByPrimaryKey(Dept record);
+
+
+    DeptSessionVo selectUserDept(String userId);
 }

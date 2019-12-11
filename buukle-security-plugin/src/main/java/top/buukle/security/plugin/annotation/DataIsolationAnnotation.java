@@ -14,20 +14,20 @@ import java.lang.annotation.Target;
 public @interface DataIsolationAnnotation {
 
 	/** 角色*/
-	public static String DIMENSION_ROLE = "0";
+	public static String DIMENSION_DEPT = "0";
 
 	/**
      * 角色字段名：在不同的表中，角色字段名可能会不一样，这里根据不同的表注解方法注明即可。
      * @return
      */
-    String roleFieldName() default "creator_role_id";
+    String dimensionFieldName() default "creator_dept_id";
 
 
     /**
      * 查询唯度 : 此值在应用时必须用当前注解静态常量指定 目前只支持 DIMENSION_ROLE
      * @return
      */
-    String queryDimension() default DataIsolationAnnotation.DIMENSION_ROLE;
+    String queryDimension() default DataIsolationAnnotation.DIMENSION_DEPT;
     
     /**
      * 查询表名

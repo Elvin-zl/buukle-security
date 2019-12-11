@@ -189,16 +189,6 @@ public class RoleServiceImpl implements RoleService{
         if(role != null && RoleEnums.systemFlag.SYSTEM_PROTECTED.value().equals(role.getSystemFlag())){
             throw new SystemException(SystemReturnEnum.OPERATE_INFO_SYSTEM_PROTECT_EXCEPTION);
         }
-        // 获取操作者下辖角色列表(在指定应用下的)
-        PageResponse userSubRolesByAppCode = SessionUtil.getUserSubRolesByAppCode(httpServletRequest, application.getCode());
-        List<Role> userSubRoleList = (List<Role>) userSubRolesByAppCode.getBody().getList();
-        List<Integer> operatorSubRoleIds = new ArrayList<>();
-        for (Role subRole: userSubRoleList) {
-            operatorSubRoleIds.add(subRole.getId());
-        }
-        if(!operatorSubRoleIds.contains(id)){
-            throw new SystemException(SystemReturnEnum.ROLE_SET_MENU_WRONG_ROLE_NO_LEVEL);
-        }
     }
 
     /**
@@ -245,8 +235,6 @@ public class RoleServiceImpl implements RoleService{
         if(null == application){
             return new PageResponse.Builder().build(new ArrayList<SelectTreeNodeResult>(),0,0,0);
         }
-        // 获取操作者下辖角色列表
-        List<Integer> operatorSubRoleIds = SessionUtil.getUserSubRolesIdList(request);
 
         RoleExample applicationExample = new RoleExample();
         RoleExample.Criteria criteria = applicationExample.createCriteria();
@@ -259,6 +247,8 @@ public class RoleServiceImpl implements RoleService{
         rootNode.setSpread(true);
         List<SelectTreeNodeResult> nodes = new ArrayList<>();
         nodes.add(rootNode);
+        // 获取操作者下辖角色列表
+        List<Integer> operatorSubRoleIds = SessionUtil.getUserSubRolesIdList(request);
         this.findChildren(rootNode,roles,operatorSubRoleIds);
         return new PageResponse.Builder().build(nodes,0,0,0);
     }
@@ -290,16 +280,13 @@ public class RoleServiceImpl implements RoleService{
         criteria.andStatusEqualTo(RoleEnums.status.PUBLISED.value());
         criteria.andApplicationIdEqualTo(applications.get(0).getId());
         List<Role> appRoles = roleMapper.selectByExample(roleExample);
-        // 判定操作者有无操作权限
-        if(!CollectionUtils.isEmpty(userRoles) && !SessionUtil.getUserSubRolesIdList(request).contains(userRoles.get(0).getId())){
-            throw new SystemException(SystemReturnEnum.USER_SET_USER_ROLE_NO_LEVEL);
-        }
         List<RoleTreeResult> roleTree = new ArrayList<>();
+        List<Integer> userSubRolesIdList = SessionUtil.getUserSubRolesIdList(request);
         for (Role role: appRoles) {
             RoleTreeResult roleTreeResult = new RoleTreeResult();
             BeanUtils.copyProperties(role,roleTreeResult);
             // 屏蔽操作者不具有的高级角色
-            roleTreeResult.setNocheck(!SessionUtil.getUserSubRolesIdList(request).contains(role.getId()));
+            roleTreeResult.setNocheck(!userSubRolesIdList.contains(role.getId()));
             // 设置被操作用户当前选中角色
             roleTreeResult.setChecked((!CollectionUtils.isEmpty(userRoles)) && userRoles.contains(role));
             roleTree.add(roleTreeResult);
@@ -346,10 +333,6 @@ public class RoleServiceImpl implements RoleService{
         List<Application> applications = applicationMapper.selectByExample(applicationExample);
         if(CollectionUtils.isEmpty(applications) || applications.size() > 1 ){
             throw new SystemException(SystemReturnEnum.USER_SET_USER_ROLE_PRE_APP_CODE_WRONG);
-        }
-        // 获取操作者下辖角色列表
-        if(!SessionUtil.getUserSubRolesIdList(request).contains(id)){
-            throw new SystemException(SystemReturnEnum.ROLE_SET_MENU_WRONG_ROLE_NO_LEVEL);
         }
         // 获取操作者下辖资源列表
         List<String> operatorSubResource = (List<String> )SessionUtil.get(request, SessionUtil.USER_URL_LIST_KEY);
@@ -684,7 +667,7 @@ public class RoleServiceImpl implements RoleService{
         query.setGmtModified(new Date());
         query.setModifier(operator.getUsername());
         query.setModifierCode(operator.getUserId());
-        query.setCreatorRoleId(SessionUtil.getUserTopRoleLevel(request,env.getProperty("spring.application.name")));
+        query.setCreatorRoleId(SessionUtil.getUserDeptId(request));
         return query;
     }
 

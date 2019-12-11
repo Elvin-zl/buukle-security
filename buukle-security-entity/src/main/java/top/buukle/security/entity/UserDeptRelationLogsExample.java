@@ -7,25 +7,25 @@ import java.util.List;
 public class UserDeptRelationLogsExample {
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     protected String orderByClause;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     protected boolean distinct;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     protected List<Criteria> oredCriteria;
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public UserDeptRelationLogsExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -33,7 +33,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
@@ -41,7 +41,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public String getOrderByClause() {
         return orderByClause;
@@ -49,7 +49,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
@@ -57,7 +57,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public boolean isDistinct() {
         return distinct;
@@ -65,7 +65,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public List<Criteria> getOredCriteria() {
         return oredCriteria;
@@ -73,7 +73,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void or(Criteria criteria) {
         oredCriteria.add(criteria);
@@ -81,7 +81,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Criteria or() {
         Criteria criteria = createCriteriaInternal();
@@ -91,7 +91,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public Criteria createCriteria() {
         Criteria criteria = createCriteriaInternal();
@@ -103,7 +103,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     protected Criteria createCriteriaInternal() {
         Criteria criteria = new Criteria();
@@ -112,7 +112,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public void clear() {
         oredCriteria.clear();
@@ -122,7 +122,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -355,73 +355,133 @@ public class UserDeptRelationLogsExample {
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionIsNull() {
-            addCriterion("role_id_collection is null");
+        public Criteria andDeptIdCollectionIsNull() {
+            addCriterion("dept_id_collection is null");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionIsNotNull() {
-            addCriterion("role_id_collection is not null");
+        public Criteria andDeptIdCollectionIsNotNull() {
+            addCriterion("dept_id_collection is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionEqualTo(String value) {
-            addCriterion("role_id_collection =", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionEqualTo(String value) {
+            addCriterion("dept_id_collection =", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionNotEqualTo(String value) {
-            addCriterion("role_id_collection <>", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionNotEqualTo(String value) {
+            addCriterion("dept_id_collection <>", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionGreaterThan(String value) {
-            addCriterion("role_id_collection >", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionGreaterThan(String value) {
+            addCriterion("dept_id_collection >", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionGreaterThanOrEqualTo(String value) {
-            addCriterion("role_id_collection >=", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionGreaterThanOrEqualTo(String value) {
+            addCriterion("dept_id_collection >=", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionLessThan(String value) {
-            addCriterion("role_id_collection <", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionLessThan(String value) {
+            addCriterion("dept_id_collection <", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionLessThanOrEqualTo(String value) {
-            addCriterion("role_id_collection <=", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionLessThanOrEqualTo(String value) {
+            addCriterion("dept_id_collection <=", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionLike(String value) {
-            addCriterion("role_id_collection like", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionLike(String value) {
+            addCriterion("dept_id_collection like", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionNotLike(String value) {
-            addCriterion("role_id_collection not like", value, "roleIdCollection");
+        public Criteria andDeptIdCollectionNotLike(String value) {
+            addCriterion("dept_id_collection not like", value, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionIn(List<String> values) {
-            addCriterion("role_id_collection in", values, "roleIdCollection");
+        public Criteria andDeptIdCollectionIn(List<String> values) {
+            addCriterion("dept_id_collection in", values, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionNotIn(List<String> values) {
-            addCriterion("role_id_collection not in", values, "roleIdCollection");
+        public Criteria andDeptIdCollectionNotIn(List<String> values) {
+            addCriterion("dept_id_collection not in", values, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionBetween(String value1, String value2) {
-            addCriterion("role_id_collection between", value1, value2, "roleIdCollection");
+        public Criteria andDeptIdCollectionBetween(String value1, String value2) {
+            addCriterion("dept_id_collection between", value1, value2, "deptIdCollection");
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionNotBetween(String value1, String value2) {
-            addCriterion("role_id_collection not between", value1, value2, "roleIdCollection");
+        public Criteria andDeptIdCollectionNotBetween(String value1, String value2) {
+            addCriterion("dept_id_collection not between", value1, value2, "deptIdCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderIsNull() {
+            addCriterion("leader is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderIsNotNull() {
+            addCriterion("leader is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderEqualTo(Integer value) {
+            addCriterion("leader =", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderNotEqualTo(Integer value) {
+            addCriterion("leader <>", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderGreaterThan(Integer value) {
+            addCriterion("leader >", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderGreaterThanOrEqualTo(Integer value) {
+            addCriterion("leader >=", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderLessThan(Integer value) {
+            addCriterion("leader <", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderLessThanOrEqualTo(Integer value) {
+            addCriterion("leader <=", value, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderIn(List<Integer> values) {
+            addCriterion("leader in", values, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderNotIn(List<Integer> values) {
+            addCriterion("leader not in", values, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderBetween(Integer value1, Integer value2) {
+            addCriterion("leader between", value1, value2, "leader");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeaderNotBetween(Integer value1, Integer value2) {
+            addCriterion("leader not between", value1, value2, "leader");
             return (Criteria) this;
         }
 
@@ -695,63 +755,63 @@ public class UserDeptRelationLogsExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdIsNull() {
-            addCriterion("creator_role_id is null");
+        public Criteria andCreatorDeptIdIsNull() {
+            addCriterion("creator_dept_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdIsNotNull() {
-            addCriterion("creator_role_id is not null");
+        public Criteria andCreatorDeptIdIsNotNull() {
+            addCriterion("creator_dept_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdEqualTo(Integer value) {
-            addCriterion("creator_role_id =", value, "creatorRoleId");
+        public Criteria andCreatorDeptIdEqualTo(Integer value) {
+            addCriterion("creator_dept_id =", value, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdNotEqualTo(Integer value) {
-            addCriterion("creator_role_id <>", value, "creatorRoleId");
+        public Criteria andCreatorDeptIdNotEqualTo(Integer value) {
+            addCriterion("creator_dept_id <>", value, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdGreaterThan(Integer value) {
-            addCriterion("creator_role_id >", value, "creatorRoleId");
+        public Criteria andCreatorDeptIdGreaterThan(Integer value) {
+            addCriterion("creator_dept_id >", value, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("creator_role_id >=", value, "creatorRoleId");
+        public Criteria andCreatorDeptIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("creator_dept_id >=", value, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdLessThan(Integer value) {
-            addCriterion("creator_role_id <", value, "creatorRoleId");
+        public Criteria andCreatorDeptIdLessThan(Integer value) {
+            addCriterion("creator_dept_id <", value, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("creator_role_id <=", value, "creatorRoleId");
+        public Criteria andCreatorDeptIdLessThanOrEqualTo(Integer value) {
+            addCriterion("creator_dept_id <=", value, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdIn(List<Integer> values) {
-            addCriterion("creator_role_id in", values, "creatorRoleId");
+        public Criteria andCreatorDeptIdIn(List<Integer> values) {
+            addCriterion("creator_dept_id in", values, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdNotIn(List<Integer> values) {
-            addCriterion("creator_role_id not in", values, "creatorRoleId");
+        public Criteria andCreatorDeptIdNotIn(List<Integer> values) {
+            addCriterion("creator_dept_id not in", values, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdBetween(Integer value1, Integer value2) {
-            addCriterion("creator_role_id between", value1, value2, "creatorRoleId");
+        public Criteria andCreatorDeptIdBetween(Integer value1, Integer value2) {
+            addCriterion("creator_dept_id between", value1, value2, "creatorDeptId");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorRoleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("creator_role_id not between", value1, value2, "creatorRoleId");
+        public Criteria andCreatorDeptIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("creator_dept_id not between", value1, value2, "creatorDeptId");
             return (Criteria) this;
         }
 
@@ -1440,8 +1500,8 @@ public class UserDeptRelationLogsExample {
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdCollectionLikeInsensitive(String value) {
-            addCriterion("upper(role_id_collection) like", value.toUpperCase(), "roleIdCollection");
+        public Criteria andDeptIdCollectionLikeInsensitive(String value) {
+            addCriterion("upper(dept_id_collection) like", value.toUpperCase(), "deptIdCollection");
             return (Criteria) this;
         }
 
@@ -1503,7 +1563,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated do_not_delete_during_merge Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated do_not_delete_during_merge Wed Dec 11 18:13:17 CST 2019
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -1514,7 +1574,7 @@ public class UserDeptRelationLogsExample {
 
     /**
      *
-     * @mbg.generated Wed Dec 11 14:13:56 CST 2019
+     * @mbg.generated Wed Dec 11 18:13:17 CST 2019
      */
     public static class Criterion {
         private String condition;

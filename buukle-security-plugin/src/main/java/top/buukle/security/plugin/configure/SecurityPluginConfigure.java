@@ -44,7 +44,7 @@ public class SecurityPluginConfigure {
         pageInterceptor.setProperties(this.pageHelperProperties());
         for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) {
             sqlSessionFactory.getConfiguration().addInterceptor(pageInterceptor);
-//            sqlSessionFactory.getConfiguration().addInterceptor(dataIsolationInterceptor);
+            sqlSessionFactory.getConfiguration().addInterceptor(dataIsolationInterceptor);
         }
     }
 

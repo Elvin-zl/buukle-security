@@ -30,4 +30,26 @@ public class DeptEnums {
             return status;
         }
     }
+    public enum leader {
+
+        IS_LEADER(1,"是领导"),
+        NOT_LEADER(0,"不是领导"),
+        ;
+
+        private Integer flag;
+        private String description;
+
+        leader(int flag, String description) {
+            this.description = description;
+            this.flag = flag;
+        }
+
+        public Integer flag() {
+            return flag;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
 }

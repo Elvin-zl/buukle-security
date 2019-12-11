@@ -10,7 +10,7 @@ public class DataIsolationCache {
 	
 	private String queryDimension;
 	
-	private String roleFieldName;
+	private String dimensionFieldName;
 
 	public String getTableName() {
 		return tableName;
@@ -28,11 +28,11 @@ public class DataIsolationCache {
 		this.queryDimension = queryDimension;
 	}
 
-	public String getRoleFieldName() {
-		return roleFieldName;
+	public String getDimensionFieldName() {
+		return dimensionFieldName;
 	}
 
-	public void setRoleFieldName(String roleFieldName) {
-		this.roleFieldName = roleFieldName;
+	public void setDimensionFieldName(String dimensionFieldName) {
+		this.dimensionFieldName = dimensionFieldName;
 	}
 }

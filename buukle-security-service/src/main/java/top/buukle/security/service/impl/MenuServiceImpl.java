@@ -183,11 +183,6 @@ public class MenuServiceImpl implements MenuService{
         if(MenuEnums.systemFlag.SYSTEM_PROTECTED.value().equals(menu.getSystemFlag())){
             throw new SystemException(SystemReturnEnum.OPERATE_INFO_SYSTEM_PROTECT_EXCEPTION);
         }
-        // 获取操作者下辖资源列表
-        List<String> operatorSubResource = (List<String> )SessionUtil.get(request, SessionUtil.USER_URL_LIST_KEY);
-        if(!operatorSubResource.contains(menu.getUrl())){
-            throw new SystemException(SystemReturnEnum.MENU_SAVE_OR_EDIT_NO_PERM);
-        }
     }
 
     /**
@@ -205,7 +200,7 @@ public class MenuServiceImpl implements MenuService{
         validateParamForSaveOrEdit(query);
         // 新增
         if(query.getId() == null){
-            query.setCreatorRoleId(SessionUtil.getUserTopRoleLevel(request,env.getProperty("spring.application.name")));
+            query.setCreatorRoleId(SessionUtil.getUserDeptId(request));
             this.save(query,request,response);
         }
         // 更新

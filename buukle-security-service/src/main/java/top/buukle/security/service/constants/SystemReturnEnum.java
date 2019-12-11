@@ -31,10 +31,11 @@ public enum SystemReturnEnum {
     USER_SAVE_OR_EDIT_USERNAME_EXIST("F","010206","保存或更新用户失败,用户名已存在!"),
     USER_SET_USER_ROLE_PRE_APP_CODE_WRONG("F","010207","操作失败,该应用code信息有误或不存在!"),
     USER_SET_USER_ROLE_ROLE_ID_MULTI("F","010208","分配角色失败,用户在一个应用内禁止设置多个角色!"),
-    USER_SET_USER_ROLE_NO_LEVEL("F","010209","该用户当前角色不支持您操作!"),
-    USER_SET_USER_ROLE_NO_ROLE("F","010210","您该应用下没有角色信息!"),
-    USER_SAVE_OR_EDIT_APP_NOT_EXIST("F","010211","应用信息异常!"),
-    USER_SAVE_OR_EDIT_NO_PERM("F","010212","您当前角色不支持操作此用户或其中一个!"),
+    USER_SET_USER_ROLE_NO_ROLE_LEVEL("F","010209","该用户当前角色不支持您操作!"),
+    USER_SET_USER_ROLE_NO_DEPT_LEVEL("F","010210","该用户当前部门不支持您操作!"),
+    USER_SET_USER_ROLE_NO_ROLE("F","010211","您该应用下没有角色信息!"),
+    USER_SAVE_OR_EDIT_APP_NOT_EXIST("F","010212","应用信息异常!"),
+    USER_SAVE_OR_EDIT_NO_PERM("F","010213","您当前角色不支持操作此用户或其中一个!"),
 
     /*--role 返回码{04}{**}{**}*/
     ROLE_SAVE_OR_EDIT_APPID_NULL("F","010301","保存或更新角色失败,所属应用id为空!"),
