@@ -13,26 +13,53 @@
 	<!--表单-->
 	<form class="layui-form column-content-detail" id="deptCrudForm">
 		<!--hidden area-->
-		<input type="hidden" name="id" th:attr="value = *@forDoller@*{record?.id}" />
-		<div class="layui-tab">
-			<div class="layui-tab-content">
-				<div class="layui-tab-item layui-show">
-					<div class="layui-form-item">
-						<label class="layui-form-label">备注：</label>
-						<div class="layui-input-block">
-							<input type="text"  name="remark" th:attr="value = *@forDoller@*{record?.remark}" placeholder="remark" autocomplete="off" class="layui-input">
-						</div>
+		<input type="hidden" name="id" th:attr="value = ${record?.id}" />
+		<div class="layui-form-item">
+			<label class="layui-form-label">上级部门：</label>
+			<div class="layui-input-inline">
+				<div class="layui-unselect layui-form-select downpanel">
+					<div id="superDept" class="layui-select-title">
+						<span style="padding-top: 10px;"  id="roleTreeSpan" class="layui-input layui-unselect" th:text="${record?.superName} == '' ? '选择部门' : ${record?.superName}" ></span>
+						<input id="roleTreeInput" type="hidden" th:attr="value = ${record?.pid}" name="pid">
+						<i class="layui-edge"></i>
 					</div>
+					<dl class="layui-anim layui-anim-upbit">
+						<dd>
+							<ul data-url="/dept/getDeptTree" id="deptTree"></ul>
+						</dd>
+					</dl>
 				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">
+				部门名称：
+				<i class="require">*</i>
+			</label>
+			<div class="layui-input-block">
+				<input type="text"  name="deptName" th:attr="value = ${record?.deptName}" placeholder="部门名称" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">描述：</label>
+			<div class="layui-input-block">
+				<textarea th:text="${record?.description}" name="description" placeholder="描述" class="layui-textarea"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注：</label>
+			<div class="layui-input-block">
+				<textarea th:text="${record?.remark}" name="remark" placeholder="备注" class="layui-textarea"></textarea>
 			</div>
 		</div>
 		<!--操作-->
 		<div class="layui-form-item" style="padding-left: 10px;">
 			<div class="layui-input-block">
 				<!-- 自定义权限标签 -->
-				<hp url="/dept/saveOrEdit">
+<!--				<hp url="/dept/saveOrEdit">-->
+<!--					<div id="saveOrEdit" class="layui-btn layui-btn-normal">提交</div>-->
+<!--				</hp>-->
 					<div id="saveOrEdit" class="layui-btn layui-btn-normal">提交</div>
-				</hp>
 				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 				<div id="back" class="layui-btn layui-btn-primary">取消</div>
 			</div>
@@ -43,16 +70,41 @@
 	<script src="/static/security/plugin/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/security/js/jqueryValidate/jquery.validate.min.js" type="text/javascript" charset="utf-8"></script>
 	<script>
-		layui.use(['jquery', 'layer','dialog'], function() {
-			layer = layui.layer, $ = layui.jquery, dialog = layui.dialog;
+		layui.use(['jquery', 'layer','dialog','tree'], function() {
+			layer = layui.layer, $ = layui.jquery, dialog = layui.dialog, tree = layui.tree;
             bindSaveOrEdit();
+			// 绑定上级部门选择
+			bindPidClick(tree);
 		});
+
+		/**
+		 * 绑定上级部门选择
+		 * */
+		function bindPidClick(tree) {
+			$('#superDept').off().on('click',function () {
+				$.ajax({
+					url:$('#deptTree').attr('data-url'),
+					method:'post',
+					dataType:'json',
+					async:false,
+					success:function (data) {
+						if(data.head.status=="S"){
+							renderSelectedTree(tree,data,"#deptTree",'pid');
+						}else{
+							layer.msg(data.head.msg);
+						}
+					}
+				})
+			})
+		}
 		/** 绑定提交*/
         function bindSaveOrEdit() {
 			var  validateLoin = $('#deptCrudForm').validate({
 				rules:{
+					deptName:{required:true,minlength: 2},
 				},
 				messages:{
+					deptName:"请正确输入部门名称(2位以上)",
 				}
 			});
             $('#saveOrEdit').off().on('click',function () {

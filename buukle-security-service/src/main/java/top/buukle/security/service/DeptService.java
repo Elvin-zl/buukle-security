@@ -1,6 +1,7 @@
 package top.buukle.security .service;
 
 import top.buukle.common.call.CommonResponse;
+import top.buukle.common.call.PageResponse;
 import top.buukle.common.mvc.BaseService;
 import top.buukle.security .entity.vo.DeptQuery;
 
@@ -15,4 +16,7 @@ public interface DeptService extends BaseService{
 
     CommonResponse saveOrEdit(DeptQuery query, HttpServletRequest request, HttpServletResponse response);
 
+    PageResponse getDeptTree(Integer applicationId, HttpServletRequest request, HttpServletResponse response);
+
+    PageResponse getUserDept(String userId, HttpServletRequest request, HttpServletResponse response);
 }

@@ -2,8 +2,8 @@ package top.buukle.security .service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,7 +19,10 @@ import top.buukle.security.entity.User;
 import top.buukle.security .entity.Dept;
 import top.buukle.security .entity.DeptExample;
 import top.buukle.common.mvc.BaseQuery;
+import top.buukle.security.entity.vo.DeptCrudModelVo;
 import top.buukle.security .entity.vo.DeptQuery;
+import top.buukle.security.entity.vo.DeptTreeResult;
+import top.buukle.security.entity.vo.SelectTreeNodeResult;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security .service.DeptService;
 import top.buukle.security .service.constants.SystemReturnEnum;
@@ -120,12 +123,24 @@ public class DeptServiceImpl implements DeptService{
      * @Date 2019/8/4
      */
     @Override
-    public Dept selectByPrimaryKeyForCrud(HttpServletRequest httpServletRequest, Integer id) {
+    public DeptCrudModelVo selectByPrimaryKeyForCrud(HttpServletRequest httpServletRequest, Integer id) {
         if(id == null){
-            return new Dept();
+            return new DeptCrudModelVo();
         }
+        DeptCrudModelVo deptCrudModelVo = new DeptCrudModelVo();
         Dept dept = deptMapper.selectByPrimaryKey(id);
-        return dept == null ? new Dept() : dept;
+        if(dept != null){
+            BeanUtils.copyProperties(dept,deptCrudModelVo);
+            if(dept.getPid() != null){
+                if(dept.getPid() == 0){
+                    deptCrudModelVo.setSuperName("root");
+                }else{
+                    Dept pDept = deptMapper.selectByPrimaryKey(dept.getPid());
+                    deptCrudModelVo.setSuperName(pDept.getDeptName());
+                }
+            }
+        }
+        return deptCrudModelVo;
     }
 
     /**
@@ -156,6 +171,73 @@ public class DeptServiceImpl implements DeptService{
             this.update(query,request,response);
         }
         return new CommonResponse.Builder().buildSuccess();
+    }
+
+    /**
+     * @description 获取部门树
+     * @param applicationId
+     * @param request
+     * @param response
+     * @return top.buukle.common.call.PageResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/11
+     */
+    @Override
+    public PageResponse getDeptTree(Integer applicationId, HttpServletRequest request, HttpServletResponse response) {
+        // 获取操作者下辖部门列表
+        List<Integer> operatorSubRoleIds = SessionUtil.getUserSubRolesIdList(request);
+
+        DeptExample applicationExample = new DeptExample();
+        List<Dept> depts = deptMapper.selectByExample(applicationExample);
+        SelectTreeNodeResult rootNode = new SelectTreeNodeResult();
+        rootNode.setId(0);
+        rootNode.setTitle("root");
+        rootNode.setSpread(true);
+        rootNode.setDisabled(false);
+        List<SelectTreeNodeResult> nodes = new ArrayList<>();
+        nodes.add(rootNode);
+        this.findChildren(rootNode,depts,operatorSubRoleIds);
+        return new PageResponse.Builder().build(nodes,0,0,0);
+    }
+
+    /**
+     * @description 获取用户部门列表
+     * @param userId
+     * @param request
+     * @param response
+     * @return top.buukle.common.call.PageResponse
+     * @Author zhanglei1102
+     * @Date 2019/12/11
+     */
+    @Override
+    public PageResponse getUserDept(String userId, HttpServletRequest request, HttpServletResponse response) {
+        // 查询被操作用户在app拥有的角色列表
+        DeptExample applicationExample = new DeptExample();
+        List<Dept> depts = deptMapper.selectByExample(applicationExample);
+        List<DeptTreeResult> deptTreeResults = new ArrayList<>();
+        for (Dept dept : depts) {
+            DeptTreeResult treeResult = new DeptTreeResult();
+            BeanUtils.copyProperties(dept,treeResult);
+            deptTreeResults.add(treeResult);
+            /* TODO 屏蔽当前用户不能操作的  */
+        }
+        return new PageResponse.Builder().build(deptTreeResults, 0, 0, 0);
+    }
+
+    private void findChildren(SelectTreeNodeResult node, List<Dept> depts, List<Integer> operatorSubRoleIds) {
+        List<SelectTreeNodeResult> nodes = new ArrayList<>();
+        for (Dept dept: depts) {
+            if(dept.getPid().equals(node.getId())){
+                SelectTreeNodeResult nodeNew = new SelectTreeNodeResult();
+//                nodeNew.setDisabled(!operatorSubRoleIds.contains(dept.getId()));
+                nodeNew.setId(dept.getId());
+                nodeNew.setTitle(dept.getDeptName());
+                nodeNew.setSpread(true);
+                nodes.add(nodeNew);
+//                this.findChildren(nodeNew,depts, operatorSubRoleIds);
+            }
+        }
+        node.setChildren(nodes);
     }
 
     /**

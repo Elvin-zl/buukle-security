@@ -45,6 +45,7 @@
 					<hp url="/security/user/userRoleSetView">
 						<div class="layui-btn layui-btn-sm layui-btn-normal setUserRoleBtn" th:attr="data-username = ${user?.username} ,data-id = ${user?.id} , data-userId = ${user?.userId}" data-url="/security/user/userRoleSetView"><i class="layui-icon">&#xe613;</i></div>
 					</hp>
+					<div class="layui-btn layui-btn-sm layui-btn-normal setUserDeptBtn" th:attr="data-username = ${user?.username} ,data-id = ${user?.id} , data-userId = ${user?.userId}" data-url="/security/user/userDeptSetView"><i class="layui-icon">&#xe770;</i></div>
 				</div>
 			</td>
 		</tr>
@@ -56,6 +57,8 @@
 <script>
     // 绑定分配角色
 	bindSetUserRole();
+	// 绑定分配部门
+	bindSetUserDept();
 	/** 绑定分配角色*/
     function bindSetUserRole() {
         $('.setUserRoleBtn').off().on('click', function() {
@@ -66,6 +69,18 @@
             return false;
         }).mouseenter(function() {
             dialog.tips('分配角色', '.setUserRoleBtn');
+        })
+    }
+	/** 绑定分配部门*/
+    function bindSetUserDept() {
+        $('.setUserDeptBtn').off().on('click', function() {
+            var url=$(this).attr('data-url');
+            var userId=$(this).attr('data-userId');
+            url = url + "?id=" + $(this).attr('data-id') + ((userId =="" || userId==undefined) ? "" : "&userId=" + userId);
+            parent.page("分配部门("+ $(this).attr('data-username') +")", url, iframeObj, w = "700px", h = "620px");
+            return false;
+        }).mouseenter(function() {
+            dialog.tips('分配部门', '.setUserDeptBtn');
         })
     }
 </script>
