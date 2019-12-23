@@ -12,6 +12,7 @@
         <groupId>top.buukle</groupId>
         <artifactId>buukle-main</artifactId>
         <version>1.0.1.RELEASE</version>
+        <relativePath>../buukle-main/pom.xml</relativePath>
     </parent>
 
     <modules>
