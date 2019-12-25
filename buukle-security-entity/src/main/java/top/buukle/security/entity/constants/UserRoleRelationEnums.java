@@ -1,4 +1,4 @@
-package top.buukle.security .service.constants;
+package top.buukle.security.entity.constants;
 
 /**
  * @Author: elvin
