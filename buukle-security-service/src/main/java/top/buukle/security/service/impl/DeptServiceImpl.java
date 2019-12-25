@@ -22,7 +22,7 @@ import top.buukle.common.mvc.BaseQuery;
 import top.buukle.security.entity.vo.*;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security .service.DeptService;
-import top.buukle.security .service.constants.SystemReturnEnum;
+import top.buukle.security.service.constants.SystemReturnEnum;
 import top.buukle.security .entity.constants.DeptEnums;
 import top.buukle.security .service.exception.SystemException;
 import top.buukle.security .service.util.ConvertHumpUtil;

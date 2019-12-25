@@ -1,10 +1,10 @@
-package top.buukle.security .service.constants;
+package top.buukle.security.entity.constants;
 
 /**
  * @Author: elvin
  * @Date: 2019/7/28/028 3:56
  */
-public class RoleMenuButtonRelationEnums {
+public class UserTrailEnums {
 
     public enum status {
 

@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Isolation;
@@ -24,8 +23,8 @@ import top.buukle.security .entity.vo.UserQuery;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security .service.UserService;
 import top.buukle.security.service.constants.SystemConstants;
-import top.buukle.security .service.constants.UserEnums;
-import top.buukle.security .service.constants.SystemReturnEnum;
+import top.buukle.security.entity.constants.UserEnums;
+import top.buukle.security.service.constants.SystemReturnEnum;
 import top.buukle.security .service.exception.SystemException;
 import top.buukle.common.call.CommonResponse;
 import top.buukle.common.call.FuzzyResponse;

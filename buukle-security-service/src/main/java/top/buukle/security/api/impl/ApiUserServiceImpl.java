@@ -19,7 +19,7 @@ import top.buukle.security.plugin.enums.SecurityExceptionEnum;
 import top.buukle.security.plugin.exception.SecurityPluginException;
 import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security.entity.constants.MenuEnums;
-import top.buukle.security.service.constants.RoleEnums;
+import top.buukle.security.entity.constants.RoleEnums;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.StringUtil;
 

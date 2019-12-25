@@ -26,7 +26,7 @@ import top.buukle.security .entity.MenuExample;
 import top.buukle.security.entity.vo.*;
 import top.buukle.security .plugin.util.SessionUtil;
 import top.buukle.security .service.MenuService;
-import top.buukle.security .service.constants.SystemReturnEnum;
+import top.buukle.security.service.constants.SystemReturnEnum;
 import top.buukle.security.entity.constants.MenuEnums;
 import top.buukle.security .service.exception.SystemException;
 import top.buukle.security .service.util.ConvertHumpUtil;
