@@ -11,7 +11,7 @@ logging:
 spring:
   ##引入
   profiles:
-    include: local-security,local-wjs
+    include: cmcc-security,cmcc-wjs
   ##应用名
   application:
       name: buukle-security

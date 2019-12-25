@@ -1,0 +1,34 @@
+spring:
+  quartz:
+    startupDelay: 30
+    #相关属性配置
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: buukle.wjs.plugin.scheduler
+            instanceId: AUTO
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+
+## wjs-plugin 相关配置
+wjs:
+  server:
+    ### wjs.server.name ,调用 wjs 的服务名称
+    name: buukle-wjs
+    islocal: 1
+  ### quartz 执行任务的线程池配置
+  pool:
+    ### 线程池核心线程数
+    coreSize: 5
+    ### 线程池最大线程数
+    maxSize: 20
+    ### 队列容量
+    queueCapacity: 300
+    ### 空闲活跃时间
+    keepAliveSeconds: 30
+
+
