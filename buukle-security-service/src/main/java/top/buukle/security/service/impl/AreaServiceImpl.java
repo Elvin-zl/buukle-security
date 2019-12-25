@@ -3,6 +3,7 @@ package top.buukle.security .service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,24 +13,22 @@ import top.buukle.common.call.FuzzyResponse;
 import top.buukle.common.call.PageResponse;
 import top.buukle.common.call.vo.FuzzyVo;
 import top.buukle.common.status.StatusConstants;
-
+import top.buukle.common.mvc.CommonMapper;
 import top.buukle.security .dao.AreaMapper;
-import top.buukle.security .entity.User;
+import top.buukle.security.entity.User;
 import top.buukle.security .entity.Area;
 import top.buukle.security .entity.AreaExample;
+import top.buukle.common.mvc.BaseQuery;
 import top.buukle.security .entity.vo.AreaQuery;
-import top.buukle.security .plugin.util.SessionUtil;
+import top.buukle.security.plugin.util.SessionUtil;
 import top.buukle.security .service.AreaService;
 import top.buukle.security .service.constants.SystemReturnEnum;
-import top.buukle.security .service.constants.AreaEnums;
+import top.buukle.security .entity.constants.AreaEnums;
 import top.buukle.security .service.exception.SystemException;
 import top.buukle.security .service.util.ConvertHumpUtil;
 import top.buukle.util.DateUtil;
 import top.buukle.util.JsonUtil;
 import top.buukle.util.StringUtil;
-import top.buukle.common.mvc.BaseQuery;
-import top.buukle.common.mvc.CommonMapper;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -116,7 +115,7 @@ public class AreaServiceImpl implements AreaService{
     /**
      * @description 根据id查询
      * @param id
-     * @return top.buukle.security.entity.Area
+     * @return top.top.buukle.security .entity.Area
      * @Author elvin
      * @Date 2019/8/4
      */
@@ -141,6 +140,12 @@ public class AreaServiceImpl implements AreaService{
     @Override
     @Transactional(propagation = Propagation.REQUIRED,isolation= Isolation.DEFAULT ,rollbackFor = Exception.class)
     public CommonResponse saveOrEdit(AreaQuery query, HttpServletRequest request, HttpServletResponse response) {
+
+        User operator = SessionUtil.getOperator(request, response);
+//        query.setCreatorRoleId(SessionUtil.getUserRoleId(request, SpringContextUtil.getBean(Environment.class).getProperty("spring.application.name")).getId());
+        query.setCreator(operator.getUsername());
+        query.setCreatorCode(operator.getUserId());
+
         validateParamForSaveOrEdit(query);
         // 新增
         if(query.getId() == null){
