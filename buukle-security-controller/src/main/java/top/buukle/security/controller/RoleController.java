@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import top.buukle.common.call.CommonResponse;
+import top.buukle.common.call.FuzzyResponse;
 import top.buukle.common.call.PageResponse;
 import top.buukle.security .entity.vo.RoleQuery;
 import top.buukle.security .service.RoleService;
+import top.buukle.util.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
 * @author elvin
@@ -26,15 +29,108 @@ public class RoleController {
     private RoleService roleService;
 
     /**
-    * 获取列表
-    * @return
-    * @throws Exception
-    */
-    @RequestMapping("/{pageName}")
-    public ModelAndView getPage(@PathVariable("pageName") String pageName, RoleQuery query, ModelAndView modelAndView) throws Exception {
-        modelAndView.addObject("response", roleService.getPage(query));
-        modelAndView.setViewName("role/" + pageName);
+     * @description 二级页面
+     * @param modelAndView
+     * @return org.springframework.web.servlet.ModelAndView
+     * @Author elvin
+     * @Date 2019/12/25
+     */
+    @RequestMapping("/roleHome")
+    public ModelAndView roleHome(ModelAndView modelAndView) {
+        modelAndView.setViewName("role/roleHome");
         return modelAndView;
+    }
+    /**
+     * @description 增改页面
+     * @param id
+     * @param request
+     * @param modelAndView
+     * @return org.springframework.web.servlet.ModelAndView
+     * @Author elvin
+     * @Date 2019/12/25
+     */
+    @RequestMapping("/roleCrudView")
+    public ModelAndView roleCrudView( Integer id, HttpServletRequest request, ModelAndView modelAndView) {
+        Object o = roleService.selectByPrimaryKeyForCrud(request, id);
+        modelAndView.addObject("record",o);
+        modelAndView.setViewName("role/roleCrudView");
+        return modelAndView;
+    }
+
+    /**
+     * @description 设置菜单
+     * @param id
+     * @param request
+     * @param modelAndView
+     * @return org.springframework.web.servlet.ModelAndView
+     * @Author elvin
+     * @Date 2019/12/25
+     */
+    @RequestMapping("/roleMenuSetView")
+    public ModelAndView roleMenuSetView( Integer id, HttpServletRequest request, ModelAndView modelAndView) {
+        Object o = roleService.selectByPrimaryKeyForCrud(request, id);
+        modelAndView.addObject("record",o);
+        modelAndView.setViewName("user/roleMenuSetView");
+        return modelAndView;
+    }
+
+
+    /**
+     * 获取列表
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/rolePage")
+    public ModelAndView rolePage( RoleQuery query, ModelAndView modelAndView) throws Exception {
+        modelAndView.addObject("response", roleService.getPage(query));
+        modelAndView.setViewName("role/rolePage");
+        return modelAndView;
+    }
+
+    /**
+     * @description 删除单条
+     * @param id
+     * @param request
+     * @return org.springframework.web.servlet.ModelAndView
+     * @Author elvin
+     * @Date 2019/12/25
+     */
+    @RequestMapping("/roleCrudJson")
+    public void roleCrudJson( Integer id, HttpServletRequest request,HttpServletResponse response) throws IOException {
+        roleService.selectByPrimaryKeyForCrud(request,id);
+        CommonResponse delete = roleService.delete(id, request, response);
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(JsonUtil.toJSONString(delete));
+    }
+    /**
+     * @description 批量删除
+     * @param request
+     * @return org.springframework.web.servlet.ModelAndView
+     * @Author elvin
+     * @Date 2019/12/25
+     */
+    @RequestMapping("/roleBatchDeleteJson")
+    public void roleBatchDeleteJson( String ids , HttpServletRequest request,HttpServletResponse response) throws IOException {
+        CommonResponse commonResponse = roleService.deleteBatch(ids, request, response);
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(JsonUtil.toJSONString(commonResponse));
+    }
+
+    /**
+     * @description 模糊搜索
+     * @param text
+     * @param fieldName
+     * @param request
+     * @return top.buukle.common.call.FuzzyResponse
+     * @Author elvin
+     * @Date 2019/8/4
+     */
+    @RequestMapping("/fuzzy/search")
+    @ResponseBody
+    public FuzzyResponse fuzzySearch(String text, String fieldName, HttpServletRequest request) {
+        return roleService.fuzzySearch(text, fieldName);
     }
 
     /**

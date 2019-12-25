@@ -4,6 +4,8 @@ server:
   tomcat:
     max-threads: 800
     uri-encoding: utf-8
+  servlet:
+    context-path: /
 ##日志配置
 logging:
   config: classpath:config/spring/springBoot-logbak-local.xml
@@ -59,7 +61,7 @@ spring:
 ##clould注册中心 eureka 配置
 eureka:
   instance:
-    hostname: 127.0.0.1
+    hostname: 192.168.254.27
     prefer-ip-address: true
     serverport: 9090
   client:

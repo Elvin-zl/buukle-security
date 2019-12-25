@@ -62,6 +62,16 @@ public class SecurityController {
     }
 
     /**
+     * security 欢迎页
+     * @return
+     */
+    @RequestMapping("/index/welcome")
+    public ModelAndView indexWelcome(ModelAndView modelAndView) {
+        modelAndView.setViewName("index/welcome");
+        return modelAndView;
+    }
+
+    /**
      * @description 获取顶部菜单列表
      * @param subMenuList
      * @return java.util.List<top.buukle.security.entity.Menu>
@@ -93,66 +103,4 @@ public class SecurityController {
 
         }
     }
-
-    /**
-     * security 子页面控制器
-     * @param entity
-     * @param operationAndViewName
-     * @param modelAndView
-     * @return
-     */
-    @RequestMapping("/{entity}/{operationAndViewName}")
-    public ModelAndView security(
-                                 Integer id,
-                                 String ids ,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response,
-                                 @PathVariable("entity") String entity ,
-                                 @PathVariable("operationAndViewName")  String operationAndViewName,
-                                 ModelAndView modelAndView) throws IOException {
-        Object o = null;
-        // 增改页面
-        if(operationAndViewName.endsWith("CrudView") || operationAndViewName.endsWith("SetView")){
-            webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
-            o = ((BaseService) webApplicationContext.getBean(entity + "Service")).selectByPrimaryKeyForCrud(request,id);
-        }
-        // 删除结果
-        if(operationAndViewName.endsWith("CrudJson")){
-            webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
-            o = ((BaseService) webApplicationContext.getBean(entity + "Service")).delete(id,request,response);
-            response.setHeader("Content-type", "text/html;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(JsonUtil.toJSONString(o));
-            return null;
-        }
-        // 批删结果
-        if(operationAndViewName.endsWith("BatchDeleteJson")){
-            webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
-            o = ((BaseService) webApplicationContext.getBean(entity + "Service")).deleteBatch(ids,request,response);
-            response.setHeader("Content-type", "text/html;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(JsonUtil.toJSONString(o));
-            return null;
-        }
-        modelAndView.addObject("record",o).setViewName("/" + entity + "/" + operationAndViewName);
-        return modelAndView;
-    }
-
-    /**
-     * @description 模糊搜索
-     * @param entity
-     * @param text
-     * @param fieldName
-     * @param request
-     * @return top.buukle.common.call.FuzzyResponse
-     * @Author elvin
-     * @Date 2019/8/4
-     */
-    @RequestMapping("/{entity}/fuzzy/search")
-    @ResponseBody
-    public FuzzyResponse fuzzySearch(@PathVariable("entity") String entity,String text, String fieldName,HttpServletRequest request) {
-        webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
-        return ((BaseService) webApplicationContext.getBean(entity + "Service")).fuzzySearch(text, fieldName);
-    }
-
 }
