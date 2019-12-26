@@ -8,7 +8,7 @@ server:
     context-path: /
 ##日志配置
 logging:
-  config: classpath:config/spring/springBoot-logbak-prod.xml
+  config: classpath:config/spring/springBoot-logbak-cmcc.xml
 ##spring生态配置
 spring:
   ##引入
