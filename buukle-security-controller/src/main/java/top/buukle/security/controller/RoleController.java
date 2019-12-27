@@ -70,7 +70,7 @@ public class RoleController {
     public ModelAndView roleMenuSetView( Integer id, HttpServletRequest request, ModelAndView modelAndView) {
         Object o = roleService.selectByPrimaryKeyForCrud(request, id);
         modelAndView.addObject("record",o);
-        modelAndView.setViewName("user/roleMenuSetView");
+        modelAndView.setViewName("role/roleMenuSetView");
         return modelAndView;
     }
 
